@@ -1,4 +1,3 @@
-import ApplyRequest from "@/pages/apply/ApplyRequest";
 import SignIn from "@/pages/auth/SignIn";
 import SignUp from "@/pages/auth/SignUp";
 import Dashboard from "@/pages/dashboard/Dashboard";
@@ -16,7 +15,6 @@ const RootRouter = () => {
       <Route element={<Auth />}>
         <Route element={<MainLayout />}>
           <Route index path={"/"} element={<Dashboard />} />
-          <Route path="apply-request" element={<ApplyRequest />} />
         </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
       </Route>

@@ -1,5 +1,5 @@
 import { useConnect } from "@/shared/hooks";
-import { ConnectButton } from "@/shared/ui";
+import { ConnectButton } from "@/shared/component";
 import { useNavigate } from "react-router";
 import KaiaLogo from "@/shared/assets/images/icon_kaia_dark.svg";
 import { sliceWalletAddress } from "@/shared/utils";

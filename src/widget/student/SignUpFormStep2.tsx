@@ -1,10 +1,9 @@
 import { ISignUpForm, useSignUp } from "@/features/student";
-import { ErrorMessage } from "@/shared/component";
+import { ConnectButton, ErrorMessage } from "@/shared/component";
 import { BANK_CODE } from "@/shared/constants";
 import {
   Input,
   Button,
-  ConnectButton,
   Select,
   SelectContent,
   SelectGroup,

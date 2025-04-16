@@ -1,4 +1,4 @@
-import { SignUpInput } from "@/widget/student";
+import { RowLabelFormInput } from "@/shared/component";
 import { Button, Separator } from "@/shared/ui";
 import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@/shared/component";
@@ -32,32 +32,29 @@ const SignUpFormStep1 = ({
 
   return (
     <div className="grid gap-4 mt-4">
-      <SignUpInput
+      <RowLabelFormInput
         label="아이디"
         id="id"
         type="text"
         placeholder="아이디를 입력해주세요."
-        register={register}
+        {...register("id")}
         required
-        name="id"
       />
-      <SignUpInput
+      <RowLabelFormInput
         label="비밀번호"
         id="password"
         type="password"
         placeholder="비밀번호를 입력해주세요."
-        register={register}
+        {...register("password")}
         required
-        name="password"
       />
-      <SignUpInput
+      <RowLabelFormInput
         label="비밀번호 확인"
         id="confirm-password"
         type="password"
         placeholder="동일한 비밀번호를 입력해주세요."
-        register={register}
+        {...register("confirm_password")}
         required
-        name="confirm_password"
       />
       {(errors.id?.message ||
         errors.password?.message ||
@@ -73,44 +70,40 @@ const SignUpFormStep1 = ({
         />
       )}
       <Separator />
-      <SignUpInput
+      <RowLabelFormInput
         label="이름"
         id="name"
         type="text"
         placeholder="이름을 입력해주세요."
-        register={register}
-        name="name"
+        {...register("name")}
         required
         autoComplete="off"
       />
-      <SignUpInput
+      <RowLabelFormInput
         label="학과"
         id="department"
         type="text"
         placeholder="학과를 입력해주세요."
-        register={register}
-        name="department"
+        {...register("department")}
         required
         autoComplete="off"
       />
-      <SignUpInput
+      <RowLabelFormInput
         label="이메일"
         id="email"
         type="text"
         placeholder="이메일을 입력해주세요."
-        register={register}
-        name="email"
+        {...register("email")}
         required
         autoComplete="off"
       />
-      <SignUpInput
+      <RowLabelFormInput
         label="전화번호"
         id="phone_number"
         type="text"
         placeholder="010-0000-0000 형식으로 입력해주세요."
-        register={register}
+        {...register("phone_number")}
         required
-        name="phone_number"
         autoComplete="off"
       />
       {(errors.name?.message ||

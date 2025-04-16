@@ -40,4 +40,4 @@ const ConnectButton = {
   SmallButton: SmallButton,
 };
 
-export { ConnectButton };
+export default ConnectButton;

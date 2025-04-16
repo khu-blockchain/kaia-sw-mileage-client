@@ -1,28 +1,21 @@
-import { ISignUpForm } from "@/features/student";
 import { Input, Label } from "@/shared/ui";
-import { Path, UseFormRegister } from "react-hook-form";
+import { InputHTMLAttributes } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
-interface SignUpInputProps {
-  label: string;
-  id: string;
-  type: string;
-  placeholder: string;
-  register: UseFormRegister<ISignUpForm>;
-  name: Path<ISignUpForm>;
-  autoComplete?: string;
-  required?: boolean;
-}
+type RowLabelFormInputProps = InputHTMLAttributes<HTMLInputElement> &
+  UseFormRegisterReturn & {
+    label: string;
+  };
 
-function SignUpInput({
+function RowLabelFormInput({
   label,
   id,
   type,
   placeholder,
-  register,
-  name,
   autoComplete,
   required,
-}: SignUpInputProps) {
+  ...registerField
+}: RowLabelFormInputProps) {
   return (
     <div className="flex gap-2">
       <Label htmlFor={id} className="w-25">
@@ -35,11 +28,11 @@ function SignUpInput({
           placeholder={placeholder}
           autoComplete={autoComplete}
           required={required}
-          {...register(name)}
+          {...registerField}
         />
       </div>
     </div>
   );
 }
 
-export default SignUpInput;
+export default RowLabelFormInput;
