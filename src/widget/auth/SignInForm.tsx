@@ -2,10 +2,10 @@ import { toast } from "sonner";
 import { SubmitHandler } from "react-hook-form";
 import { Button, Input, Label, Separator } from "@/shared/ui";
 import { useNavigate } from "react-router";
-import { ISignInForm, useSignInForm } from "@/features/auth/form";
-import { useSignIn } from "@/features/auth/service";
+import { ISignInForm, useSignInForm, useSignIn } from "@/features/auth";
 
 const SignInForm = () => {
+  
   const navigate = useNavigate();
   const {
     register,
@@ -23,7 +23,6 @@ const SignInForm = () => {
 
   const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
     mutate({
-      loginType: "STUDENT",
       id: data.id,
       password: data.password,
     });

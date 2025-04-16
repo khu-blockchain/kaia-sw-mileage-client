@@ -1,8 +1,9 @@
-import { StudentWithToken, TokenType } from "@/entities";
+import { AuthStudent } from "@/entities/student";
+import { TokenType } from "@/entities/auth";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 
-const initialState: StudentWithToken = {
+const initialState: AuthStudent = {
   student: {
     student_id: "",
     name: "",
@@ -30,7 +31,7 @@ const initialState: StudentWithToken = {
 export const useStudentStore = create(
   combine(initialState, (set, get) => ({
     actions: {
-      setStudent: (studentWithToken: StudentWithToken) => set({ ...studentWithToken }),
+      setStudent: (authStudent: AuthStudent) => set({ ...authStudent }),
       getStudent: () => get().student,
       getToken: () => get().tokens,
       reset: () => set(initialState),

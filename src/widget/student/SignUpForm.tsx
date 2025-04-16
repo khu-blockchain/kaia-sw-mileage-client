@@ -1,7 +1,8 @@
-import { useSignUpForm } from "@/features/student/form";
-import { SignUpFormStep1, SignUpFormStep2 } from ".";
+import { useSignUpForm } from "@/features/student";
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
+import SignUpFormStep1 from "@/widget/student/SignUpFormStep1";
+import SignUpFormStep2 from "@/widget/student/SignUpFormStep2";
 
 const SignUpForm = () => {
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);

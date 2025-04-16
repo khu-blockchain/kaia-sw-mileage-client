@@ -1,4 +1,4 @@
-import { caver, provider } from "@/app/App";
+import { caver, provider } from "@/shared/constants";
 import { ABI, Bytecode, Transaction } from "@/shared/types";
 
 const encodeContractDeployABI = (abi: ABI, bytecode: Bytecode, args: Array<any>) => {

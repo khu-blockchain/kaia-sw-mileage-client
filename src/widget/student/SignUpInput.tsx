@@ -1,4 +1,4 @@
-import { ISignUpForm } from "@/features/student/form";
+import { ISignUpForm } from "@/features/student";
 import { Input, Label } from "@/shared/ui";
 import { Path, UseFormRegister } from "react-hook-form";
 

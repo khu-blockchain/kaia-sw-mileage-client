@@ -3,7 +3,7 @@ export * from './input';
 export * from './label';
 export * from './separator';
 export * from './sonner';
-export * from './connect-button';
+export * from '../component/ConnectButton';
 export * from './textarea';
 export * from './spinner';
 export * from './table';

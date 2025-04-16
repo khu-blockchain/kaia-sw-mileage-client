@@ -1,11 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router";
-import RootRouter from "./RootRouter";
+import RootRouter from "@/app/RootRouter";
 import { Toaster } from "@/shared/ui";
-
-export const provider = window.klaytn;
-export const caver = window.caver;
-
 
 const queryClient = new QueryClient({
   defaultOptions: {

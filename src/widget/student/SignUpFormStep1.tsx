@@ -1,8 +1,9 @@
-import { SignUpInput } from ".";
-import { ISignUpForm } from "@/features/student/form";
+import { SignUpInput } from "@/widget/student";
 import { Button, Separator } from "@/shared/ui";
 import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@/shared/component";
+import { ISignUpForm } from "@/features/student/form";
+
 const SignUpFormStep1 = ({
   setCurrentStep,
 }: {

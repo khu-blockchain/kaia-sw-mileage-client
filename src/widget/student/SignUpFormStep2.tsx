@@ -1,11 +1,10 @@
-import { ISignUpForm } from "@/features/student/form";
-import { useSignUp } from "@/features/student/service";
+import { ISignUpForm, useSignUp } from "@/features/student";
 import { ErrorMessage } from "@/shared/component";
 import { BANK_CODE } from "@/shared/constants";
 import {
+  Input,
   Button,
   ConnectButton,
-  Input,
   Select,
   SelectContent,
   SelectGroup,
@@ -15,7 +14,7 @@ import {
   SelectValue,
   Separator,
 } from "@/shared/ui";
-import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
+import { useFormContext, SubmitHandler, Controller } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 

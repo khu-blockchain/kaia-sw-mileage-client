@@ -1,6 +1,6 @@
 import KaiaLogo from "@/shared/assets/images/icon_kaia_dark.svg";
 import { cn } from "@/shared/utils";
-import { useConnect } from "../hooks";
+import { useConnect } from "@/shared/hooks";
 
 const DefaultButton = ({ className, connectCallback }: { className?: string, connectCallback?: (address: string[]) => void }) => {
   const {onConnect} = useConnect();

@@ -1,6 +1,6 @@
-import { Student } from "@/entities";
+import { Student } from "@/entities/student";
 
-type signUpRequest = {
+type useSignUpRequest = {
   studentId: string;
   password: string;
   passwordConfirm: string;
@@ -11,9 +11,8 @@ type signUpRequest = {
   walletAddress: string;
   bankAccountNumber: string;
   bankCode: string;
-  // personalInformationConsentStatus: number;
 };
 
-type signUpResponse = Student;
+type useSignUpResponse = Student;
 
-export type { signUpRequest, signUpResponse };
+export type { useSignUpRequest, useSignUpResponse };

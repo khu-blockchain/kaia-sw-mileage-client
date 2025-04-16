@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { provider } from "@/app/App";
+import { provider } from "@/shared/constants";
 
 const useConnect = () => {
   // Global Level에서의 wallet address 관리
