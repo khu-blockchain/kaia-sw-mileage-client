@@ -28,6 +28,7 @@ const ApplyMileageFileContainer = ({
   const deleteFile = () => {
     setFiles((prev) => prev.filter((_, idx) => idx !== index));
   };
+  
   return (
     <div className="flex w-full overflow-hidden rounded-md border border-border justify-between">
       <div

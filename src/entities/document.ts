@@ -1,3 +1,5 @@
+type ActivityField = Record<string, any>;
+
 type SwMileage = {
   sw_mileage_id: number;
   student_id: string;
@@ -26,4 +28,4 @@ type SwMileageFile = {
   updated_at?: string;
 };
 
-export type { SwMileage, SwMileageFile };
+export type { ActivityField, SwMileage, SwMileageFile };

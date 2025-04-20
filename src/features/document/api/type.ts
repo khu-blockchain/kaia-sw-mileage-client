@@ -1,5 +1,5 @@
-import { ActivityField } from "@/entities/activity_field";
-import { SwMileage, SwMileageFile } from "@/entities/sw_mileage";
+import { ActivityField } from "@/entities/document";
+import { SwMileage, SwMileageFile } from "@/entities/document";
 
 type getActivityFieldAPIRequest = void;
 
