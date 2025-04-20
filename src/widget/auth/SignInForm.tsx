@@ -23,7 +23,7 @@ const SignInForm = () => {
 
   const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
     mutate({
-      id: data.id,
+      studentId: data.student_id,
       password: data.password,
     });
   };
@@ -39,18 +39,18 @@ const SignInForm = () => {
       <div className="grid gap-6">
         <div className="grid gap-2">
           <div className="flex justify-between w-full">
-            <Label htmlFor="id">아이디</Label>
-            {errors.id && (
+            <Label htmlFor="student_id">학번</Label>
+            {errors.student_id && (
               <p className="text-xs leading-none text-destructive">
-                {errors.id.message}
+                {errors.student_id.message}
               </p>
             )}
           </div>
           <Input
-            id="id"
+            id="student_id"
             type="text"
-            placeholder="아이디를 입력해주세요."
-            {...register("id")}
+            placeholder="학번을 입력해주세요."
+            {...register("student_id")}
           />
         </div>
         <div className="grid gap-2">

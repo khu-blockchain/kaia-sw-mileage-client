@@ -49,7 +49,8 @@ const useSignIn: Mutation<useSignInRequest, useSignInResponse> = (args) => {
   return useMutation({
     mutationFn: async (data) => {
       const result = await signInAPI({
-        ...data,
+        id: data.studentId,
+        password: data.password,
         loginType: "STUDENT",
       });
       const { tokens } = result;

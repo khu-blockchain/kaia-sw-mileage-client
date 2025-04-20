@@ -51,7 +51,7 @@ const SignUpFormStep2 = ({
     //이미 step1을 통과했으므로, 2를 통과하면 모든 데이터가 존재한다고 가정할 수 있음.
     if (isValid) {
       mutate({
-        studentId: data.id!,
+        studentId: data.student_id!,
         password: data.password!,
         passwordConfirm: data.confirm_password!,
         name: data.name!,

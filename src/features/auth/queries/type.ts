@@ -5,7 +5,7 @@ type useRefreshRequest = void;
 type useRefreshResponse = AuthStudent
 
 type useSignInRequest = {
-  id: string;
+  studentId: string;
   password: string;
 }
 

@@ -12,11 +12,11 @@ const signInAPI: API<signInAPIRequest, signInAPIResponse> = async (request) => {
 
   try {
     const result = await AuthServer.post("login", {
-      json: {
-        loginType,
-        id,
-        password,
-      },
+    json: {
+      loginType,
+      id,
+      password,
+    },
     }).json();
     return result as signInAPIResponse;
   } catch (e) {

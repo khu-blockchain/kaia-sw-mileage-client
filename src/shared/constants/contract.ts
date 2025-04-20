@@ -1,6 +1,7 @@
+import { ABI } from "@/shared/types";
 
 
-const SW_MILEAGE_TOKEN_ABI = [
+const SW_MILEAGE_TOKEN_ABI: ABI = [
   {
     type: "constructor",
     inputs: [

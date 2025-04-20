@@ -17,7 +17,7 @@ const SignUpFormStep1 = ({
 
   const handleStep1Submit = async () => {
     const isValid = await trigger([
-      "id",
+      "student_id",
       "password",
       "confirm_password",
       "name",
@@ -33,11 +33,11 @@ const SignUpFormStep1 = ({
   return (
     <div className="grid gap-4 mt-4">
       <RowLabelFormInput
-        label="아이디"
-        id="id"
+        label="학번"
+        id="student_id"
         type="text"
-        placeholder="아이디를 입력해주세요."
-        {...register("id")}
+        placeholder="학번을 입력해주세요."
+        {...register("student_id")}
         required
       />
       <RowLabelFormInput
@@ -56,14 +56,14 @@ const SignUpFormStep1 = ({
         {...register("confirm_password")}
         required
       />
-      {(errors.id?.message ||
+      {(errors.student_id?.message ||
         errors.password?.message ||
         errors.confirm_password?.message) && (
         <ErrorMessage
           className="ml-30"
           errors={errors}
           fields={[
-            { field: "id", label: "아이디" },
+            { field: "student_id", label: "학번" },
             { field: "password", label: "비밀번호" },
             { field: "confirm_password", label: "비밀번호 확인" },
           ]}
@@ -95,7 +95,7 @@ const SignUpFormStep1 = ({
         placeholder="이메일을 입력해주세요."
         {...register("email")}
         required
-        autoComplete="off"
+        autoComplete="email"
       />
       <RowLabelFormInput
         label="전화번호"

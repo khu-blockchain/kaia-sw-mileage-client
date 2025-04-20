@@ -11,3 +11,4 @@ export * from './alert';
 export * from './switch';
 export * from './alert-dialog';
 export * from './select';
+export * from './badge';

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const signUpSchema = z
   .object({
-    id: z.string().nonempty("아이디를 입력해주세요."),
+    student_id: z.string().nonempty("학번을 입력해주세요.").length(10, "학번은 10자리여야 합니다."),
     password: z.string().nonempty("비밀번호를 입력해주세요."),
     confirm_password: z.string(),
     email: z

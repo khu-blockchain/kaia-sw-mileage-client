@@ -6,6 +6,7 @@ const ACTIVITY_CATEGORIES: Record<string, string> = {
   "otherActivities": "기타 활동",
 
 }
+
 export {
   ACTIVITY_CATEGORIES
 }

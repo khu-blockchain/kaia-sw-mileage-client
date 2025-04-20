@@ -1,7 +1,7 @@
 
 import { AbiItem, TransactionForSendRPC } from "caver-js";
 
-type ABI = AbiItem;
+type ABI = AbiItem[];
 
 type Bytecode = string;
 

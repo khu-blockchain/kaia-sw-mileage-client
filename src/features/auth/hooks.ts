@@ -6,7 +6,7 @@ const useSignInForm = () => {
   return useForm<ISignInForm>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      id: '',
+      student_id: '',
       password: ''
     }
   })
