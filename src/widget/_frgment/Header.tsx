@@ -5,7 +5,7 @@ import KaiaLogo from "@/shared/assets/images/icon_kaia_dark.svg";
 import { cn, sliceWalletAddress } from "@/shared/utils";
 import { Bolt } from "lucide-react";
 import { useGetMileagePoint } from "@/features/token";
-import { MENU, provider } from "@/shared/constants";
+import { MENU, kaia } from "@/shared/constants";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Header = () => {
                 key={menu.path}
                 className={cn(
                   "text-body text-sm font-semibold cursor-pointer",
-                  location.pathname === menu.path && "text-index"
+                  location.pathname.includes(menu.path) && "text-index"
                 )}
                 onClick={() => navigate(menu.path)}
               >
@@ -57,7 +57,7 @@ const Header = () => {
 
 const MyPoint = () => {
   const { data } = useGetMileagePoint({
-    targetAddress: provider.selectedAddress,
+    targetAddress: kaia.browserProvider.selectedAddress,
   });
   //TODO: call 요청 처리되는것까지는 확인,
   //hex랑 wei 처리해야되는지 몰라서 실제 값 렌더링은 마일리지 지급까지 확인 한 후 작업

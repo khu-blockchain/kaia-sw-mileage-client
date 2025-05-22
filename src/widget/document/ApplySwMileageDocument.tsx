@@ -15,6 +15,7 @@ import {
   Label,
   Textarea,
   Button,
+  Spinner,
 } from "@/shared/ui";
 import { useState } from "react";
 import { SubmitHandler, Controller } from "react-hook-form";
@@ -37,7 +38,7 @@ const ApplySwMileageDocument = () => {
 
   const [files, setFiles] = useState<Array<File | null>>([null]);
 
-  const { mutate } = useApplySwMileage({
+  const { mutate, isPending } = useApplySwMileage({
     onSuccess: (_) => {
       toast("SW 마일리지 신청이 완료되었습니다.");
     },
@@ -78,7 +79,7 @@ const ApplySwMileageDocument = () => {
       <div className="grid gap-6">
         <div className="flex gap-4 w-full">
           <div className="grid gap-2">
-            <Label className="text-md font-medium text-body">학술 분야</Label>
+            <Label className="text-sm font-medium text-body">학술 분야</Label>
             <Controller
               name="academicField"
               control={control}
@@ -99,7 +100,7 @@ const ApplySwMileageDocument = () => {
             />
           </div>
           <div className="grid gap-2">
-            <Label className="text-md font-medium text-body">비교과 활동</Label>
+            <Label className="text-sm font-medium text-body">비교과 활동</Label>
             <Controller
               name="extracurricularActivity"
               control={control}
@@ -172,16 +173,16 @@ const ApplySwMileageDocument = () => {
           )}
         </div>
         <div className="grid gap-2">
-          <Label className="text-md font-medium text-body">활동 내용</Label>
+          <Label className="text-sm font-medium text-body">활동 내용</Label>
           <Textarea
             {...register("content")}
-            className="h-50"
+            className="h-30"
             placeholder="활동 내용을 입력해주세요."
           />
         </div>
         <div className="grid gap-2">
           <div className="flex w-full justify-between items-center">
-            <Label className="text-md font-medium text-body">활동 증명</Label>
+            <Label className="text-sm font-medium text-body">활동 증명</Label>
             <Label
               onClick={() => setFiles((prev) => prev.concat(null))}
               className="text-sm font-medium text-index cursor-pointer"
@@ -201,8 +202,15 @@ const ApplySwMileageDocument = () => {
       </div>
       <Separator />
       <div className="flex gap-6 items-center">
-        <Button className="w-fit" type={"submit"}>
-          제출하기
+        <Button type="submit" className="w-min" disabled={isPending}>
+          {isPending ? (
+            <div className="flex items-center gap-1">
+              <Spinner />
+              <span>제출중...</span>
+            </div>
+          ) : (
+            "제출하기"
+          )}
         </Button>
         {errors?.academicField?.message && (
           <ErrorMessage

@@ -27,8 +27,8 @@ const ApplySwMileageBasicInfo = () => {
         {Object.entries(basicInfoMapper).map(([key, value]) => {
           const studentKey = key as keyof Student;
           return (
-            <div key={key}>
-              <p className="text-md font-medium text-body">{value}</p>
+            <div className="flex items-center justify-between" key={key}>
+              <p className="text-sm font-medium text-body">{value}</p>
               <p className="text-sm text-body">{student[studentKey]}</p>
             </div>
           );

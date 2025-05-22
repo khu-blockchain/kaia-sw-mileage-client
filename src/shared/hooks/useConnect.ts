@@ -1,20 +1,24 @@
 import { useState, useEffect } from "react";
-import { provider } from "@/shared/constants";
+import { kaia } from "@/shared/constants";
 
+
+//TODO: 연결된 지갑 주소와 계정에 등록된 지갑 주소 일치 여부 확인 및 피드백
 const useConnect = () => {
   // Global Level에서의 wallet address 관리
   const [walletAddress, setWalletAddress] = useState<string>("");
 
+  const setWalletAddressFromClient = async () => {
+    const [address] = await kaia.wallet.getAddresses();
+    if (address !== undefined) {
+      setWalletAddress(address);
+    }
+  };
+
   useEffect(() => {
     // 초기 주소 설정
-    const currentAddress = provider.selectedAddress;
-    if (currentAddress !== "" && currentAddress !== undefined) {
-      setWalletAddress(currentAddress);
-    }
-
+    setWalletAddressFromClient();
     // 계정 변경 이벤트 리스너
     const handleAccountsChanged = (accounts: string[]) => {
-      console.log("detact connection");
       setWalletAddress(accounts[0]);
     };
     const handleDisconnect = () => {
@@ -22,21 +26,25 @@ const useConnect = () => {
       // 이 문제를 해결하기 위해 window 강제 새로고침
       window.location.reload();
     };
-
     // 이벤트 리스너 등록
-    provider.on("accountsChanged", handleAccountsChanged);
-    provider.on("disconnected", handleDisconnect);
+    kaia.browserProvider.on("accountsChanged", handleAccountsChanged);
+    kaia.browserProvider.on("disconnected", handleDisconnect);
 
     // 클린업 함수
     return () => {
-      provider.removeListener("accountsChanged", handleAccountsChanged);
-      provider.removeListener("disconnected", handleDisconnect);
+      kaia.browserProvider.removeListener(
+        "accountsChanged",
+        handleAccountsChanged
+      );
+      kaia.browserProvider.removeListener("disconnected", handleDisconnect);
     };
   }, []);
 
   const onConnect = async (callback?: (address: string[]) => void) => {
     try {
-      const accounts = await provider.enable();
+      const accounts = await kaia.wallet.requestAddresses();
+      console.log(accounts);
+      // const accounts = await provider.enable();
       if (callback) {
         callback(accounts);
       }
@@ -48,4 +56,4 @@ const useConnect = () => {
   return { walletAddress, onConnect };
 };
 
-export { useConnect };
+export default useConnect;

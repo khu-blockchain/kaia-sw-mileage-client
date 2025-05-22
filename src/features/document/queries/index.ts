@@ -5,8 +5,20 @@ import {
   useApplySwMileageResponse,
   useGetActivityFieldRequest,
   useGetActivityFieldResponse,
+  useGetSwMileageDetailRequest,
+  useGetSwMileageDetailResponse,
+  useGetSwMileageListRequest,
+  useGetSwMileageListResponse,
 } from "./type";
-import { applySwMileageAPI, getActivityFieldAPI } from "../api";
+import {
+  applySwMileageAPI,
+  getActivityFieldAPI,
+  getSwMileageDetailAPI,
+  getSwMileageListAPI,
+} from "../api";
+import { useMemo } from "react";
+import { sliceWalletAddress, parseToFormattedDate } from "@/shared/utils";
+import { ACTIVITY_CATEGORIES } from "@/shared/constants";
 
 const useGetActivityField: SuspenseQuery<
   useGetActivityFieldRequest,
@@ -35,4 +47,35 @@ const useApplySwMileage: Mutation<
   });
 };
 
-export { useGetActivityField, useApplySwMileage };
+const useGetSwMileageList: SuspenseQuery<
+  useGetSwMileageListRequest,
+  useGetSwMileageListResponse
+> = (args) => {
+  return useSuspenseQuery({
+    queryKey: ["get-sw-mileage-list"],
+    queryFn: async () => {
+      const result = await getSwMileageListAPI(args);
+      return result;
+    },
+  });
+};
+
+const useGetSwMileageDetail: SuspenseQuery<
+  useGetSwMileageDetailRequest,
+  useGetSwMileageDetailResponse
+> = (args) => {
+  return useSuspenseQuery({
+    queryKey: ["get-sw-mileage-detail"],
+    queryFn: async () => {
+      const result = await getSwMileageDetailAPI(args);
+      return result;
+    },
+  });
+};
+
+export {
+  useGetActivityField,
+  useApplySwMileage,
+  useGetSwMileageList,
+  useGetSwMileageDetail,
+};

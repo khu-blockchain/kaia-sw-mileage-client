@@ -1,2 +1,2 @@
 export {default as DashboardRank} from "./DashboardRank";
-export {default as DashboardQuide} from "./DashboardQuide";
+export {default as DashboardGuide} from "./DashboardGuide";

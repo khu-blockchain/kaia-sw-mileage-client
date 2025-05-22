@@ -7,16 +7,17 @@ import {
   TableRow,
 } from "@/shared/ui";
 
-const DashboardQuide = () => {
+const DashboardGuide = () => {
   const benefits = [
-    "마일리지 제도는 학생들의 비교과 활동을 점수로 평가하여 장학금을 지급하는 제도입니다.",
-    "매년 마일리지 점수에 따른 혜택 제공",
-    "해외인턴십 및 해외교육 등 프로그램에 우선 선발 장학금/인센티브 제공",
+    "학생들의 비교과 활동을 점수로 평가하여 장학금을 지급하는 제도입니다.",
+    "매년 마일리지 점수에 따른 혜택을 제공합니다.",
+    "해외인턴십 및 해외교육 등 프로그램에 우선 선발 장학금/인센티브를 제공합니다.",
   ];
   return (
     <div className="grid gap-8">
       <div className="flex flex-col gap-4">
-        <p className="text-3xl font-bold">마일리지 제도</p>
+       
+        <p className="text-2xl font-semibold">SW 마일리지 제도란?</p>
         <ul className="list-disc ml-4">
           {benefits.map((benefit) => (
             <li key={benefit}>
@@ -71,7 +72,7 @@ const Scholarship = () => {
       </p>
       <Table>
         <TableHeader>
-          <TableRow className="bg-gray-200 hover:bg-gray-200">
+          <TableRow className="bg-gray-100 hover:bg-gray-100">
             <TableBorderHead className="w-[100px] text-center">
               구분
             </TableBorderHead>
@@ -105,8 +106,8 @@ const Scholarship = () => {
 
 const Score = () => {
   const scoreNote = [
-    "사업단에서 운영한 프로그램에서 입상하여 상금을 수상한 학생들에게는 마일리지 점수를 부여하지 않는다.",
-    "사업단에서 운영한 프로그램이 아니더라도, 같은 내용으로 타 행사에 참여하여 수상한 경우 마일리지 점수를 부여하지 않는다.",
+    "사업단에서 운영한 프로그램에서 입상하여 상금을 수상한 학생들에게는 마일리지 점수를 부여하지 않습니다.",
+    "사업단에서 운영한 프로그램이 아니더라도, 같은 내용으로 타 행사에 참여하여 수상한 경우 마일리지 점수를 부여하지 않습니다.",
   ];
   return (
     <div className="flex flex-col gap-4">
@@ -122,7 +123,7 @@ const Score = () => {
       </div>
       <Table>
         <TableHeader>
-          <TableRow className="bg-gray-200 hover:bg-gray-200">
+          <TableRow className="bg-gray-100 hover:bg-gray-100">
             <TableBorderHead className="w-[160px] text-center">
               분야
             </TableBorderHead>
@@ -371,4 +372,4 @@ const Score = () => {
   );
 };
 
-export default DashboardQuide;
+export default DashboardGuide;

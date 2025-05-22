@@ -12,9 +12,27 @@ type applySwMileageAPIResponse = {
   swMileageFiles: Array<SwMileageFile>;
 };
 
+//TODO: Pagination 추가
+type getSwMileageListAPIRequest = {
+  studentId?: string;
+  status?: number;
+};
+
+type getSwMileageListAPIResponse = Array<SwMileage>;
+
+type getSwMileageDetailAPIRequest = {
+  swMileageId: number;
+};
+
+type getSwMileageDetailAPIResponse = SwMileage;
+
 export type {
   getActivityFieldAPIRequest,
   getActivityFieldAPIResponse,
   applySwMileageAPIRequest,
   applySwMileageAPIResponse,
+  getSwMileageListAPIRequest,
+  getSwMileageListAPIResponse,
+  getSwMileageDetailAPIRequest,
+  getSwMileageDetailAPIResponse,
 };

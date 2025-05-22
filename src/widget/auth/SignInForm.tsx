@@ -18,7 +18,9 @@ const SignInForm = () => {
       toast(`${response.student.name}님, 로그인되었습니다.`);
       navigate("/");
     },
-    onError: () => {},
+    onError: () => {
+      toast(`다시 시도해주세요.`);
+    },
   });
 
   const onSubmit: SubmitHandler<ISignInForm> = async (data) => {

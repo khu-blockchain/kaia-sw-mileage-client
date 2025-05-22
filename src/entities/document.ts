@@ -12,7 +12,7 @@ type SwMileage = {
   academic_field: string;
   extracurricular_activity: string;
   extracurricular_activity_classification?: string;
-  status: number; // 1: 생성, 2: 승인, 3: 반려
+  status: 1 | 2 | 3;
   created_at: string;
   updated_at: string;
   comment: string;

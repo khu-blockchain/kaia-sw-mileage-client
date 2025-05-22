@@ -7,8 +7,11 @@ import { Init, Auth } from "@/app/RouteGuard";
 import { ApplySwMileage } from "@/pages/apply";
 import { SwMileageHistory, SwMileageHistoryDetail } from "@/pages/history";
 import { Setting } from "@/pages/setting";
+import { useScrollInit } from "@/shared/hooks";
 
 const RootRouter = () => {
+  useScrollInit();
+
   return (
     <Routes>
       <Route element={<Init />}>
@@ -24,6 +27,7 @@ const RootRouter = () => {
             <Route path=":id" element={<SwMileageHistoryDetail />} />
           </Route>
           <Route path="setting" element={<Setting />} />
+          <Route path="ranking" element={<div>랭킹</div>} />
         </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
       </Route>

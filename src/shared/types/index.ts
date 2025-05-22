@@ -1,1 +1,1 @@
-export * from "./web3.types";
+export * from "./web3.d";

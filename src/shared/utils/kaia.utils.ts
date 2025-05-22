@@ -1,36 +1,56 @@
-import { caver, provider } from "@/shared/constants";
-import { ABI, Bytecode, Transaction } from "@/shared/types";
+import { kaia } from "@/shared/constants";
+import { encodeDeployData, encodeFunctionData, getContract } from "viem";
+import type {
+  ABI,
+  Bytecode,
+  ConstructorArgs,
+  FunctionArgs,
+  ContractAddress,
+} from "@/shared/types";
 
-const encodeContractDeployABI = (abi: ABI, bytecode: Bytecode, args: Array<any>) => {
-  const contract = caver.contract.create(abi);
-  const input = contract.deploy({
-    data: bytecode,
-    arguments: args,
-  }).encodeABI();
-  return input;
-}
-
-const encodeContractExecutionABI = (abi: ABI, method: string, args: Array<any>) => {
-  const contract = caver.contract.create(abi);
-  const input = contract.methods[method](...args).encodeABI();
-  return input;
-}
-
-const requestSignTransaction = async(transaction: Transaction) => {
-  return await provider.request({
-    method: "klay_signTransaction",
-    params: [transaction],
+const encodeContractDeployABI = (
+  abi: ABI,
+  bytecode: Bytecode,
+  args: ConstructorArgs
+) => {
+  return encodeDeployData({
+    abi,
+    bytecode,
+    args,
   });
-}
+};
 
-const contractCall = async (contractAddress: string, abi: ABI, method: string, args: Array<any>) => {
-  const contract = caver.contract.create(abi, contractAddress);
-  return await contract.methods[method](...args).call();
-}
+const encodeContractExecutionABI = (
+  abi: ABI,
+  functionName: string,
+  args: FunctionArgs
+) => {
+  return encodeFunctionData({
+    abi,
+    functionName,
+    args,
+  });
+};
 
-export { 
+const contractCall = async (
+  contractAddress: ContractAddress,
+  abi: ABI,
+  method: string,
+  args: FunctionArgs
+) => {
+  const contract = getContract({
+    address: contractAddress,
+    abi,
+    client: { wallet: kaia.wallet, public: kaia.public },
+  });
+
+  const result = await contract.read[method]([...args]);
+
+  return result;
+};
+
+export {
   encodeContractDeployABI,
   encodeContractExecutionABI,
-  requestSignTransaction,
-  contractCall
- };
+  contractCall,
+};

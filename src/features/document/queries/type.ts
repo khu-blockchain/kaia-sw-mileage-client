@@ -12,9 +12,26 @@ type useApplySwMileageResponse = {
   swMileageFiles: Array<SwMileageFile>;
 };
 
+type useGetSwMileageListRequest = {
+  studentId?: string;
+  status?: number;
+};
+
+type useGetSwMileageListResponse = Array<SwMileage>;
+
+type useGetSwMileageDetailRequest = {
+  swMileageId: number;
+};
+
+type useGetSwMileageDetailResponse = SwMileage;
+
 export type {
   useGetActivityFieldRequest,
   useGetActivityFieldResponse,
   useApplySwMileageRequest,
   useApplySwMileageResponse,
+  useGetSwMileageListRequest,
+  useGetSwMileageListResponse,
+  useGetSwMileageDetailRequest,
+  useGetSwMileageDetailResponse,
 };

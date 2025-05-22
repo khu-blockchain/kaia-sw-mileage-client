@@ -73,7 +73,7 @@ const SignUpFormStep2 = ({
   return (
     <form onSubmit={handleSubmit(onStep2Submit)} className="grid gap-4 mt-4">
       <div className="flex flex-col justify-start">
-        <div className="flex gap-4">
+        <div className="flex justify-between">
           <Controller
             name="bank_code"
             control={control}
@@ -96,7 +96,7 @@ const SignUpFormStep2 = ({
             )}
           />
           <Input
-            className="w-[250px]"
+            className="w-[280px]"
             id="bank_account_number"
             type="text"
             placeholder="계좌번호를 입력해주세요.(-제외)"

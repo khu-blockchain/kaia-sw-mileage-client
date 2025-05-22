@@ -1,6 +1,5 @@
-import App from "@/app/App";
 import { CloudUpload, X } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { useDropzone } from "react-dropzone";
 
 const ApplyMileageFileContainer = ({

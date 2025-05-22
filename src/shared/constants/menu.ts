@@ -11,5 +11,9 @@ export const MENU = [
     name: "내 정보",
     path: "/setting",
   },
+  {
+    name: "랭킹",
+    path: "/ranking",
+  },
 ];
 
