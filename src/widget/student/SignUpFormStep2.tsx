@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { kaia } from "@/shared/constants";
 import { encodeContractExecutionABI } from "@/shared/utils";
 import { STUDENT_MANAGER_ABI } from "@/shared/constants/contract";
-import { toHex, keccak256 } from "viem";
+import { keccak256, encodePacked, toHex } from "viem";
 
 const SignUpFormStep2 = ({
   setCurrentStep,
@@ -56,7 +56,8 @@ const SignUpFormStep2 = ({
     ]);
     //이미 step1을 통과했으므로, 2를 통과하면 모든 데이터가 존재한다고 가정할 수 있음.
     if (isValid) {
-      const studentIdHash = keccak256(toHex(data.student_id!));
+      const studentIdHash = keccak256(encodePacked(['string'], [data.student_id!]));
+      console.log(studentIdHash)
       const transaction = encodeContractExecutionABI(
         STUDENT_MANAGER_ABI,
         "registerStudent",
