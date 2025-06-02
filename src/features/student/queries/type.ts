@@ -11,6 +11,8 @@ type useSignUpRequest = {
   walletAddress: string;
   bankAccountNumber: string;
   bankCode: string;
+  rawTransaction: string;
+  studentHash: string;
 };
 
 type useSignUpResponse = Student;

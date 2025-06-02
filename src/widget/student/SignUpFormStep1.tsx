@@ -121,7 +121,6 @@ const SignUpFormStep1 = ({
           ]}
         />
       )}
-      <Separator />
       <Button
         type="button"
         onClick={() => handleStep1Submit()}

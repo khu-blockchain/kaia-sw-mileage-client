@@ -4,7 +4,7 @@ import {
   IRegisterDocumentForm,
 } from "@/features/document";
 import { ErrorMessage } from "@/shared/component";
-import { ACTIVITY_CATEGORIES } from "@/shared/constants";
+import { ACTIVITY_CATEGORIES, kaia } from "@/shared/constants";
 import {
   Separator,
   Select,
@@ -21,8 +21,13 @@ import { useState } from "react";
 import { SubmitHandler, Controller } from "react-hook-form";
 import { toast } from "sonner";
 import ApplyMileageFileContainer from "./ApplyMileageFileContainer";
+import { encodeContractExecutionABI } from "@/shared/utils";
+import { STUDENT_MANAGER_ABI } from "@/shared/constants";
+import { useNavigate } from "react-router";
+import { keccak256 } from 'viem';
 
 const ApplySwMileageDocument = () => {
+  const navigate = useNavigate();
   const {
     methods: {
       register,
@@ -41,11 +46,14 @@ const ApplySwMileageDocument = () => {
   const { mutate, isPending } = useApplySwMileage({
     onSuccess: (_) => {
       toast("SW 마일리지 신청이 완료되었습니다.");
+      navigate("/history");
     },
     onError: () => {},
   });
 
-  const onSubmitDocument: SubmitHandler<IRegisterDocumentForm> = (data) => {
+  const onSubmitDocument: SubmitHandler<IRegisterDocumentForm> = async (
+    data
+  ) => {
     let formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
@@ -58,6 +66,53 @@ const ApplySwMileageDocument = () => {
       .forEach((file, index) => {
         formData.append(`file${index + 1}`, file);
       });
+
+    const getFileHash = async (file: File) => {
+      const arrayBuffer = await file.arrayBuffer();
+      const hash = keccak256(new Uint8Array(arrayBuffer));
+      return hash.slice(2); // '0x' 제거
+    };
+
+    const getCombinedFileHash = async (files: Array<File | null>) => {
+      const validFiles = files.filter((file) => !!file) as File[];
+
+      if (validFiles.length === 0) {
+        return "0x0000000000000000000000000000000000000000000000000000000000000000"
+      }
+
+      const fileHashes = await Promise.all(
+        validFiles.map(async (file) => {
+          return await getFileHash(file);
+        })
+      );
+
+      const concatenatedHashes = fileHashes.join("");
+      const today = new Date().toISOString().split('T')[0];
+      const encoder = new TextEncoder();
+      const data = encoder.encode(concatenatedHashes + today);
+
+      const finalHash = keccak256(data);
+
+      return finalHash;
+    };
+
+    const fileHash = await getCombinedFileHash(files);
+
+    const transaction = encodeContractExecutionABI(
+      STUDENT_MANAGER_ABI,
+      "submitDocument",
+      [fileHash]
+    );
+
+    const { rawTransaction } = await kaia.wallet.klaySignTransaction({
+      type: "FEE_DELEGATED_SMART_CONTRACT_EXECUTION",
+      from: kaia.browserProvider.selectedAddress,
+      to: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+      data: transaction,
+      gas: "0x4C4B40",
+    });
+
+    formData.append("rawTransaction", rawTransaction);
 
     mutate(formData);
   };

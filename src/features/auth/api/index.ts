@@ -8,15 +8,15 @@ import {
 } from "./type";
 
 const signInAPI: API<signInAPIRequest, signInAPIResponse> = async (request) => {
-  const { loginType, id, password } = request;
+  const { id, password } = request;
 
   try {
     const result = await AuthServer.post("login", {
-    json: {
-      loginType,
-      id,
-      password,
-    },
+      credentials: "include",
+      json: {
+        id,
+        password,
+      },
     }).json();
     return result as signInAPIResponse;
   } catch (e) {
@@ -24,14 +24,11 @@ const signInAPI: API<signInAPIRequest, signInAPIResponse> = async (request) => {
   }
 };
 
-const refreshAPI: API<refreshAPIRequest, refreshAPIResponse> = async (
-  request
-) => {
-  const { refreshToken } = request;
-
+const refreshAPI: API<refreshAPIRequest, refreshAPIResponse> = async () => {
   try {
     const result = await AuthServer.post("refresh-token", {
-      json: { refreshToken },
+      credentials: "include",
+      // json: { refreshToken },
     }).json();
     return result as refreshAPIResponse;
   } catch (e) {

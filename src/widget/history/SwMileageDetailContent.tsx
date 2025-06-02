@@ -12,6 +12,17 @@ const SwMileageDetailContent = () => {
     swMileageId: Number(swMileageId),
   });
 
+  const handleFileDownload = (fileUrl: string, fileName: string) => {
+    // 새 탭에서 파일 URL 열기 (브라우저에서 자동으로 다운로드 처리)
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = fileName;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const detailContentMapper = useMemo(() => {
     return {
       student: {
@@ -84,14 +95,14 @@ const SwMileageDetailContent = () => {
             </div>
           </div>
           <div className="h-full w-[1px] bg-gray-200 mx-6" />
-          {/* <div className="grid gap-4 w-full h-min">
+          <div className="grid gap-4 w-full h-min">
             <div className="flex items-center justify-between">
               <p className="text-xl font-semibold">제출 정보</p>
               <p className="text-sm text-muted-foreground">
                 제출 일자: {detailContentMapper.document.created_at.value}
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-1">
                 <p className="text-sm text-muted-foreground">학술 분야</p>
                 <p className="text-md text-body break-all">
@@ -115,8 +126,31 @@ const SwMileageDetailContent = () => {
                   }
                 </p>
               </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm text-muted-foreground mb-2">활동 내용</p>
+                <div className="flex w-full border border-gray-300 rounded-md p-3">
+                  <p className="text-md text-body break-all">
+                    {detailContentMapper.document.content.value}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm text-muted-foreground">제출 파일</p>
+                <div className="flex flex-col gap-1">
+                  {data.sw_mileage_files.map((file) => (
+                    <div key={file.sw_mileage_file_id} className="flex gap-1">
+                      <button
+                        onClick={() => handleFileDownload(file.url, file.name)}
+                        className="text-md text-blue-600 hover:text-blue-800 hover:underline break-all text-left cursor-pointer transition-colors"
+                      >
+                        {file.name}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
@@ -160,13 +194,3 @@ const SwMileageStatus = ({
     </Alert>
   );
 };
-
-{
-  /* <Alert variant="destructive">
-      <AlertCircle className="h-4 w-4" />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>
-        Your session has expired. Please log in again.
-      </AlertDescription>
-    </Alert> */
-}

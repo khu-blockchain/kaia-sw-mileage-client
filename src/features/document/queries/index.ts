@@ -16,9 +16,6 @@ import {
   getSwMileageDetailAPI,
   getSwMileageListAPI,
 } from "../api";
-import { useMemo } from "react";
-import { sliceWalletAddress, parseToFormattedDate } from "@/shared/utils";
-import { ACTIVITY_CATEGORIES } from "@/shared/constants";
 
 const useGetActivityField: SuspenseQuery<
   useGetActivityFieldRequest,
@@ -65,11 +62,12 @@ const useGetSwMileageDetail: SuspenseQuery<
   useGetSwMileageDetailResponse
 > = (args) => {
   return useSuspenseQuery({
-    queryKey: ["get-sw-mileage-detail"],
+    queryKey: ["get-sw-mileage-detail", args.swMileageId],
     queryFn: async () => {
       const result = await getSwMileageDetailAPI(args);
       return result;
     },
+    staleTime: 0,
   });
 };
 

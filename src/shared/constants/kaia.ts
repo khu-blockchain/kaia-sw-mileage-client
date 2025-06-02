@@ -3,15 +3,15 @@ import {
   createWalletClient,
   custom,
   rpcSchema,
-  TransactionRequest,
 } from "viem";
 import { kairos } from "viem/chains";
+import { TransactionForSendRPC } from "caver-js";
 
 type KLAY_REQUEST_METHODS = [
   {
     Method: "klay_signTransaction";
-    Parameters: [TransactionRequest];
-    ReturnType: string;
+    Parameters: [TransactionForSendRPC];
+    ReturnType: any;
   }
 ];
 
@@ -27,7 +27,7 @@ const walletClient = createWalletClient({
   transport: custom(window.klaytn!),
   rpcSchema: rpcSchema<KLAY_REQUEST_METHODS>(),
 }).extend((client) => ({
-  async klaySignTransaction(transaction: TransactionRequest) {
+  async klaySignTransaction(transaction: TransactionForSendRPC) {
     return client.request({
       method: "klay_signTransaction",
       params: [transaction],

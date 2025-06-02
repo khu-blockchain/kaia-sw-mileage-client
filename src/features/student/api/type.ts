@@ -12,6 +12,9 @@ type signUpAPIRequest = {
   bankAccountNumber: string;
   bankCode: string;
   personalInformationConsentStatus: number;
+  rawTransaction: string;
+  studentHash: string;
+
 };
 
 type signUpAPIResponse = Student;

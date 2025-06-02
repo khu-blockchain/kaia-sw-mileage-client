@@ -1,6 +1,6 @@
 import { ABI } from "@/shared/types";
 
-const SW_MILEAGE_TOKEN_ABI: ABI = [
+export const SW_MILEAGE_TOKEN_ABI: ABI = [
   {
     type: "constructor",
     inputs: [
@@ -102,7 +102,7 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
     name: "burn",
     inputs: [
       {
-        name: "amount",
+        name: "",
         type: "uint256",
         internalType: "uint256",
       },
@@ -197,7 +197,7 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
       {
         name: "",
         type: "tuple[]",
-        internalType: "struct SwMileageToken.Student[]",
+        internalType: "struct ISwMileageToken.Student[]",
         components: [
           {
             name: "account",
@@ -236,6 +236,29 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
         internalType: "bool",
       },
     ],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "initialize",
+    inputs: [
+      {
+        name: "name_",
+        type: "string",
+        internalType: "string",
+      },
+      {
+        name: "symbol_",
+        type: "string",
+        internalType: "string",
+      },
+      {
+        name: "admin",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
     stateMutability: "nonpayable",
   },
   {
@@ -290,15 +313,14 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
   },
   {
     type: "function",
-    name: "pause",
-    inputs: [],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "paused",
-    inputs: [],
+    name: "participated",
+    inputs: [
+      {
+        name: "addr",
+        type: "address",
+        internalType: "address",
+      },
+    ],
     outputs: [
       {
         name: "",
@@ -512,15 +534,21 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
     stateMutability: "nonpayable",
   },
   {
-    type: "function",
-    name: "unpause",
-    inputs: [],
-    outputs: [],
-    stateMutability: "nonpayable",
+    type: "event",
+    name: "AdminAdded",
+    inputs: [
+      {
+        name: "account",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
   },
   {
     type: "event",
-    name: "AddAdministrator",
+    name: "AdminRemoved",
     inputs: [
       {
         name: "account",
@@ -558,26 +586,13 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
   },
   {
     type: "event",
-    name: "Paused",
+    name: "Initialized",
     inputs: [
       {
-        name: "account",
-        type: "address",
+        name: "version",
+        type: "uint8",
         indexed: false,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
-    name: "RemoveAdministrator",
-    inputs: [
-      {
-        name: "account",
-        type: "address",
-        indexed: true,
-        internalType: "address",
+        internalType: "uint8",
       },
     ],
     anonymous: false,
@@ -587,7 +602,7 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
     name: "RemoveElement",
     inputs: [
       {
-        name: "addr",
+        name: "account",
         type: "address",
         indexed: true,
         internalType: "address",
@@ -622,23 +637,10 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
   },
   {
     type: "event",
-    name: "Unpaused",
-    inputs: [
-      {
-        name: "account",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
     name: "UpdateElement",
     inputs: [
       {
-        name: "addr",
+        name: "account",
         type: "address",
         indexed: true,
         internalType: "address",
@@ -646,17 +648,16 @@ const SW_MILEAGE_TOKEN_ABI: ABI = [
       {
         name: "prev",
         type: "uint256",
-        indexed: false,
+        indexed: true,
         internalType: "uint256",
       },
       {
         name: "value",
         type: "uint256",
-        indexed: false,
+        indexed: true,
         internalType: "uint256",
       },
     ],
     anonymous: false,
   },
 ];
-export { SW_MILEAGE_TOKEN_ABI };

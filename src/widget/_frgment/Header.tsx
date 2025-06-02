@@ -59,7 +59,6 @@ const MyPoint = () => {
   const { data } = useGetMileagePoint({
     targetAddress: kaia.browserProvider.selectedAddress,
   });
-  //TODO: call 요청 처리되는것까지는 확인,
   //hex랑 wei 처리해야되는지 몰라서 실제 값 렌더링은 마일리지 지급까지 확인 한 후 작업
 
   return (

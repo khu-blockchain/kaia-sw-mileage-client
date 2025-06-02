@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FormProvider } from "react-hook-form";
 import SignUpFormStep1 from "@/widget/student/SignUpFormStep1";
 import SignUpFormStep2 from "@/widget/student/SignUpFormStep2";
+import { Separator } from "@/shared/ui";
 
 const SignUpForm = () => {
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
@@ -36,7 +37,7 @@ const SignUpForm = () => {
           <SignUpFormStep2 setCurrentStep={setCurrentStep} />
         )}
       </FormProvider>
-
+      <Separator />
       <div className="text-center text-sm">
         계정이 이미 존재하나요?{" "}
         <a href="/sign-in" className="text-link">
