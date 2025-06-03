@@ -88,17 +88,17 @@ const SwMileageHistoryTable = () => {
 
 export default SwMileageHistoryTable;
 
-const SwMileageStatusBadge = ({ status }: { status: 1 | 2 | 3 }) => {
+const SwMileageStatusBadge = ({ status }: { status: 0 | 1 | 2 }) => {
   const statusText = {
-    1: {
+    2: {
       text: "심사중",
       color: "text-pending",
     },
-    2: {
+    1: {
       text: "승인",
       color: "text-approved",
     },
-    3: {
+    0: {
       text: "반려",
       color: "text-destructive",
     },

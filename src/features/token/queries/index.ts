@@ -41,8 +41,7 @@ const useGetMileagePoint: Query<
         [targetAddress]
       );
       //TODO: point 있을 때 wei 처리해야하는지 확인
-      console.log(point);
-      return 100;
+      return point;
     },
     retry: false,
   });

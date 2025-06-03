@@ -24,7 +24,7 @@ import ApplyMileageFileContainer from "./ApplyMileageFileContainer";
 import { encodeContractExecutionABI } from "@/shared/utils";
 import { STUDENT_MANAGER_ABI } from "@/shared/constants";
 import { useNavigate } from "react-router";
-import { keccak256, encodePacked } from 'viem';
+import { keccak256, encodePacked, toHex } from "viem";
 
 const ApplySwMileageDocument = () => {
   const navigate = useNavigate();
@@ -74,23 +74,41 @@ const ApplySwMileageDocument = () => {
     };
 
     const getCombinedFileHash = async (files: File[]) => {
-      const validFiles = Array.from(files).filter((file) => file.size > 0);
-      
+      const today = new Date().toISOString();
+
+      console.log(today);
+      console.log(files);
+
+      // 파일이 없는 경우 null hex와 날짜를 조합
+      if (files.length === 0) {
+        const nullHex = toHex(new Uint8Array(32));
+        const finalHash = keccak256(
+          encodePacked(["string"], [nullHex + today])
+        );
+        return finalHash;
+      }
+
       const fileHashes = await Promise.all(
-        validFiles.map(async (file) => {
+        files.map(async (file) => {
           return await getFileHash(file);
         })
       );
 
       const concatenatedHashes = fileHashes.join("");
-      const today = new Date().toISOString().split('T')[0];
-      
-      const finalHash = keccak256(encodePacked(['string'], [concatenatedHashes + today]));
+      const finalHash = keccak256(
+        encodePacked(["string"], [concatenatedHashes + today])
+      );
 
       return finalHash;
     };
 
-    const fileHash = await getCombinedFileHash(files.filter(file => file !== null) as File[]);
+    const fileHash = await getCombinedFileHash(
+      files.filter((file) => !!file) as File[]
+    );
+
+    console.log(fileHash);
+
+    formData.append("docHash", fileHash);
 
     const transaction = encodeContractExecutionABI(
       STUDENT_MANAGER_ABI,

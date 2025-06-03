@@ -163,23 +163,23 @@ const SwMileageStatus = ({
   status,
   comment,
 }: {
-  status: 1 | 2 | 3;
+  status: 0 | 1 | 2;
   comment: string;
 }) => {
   const statusText = {
-    1: {
+    2: {
       text: "심사 진행 중",
       description: "제출하신 서류를 바탕으로 심사가 진행중입니다.",
       icon: <CircleDot className="w-4 h-4 text-pending" />,
       color: "pending",
     },
-    2: {
+    1: {
       text: "제출 승인",
       description: "SW 마일리지 신청이 승인되었습니다.",
       icon: <CircleCheck className="w-4 h-4 text-approved" />,
       color: "approved",
     },
-    3: {
+    0: {
       text: "제출 반려",
       description: comment ?? "-",
       icon: <AlertCircle className="w-4 h-4 text-destructive" />,
