@@ -16,6 +16,7 @@ import {
   getSwMileageDetailAPI,
   getSwMileageListAPI,
 } from "../api";
+import { useStudentStore } from "@/features/student";
 
 const useGetActivityField: SuspenseQuery<
   useGetActivityFieldRequest,
@@ -35,8 +36,11 @@ const useApplySwMileage: Mutation<
   useApplySwMileageResponse
 > = (args) => {
   const { onSuccess, onError } = args;
+  const student = useStudentStore((state) => state).actions.getStudent();
+
   return useMutation({
     mutationFn: async (data) => {
+    
       return await applySwMileageAPI(data);
     },
     ...(onSuccess && { onSuccess: (res: any) => onSuccess(res) }),

@@ -35,6 +35,7 @@ const AcademicFieldServer = authServer('academic-field');
 const SwMileageServer = authServer('sw-mileages');
 const SwMileageTokenServer = authServer('sw-mileage-tokens');
 const SwMileageTokenHistoryServer = authServer('sw-mileage-token-histories');
+const WalletServer = authServer('wallet');
 
 export {
   AuthServer,
@@ -42,6 +43,7 @@ export {
   AcademicFieldServer,
   SwMileageServer,
   SwMileageTokenServer,
-  SwMileageTokenHistoryServer
+  SwMileageTokenHistoryServer,
+  WalletServer,
 }
 

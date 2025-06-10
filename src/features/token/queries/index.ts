@@ -7,9 +7,7 @@ import {
   useGetSWMileageTokenResponse,
 } from "./type";
 
-import {
-  getSWMileageTokenAPI,
-} from "@/features/token/api";
+import { getSWMileageTokenAPI } from "@/features/token/api";
 import { contractCall } from "@/shared/utils";
 import { STUDENT_MANAGER_ABI, SW_MILEAGE_TOKEN_ABI } from "@/shared/constants";
 import { ContractAddress } from "@/shared/types";
@@ -22,17 +20,27 @@ const useGetMileagePoint: Query<
     queryKey: ["get-mileage-point", targetAddress],
     placeholderData: 0,
     queryFn: async () => {
+      console.log(targetAddress);
+
       if (targetAddress === "" || !targetAddress) {
         return 0;
       }
-      const studentManagerContract = import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS;
 
-      const swMileageToken = await contractCall(
+      console.log(111111);
+
+      const studentManagerContract = import.meta.env
+        .VITE_STUDENT_MANAGER_CONTRACT_ADDRESS;
+
+      console.log(22222);
+
+      const swMileageToken = (await contractCall(
         studentManagerContract,
         STUDENT_MANAGER_ABI,
         "mileageToken",
         []
-      ) as ContractAddress;
+      )) as ContractAddress;
+
+      console.log(33333);
 
       const point = await contractCall(
         swMileageToken,

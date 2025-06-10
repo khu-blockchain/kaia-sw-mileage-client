@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { kaia } from "@/shared/constants";
-
 
 //TODO: 연결된 지갑 주소와 계정에 등록된 지갑 주소 일치 여부 확인 및 피드백
 const useConnect = () => {

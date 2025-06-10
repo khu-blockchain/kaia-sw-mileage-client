@@ -2,10 +2,15 @@ import { PageBoundary } from "@/widget/_suspense";
 import { useStudentStore } from "@/features/student";
 import { Student } from "@/entities/student";
 import { Label, Separator } from "@/shared/ui";
-import { User, GraduationCap } from "lucide-react";
+import { User, AlertCircle, Wallet } from "lucide-react";
 import { BANK_CODE } from "@/shared/constants";
-import { sliceWalletAddress } from "@/shared/utils";
+import { parseToFormattedDateTime, sliceWalletAddress } from "@/shared/utils";
 import { PageLayout } from "@/widget/_frgment";
+import { Button } from "@/shared/ui/button";
+import WalletLostDialog from "@/widget/setting/WalletLostDialog";
+import { useCheckHasWalletChangeProcess } from "@/features/wallet";
+import WalletChangeDialog from "@/widget/setting/WalletChangeDialog";
+import ConfirmChangeDialog from "@/widget/setting/ConfirmChangeDialog";
 
 const Setting = () => {
   return (
@@ -19,8 +24,8 @@ const Setting = () => {
           </p>
           <Separator />
           <div className="flex flex-col gap-4 w-full">
-            <StudentProfile />
             <WalletInfo />
+            <StudentProfile />
           </div>
         </div>
       </PageLayout>
@@ -76,9 +81,6 @@ const StudentProfile = () => {
 
   return (
     <div className="grid gap-6">
-      {/* 헤더 */}
-
-      {/* 프로필 섹션들 */}
       <div className="content-container">
         <div className="flex items-center gap-2">
           <User className="w-5 h-5" />
@@ -86,10 +88,8 @@ const StudentProfile = () => {
         </div>
 
         <div className="grid gap-6">
-          {/* 기본 정보와 연락처 정보 통합 */}
           <div>
             <div className="grid gap-4 lg:grid-cols-2">
-              {/* 기본 정보 필드들 */}
               {profileSections[0].fields.map((field) => (
                 <div
                   key={field.key}
@@ -114,31 +114,91 @@ const StudentProfile = () => {
 export default Setting;
 
 const WalletInfo = () => {
+  const student = useStudentStore((state) => state.actions).getStudent();
+  const {
+    data: { result, data },
+    refetch,
+  } = useCheckHasWalletChangeProcess();
+
+  console.log(result, data);
+
   return (
     <div className="content-container">
       <div className="flex items-center gap-2">
-        <GraduationCap className="w-5 h-5" />
+        <Wallet className="w-5 h-5" />
         <h2 className="text-lg font-semibold">계정 정보</h2>
       </div>
 
       <div className="grid gap-4">
-        <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm font-medium text-blue-900">
-              SW 마일리지 시스템 연동 상태
-            </p>
-            <p className="text-xs text-blue-700">
-              블록체인 지갑과 연동되어 있습니다.
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-xs font-medium text-green-700">연동됨</span>
-          </div>
-        </div>
+        {!result && (
+          <>
+            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-medium text-blue-900">
+                  SW 마일리지 계정
+                </p>
+                <p className="text-xs text-blue-700">
+                  연결된 계정 주소: {student.wallet_address}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <WalletChangeDialog refetch={refetch}>
+                  <Button variant="link" className="text-xs text-blue-700">
+                    지갑 변경하기
+                  </Button>
+                </WalletChangeDialog>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5 text-red-600" />
+              <WalletLostDialog refetch={refetch}>
+                연결된 Kaia 계정을 사용할 수 없나요?
+              </WalletLostDialog>
+            </div>
+          </>
+        )}
+        {result && data?.type === "WALLET_LOST" && (
+          <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex flex-col w-full gap-1">
+              <div className="flex w-full items-center justify-between mb-3">
+                <p className="text-sm font-medium text-yellow-900">
+                  SW 마일리지 계정 변경이 요청되었습니다.
+                </p>
+                <p className="text-xs text-yellow-700">
+                  변경 요청 일시:{" "}
+                  {parseToFormattedDateTime(data?.data?.created_at || "")}
+                </p>
+              </div>
 
+              <p className="text-xs text-yellow-700">
+                기존 계정: {data?.data?.address}
+              </p>
+              <p className="text-xs text-yellow-700">
+                변경 요청 계정: {data?.data?.target_address}
+              </p>
+            </div>
+          </div>
+        )}
+        {result && data?.type === "WALLET_CHANGE" && (
+          <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-medium text-yellow-900">
+                SW 마일리지 계정 변경이 진행중입니다.
+              </p>
+              <p className="text-xs text-yellow-700">
+                소유권 증명이 완료된 계정: {data?.data?.targetAccount}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <ConfirmChangeDialog targetAccount={data?.data?.targetAccount} refetch={refetch}>
+                <Button variant="link" className="text-xs text-yellow-700">
+                  지갑 변경 완료하기
+                </Button>
+              </ConfirmChangeDialog>
+            </div>
+          </div>
+        )}
         <Separator />
-
         <div className="flex flex-col gap-2">
           <p className="text-sm font-medium text-body">주의사항</p>
           <ul className="text-xs text-muted-foreground space-y-1">

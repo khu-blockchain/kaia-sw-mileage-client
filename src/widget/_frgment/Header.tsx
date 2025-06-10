@@ -6,6 +6,7 @@ import { cn, sliceWalletAddress } from "@/shared/utils";
 import { Bolt } from "lucide-react";
 import { useGetMileagePoint } from "@/features/token";
 import { MENU, kaia } from "@/shared/constants";
+import { useMemo } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -59,8 +60,8 @@ const MyPoint = () => {
   const { data } = useGetMileagePoint({
     targetAddress: kaia.browserProvider.selectedAddress,
   });
-  //hex랑 wei 처리해야되는지 몰라서 실제 값 렌더링은 마일리지 지급까지 확인 한 후 작업
 
+  console.log(data);
   return (
     <div className="flex gap-1 items-center">
       <Bolt className="w-5 h-5 text-body" />

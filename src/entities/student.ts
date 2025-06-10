@@ -9,6 +9,7 @@ type Student = {
   wallet_address: string
   bank_account_number: string;
   bank_code: string;
+  student_hash: string;
 }
 
 type AuthStudent = {

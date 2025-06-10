@@ -8,4 +8,4 @@ type ConstructorArgs = ContractConstructorArgs;
 type FunctionArgs = ContractFunctionArgs;
 type ContractAddress = Address;
 
-export type { Transaction, ABI, Bytecode, ConstructorArgs, FunctionArgs, ContractAddress };
+export type { Transaction, ABI, Bytecode, ConstructorArgs, FunctionArgs, ContractAddress, Address };

@@ -8,6 +8,7 @@ import { ApplySwMileage } from "@/pages/apply";
 import { SwMileageHistory, SwMileageHistoryDetail } from "@/pages/history";
 import { Setting } from "@/pages/setting";
 import { useScrollInit } from "@/shared/hooks";
+import Rank from "@/pages/rank/Rank";
 
 const RootRouter = () => {
   useScrollInit();
@@ -27,7 +28,7 @@ const RootRouter = () => {
             <Route path=":id" element={<SwMileageHistoryDetail />} />
           </Route>
           <Route path="setting" element={<Setting />} />
-          <Route path="ranking" element={<div>랭킹</div>} />
+          <Route path="ranking" element={<Rank />} />
         </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
       </Route>

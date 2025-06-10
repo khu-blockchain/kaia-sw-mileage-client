@@ -13,6 +13,7 @@ const initialState: AuthStudent = {
     department: "",
     bank_account_number: "",
     bank_code: "",
+    student_hash: "",
   },
   tokens: [
     {

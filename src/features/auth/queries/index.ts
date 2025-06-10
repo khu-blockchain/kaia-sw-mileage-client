@@ -1,9 +1,3 @@
-import { TokenType } from "@/entities/auth";
-import {
-  getLocalStorageData,
-  getToday,
-  setLocalStorageData,
-} from "@/shared/utils";
 import { useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import { SuspenseQuery, Mutation } from "@/features/_core/api";
 import { useStudentStore } from "@/features/student";
@@ -17,25 +11,12 @@ import {
 
 // post 요청은 mutation이어야 한다는 법칙은 없음
 const useRefresh: SuspenseQuery<useRefreshRequest, useRefreshResponse> = () => {
-  // const refreshToken = getLocalStorageData("refresh-token");
-  // const refreshExpires = getLocalStorageData("refresh-expires");
   const { setStudent } = useStudentStore((state) => state.actions);
 
   return useSuspenseQuery({
     queryKey: ["refresh"],
     queryFn: async () => {
-      // if (!refreshToken || refreshToken === null) {
-      //   throw new Error("유효하지 않은 리프레시 토큰");
-      // }
-      // if (getToday().isAfter(refreshExpires)) {
-      //   throw new Error("유효하지 않은 리프레시 토큰");
-      // }
       const result = await refreshAPI();
-      console.log(result);
-      // const { tokens } = result;
-      // const newToken = tokens[TokenType.REFRESH];
-      // setLocalStorageData("refresh-token", newToken.token);
-      // setLocalStorageData("refresh-expires", newToken.expires);
       setStudent(result);
       return result;
     },
@@ -52,13 +33,7 @@ const useSignIn: Mutation<useSignInRequest, useSignInResponse> = (args) => {
       const result = await signInAPI({
         id: data.studentId,
         password: data.password,
-        loginType: "STUDENT",
       });
-      const { tokens } = result;
-      console.log(result);
-      // const newToken = tokens[TokenType.REFRESH];
-      // setLocalStorageData("refresh-token", newToken.token);
-      // setLocalStorageData("refresh-expires", newToken.expires);
       setStudent(result);
       return result;
     },

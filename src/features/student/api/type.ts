@@ -14,9 +14,29 @@ type signUpAPIRequest = {
   personalInformationConsentStatus: number;
   rawTransaction: string;
   studentHash: string;
-
 };
 
 type signUpAPIResponse = Student;
 
-export type { signUpAPIRequest, signUpAPIResponse };
+type createWalletChangeAPIRequest = {
+  studentId: string;
+  rawTransaction: string;
+};
+
+type createWalletChangeAPIResponse = { message: string };
+
+type confirmWalletChangeAPIRequest = {
+  studentId: string;
+  rawTransaction: string;
+};
+
+type confirmWalletChangeAPIResponse = { message: string };
+
+export type {
+  signUpAPIRequest,
+  signUpAPIResponse,
+  createWalletChangeAPIRequest,
+  createWalletChangeAPIResponse,
+  confirmWalletChangeAPIRequest,
+  confirmWalletChangeAPIResponse,
+};
