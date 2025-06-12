@@ -18,11 +18,11 @@ type KLAY_REQUEST_METHODS = [
 
 // Kaia wallet 존재 여부 확인 함수
 const isKaiaWalletAvailable = (): boolean => {
-  return typeof window !== 'undefined' && !!window.klaytn;
+  return typeof window !== "undefined" && !!window.klaytn;
 };
 
 // Fallback RPC URL (테스트넷)
-const KAIROS_RPC_URL = 'https://public-en-kairos.node.kaia.io';
+const KAIROS_RPC_URL = "https://public-en-kairos.node.kaia.io";
 
 const provider = window.klaytn;
 
@@ -40,10 +40,9 @@ const publicClient = createPublicClient({
 });
 
 // wallet client는 wallet이 있을 때만 생성
-const walletClient = isKaiaWalletAvailable() 
-  ? createWalletClient({
+const walletClient = createWalletClient({
       chain: kairos,
-      transport: custom(window.klaytn!),
+      transport: getTransport(),
       rpcSchema: rpcSchema<KLAY_REQUEST_METHODS>(),
     }).extend((client) => ({
       async klaySignTransaction(transaction: TransactionForSendRPC) {
@@ -53,7 +52,6 @@ const walletClient = isKaiaWalletAvailable()
         });
       },
     }))
-  : null;
 
 const kaia = {
   wallet: walletClient,
