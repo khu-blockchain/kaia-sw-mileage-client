@@ -26,16 +26,20 @@ const useConnect = () => {
       window.location.reload();
     };
     // 이벤트 리스너 등록
-    kaia.browserProvider.on("accountsChanged", handleAccountsChanged);
-    kaia.browserProvider.on("disconnected", handleDisconnect);
+    if (kaia.browserProvider) {
+      kaia.browserProvider.on("accountsChanged", handleAccountsChanged);
+      kaia.browserProvider.on("disconnected", handleDisconnect);
+    }
 
     // 클린업 함수
     return () => {
-      kaia.browserProvider.removeListener(
-        "accountsChanged",
-        handleAccountsChanged
-      );
-      kaia.browserProvider.removeListener("disconnected", handleDisconnect);
+      if (kaia.browserProvider) {
+        kaia.browserProvider.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+        kaia.browserProvider.removeListener("disconnected", handleDisconnect);
+      }
     };
   }, []);
 
