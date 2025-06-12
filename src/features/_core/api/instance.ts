@@ -1,6 +1,6 @@
 import ky, { KyInstance } from 'ky';
 import { useStudentStore } from '@/features/student/store';
-const baseURL = 'http://localhost:1987/v1/';
+const baseURL = 'http://khunggum.khu.ac.kr:8080/v1/';
 
 const baseApi = ky.create();
 

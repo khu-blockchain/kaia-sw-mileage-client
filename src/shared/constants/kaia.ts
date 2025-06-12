@@ -3,6 +3,7 @@ import {
   createWalletClient,
   custom,
   rpcSchema,
+  http,
 } from "viem";
 import { kairos } from "viem/chains";
 import { TransactionForSendRPC } from "caver-js";
@@ -15,30 +16,50 @@ type KLAY_REQUEST_METHODS = [
   }
 ];
 
+// Kaia wallet 존재 여부 확인 함수
+const isKaiaWalletAvailable = (): boolean => {
+  return typeof window !== 'undefined' && !!window.klaytn;
+};
+
+// Fallback RPC URL (테스트넷)
+const KAIROS_RPC_URL = 'https://public-en-kairos.node.kaia.io';
+
 const provider = window.klaytn;
+
+// wallet이 없을 때는 HTTP transport 사용
+const getTransport = () => {
+  if (isKaiaWalletAvailable()) {
+    return custom(window.klaytn!);
+  }
+  return http(KAIROS_RPC_URL);
+};
 
 const publicClient = createPublicClient({
   chain: kairos,
-  transport: custom(window.klaytn!),
+  transport: getTransport(),
 });
 
-const walletClient = createWalletClient({
-  chain: kairos,
-  transport: custom(window.klaytn!),
-  rpcSchema: rpcSchema<KLAY_REQUEST_METHODS>(),
-}).extend((client) => ({
-  async klaySignTransaction(transaction: TransactionForSendRPC) {
-    return client.request({
-      method: "klay_signTransaction",
-      params: [transaction],
-    });
-  },
-}));
+// wallet client는 wallet이 있을 때만 생성
+const walletClient = isKaiaWalletAvailable() 
+  ? createWalletClient({
+      chain: kairos,
+      transport: custom(window.klaytn!),
+      rpcSchema: rpcSchema<KLAY_REQUEST_METHODS>(),
+    }).extend((client) => ({
+      async klaySignTransaction(transaction: TransactionForSendRPC) {
+        return client.request({
+          method: "klay_signTransaction",
+          params: [transaction],
+        });
+      },
+    }))
+  : null;
 
 const kaia = {
   wallet: walletClient,
   public: publicClient,
   browserProvider: provider,
+  isWalletAvailable: isKaiaWalletAvailable(),
 };
 
-export { kaia };
+export { kaia, isKaiaWalletAvailable };
