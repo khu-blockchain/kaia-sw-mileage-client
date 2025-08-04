@@ -1,0 +1,1 @@
+export { useStudentSignUp } from "./queries";
