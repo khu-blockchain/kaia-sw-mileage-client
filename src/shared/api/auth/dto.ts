@@ -1,25 +1,19 @@
 import type { StudentResponse } from "../student";
 
-type TokenDetails = {
-	token: string;
-	expires_in: number;
+type AccessToken = {
+	access_token: string;
 };
 
 type SignInRequest = {
-	studentId: string;
+	adminId: string;
 	password: string;
 };
 
-type SignInResponse = StudentResponse & {
-	access_token: TokenDetails;
-};
+type SignInResponse = StudentResponse & AccessToken;
 
-type RefreshTokenResponse = StudentResponse & {
-	access_token: TokenDetails;
-};
+type RefreshTokenResponse = StudentResponse & AccessToken;
 
 export type {
-	TokenDetails,
 	SignInRequest,
 	SignInResponse,
 	RefreshTokenResponse,

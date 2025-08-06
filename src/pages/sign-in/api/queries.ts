@@ -1,14 +1,15 @@
 import type { SignInRequest } from "@/shared/api/auth";
 
 import { useMutation } from "@tanstack/react-query";
+import { useSetRecoilState } from "recoil";
 
-import { mapStudent, useStudentStore } from "@entities/student";
-import { useAuthStore } from "@shared/authorize";
+import { mapStudent, studentState } from "@entities/student";
+import { accessTokenState } from "@shared/authorize";
 import { authApi } from "@/shared/api/auth";
 
 export const useStudentSignIn = () => {
-	const { actions: studentActions } = useStudentStore();
-	const { actions: authActions } = useAuthStore();
+	const setStudentState = useSetRecoilState(studentState);
+	const setAccessTokenState = useSetRecoilState(accessTokenState);
 
 	return useMutation({
 		mutationFn: async (request: SignInRequest) => {
@@ -16,8 +17,8 @@ export const useStudentSignIn = () => {
 
 			const { access_token, ...student } = data;
 
-			authActions.setAccessToken(access_token.token);
-			studentActions.setStudent(mapStudent(student));
+			setAccessTokenState(access_token);
+			setStudentState(mapStudent(student));
 
 			return mapStudent(student);
 		},

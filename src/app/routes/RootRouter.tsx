@@ -12,6 +12,7 @@ import { SignUpPage } from "@/pages/sign-up";
 import { UserSettingPage } from "@/pages/user-setting";
 
 import { AuthGuard, InitGuard } from "../guards";
+import { MainLayout } from "../layouts";
 
 export default function RootRouter() {
 	const location = useLocation();
@@ -28,15 +29,16 @@ export default function RootRouter() {
 			</Route>
 			<Route element={<AuthGuard />}>
 				<Route>
-					{/* <Route element={<MainLayout />}> */}
-					<Route index path={"/"} element={<MileageInfoPage />} />
-					<Route path="apply" element={<MileageRegistrationPage />} />
-					<Route path="history/*">
-						<Route index element={<MileageHistoryPage />} />
-						<Route path=":id" element={<MileageHistoryDetailPage />} />
+					<Route element={<MainLayout />}>
+						<Route index path={"/"} element={<MileageInfoPage />} />
+						<Route path="apply" element={<MileageRegistrationPage />} />
+						<Route path="history/*">
+							<Route index element={<MileageHistoryPage />} />
+							<Route path=":id" element={<MileageHistoryDetailPage />} />
+						</Route>
+						<Route path="setting" element={<UserSettingPage />} />
+						<Route path="ranking" element={<RankPage />} />
 					</Route>
-					<Route path="setting" element={<UserSettingPage />} />
-					<Route path="ranking" element={<RankPage />} />
 				</Route>
 				<Route path="*" element={<Navigate to={"/"} />} />
 			</Route>

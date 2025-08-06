@@ -89,7 +89,7 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 				data: transaction,
 				gas: "0x4C4B40",
 			});
-			await mutateAsync({
+			const response = await mutateAsync({
 				studentId: data.studentId!,
 				password: data.password!,
 				passwordConfirm: data.confirmPassword!,
@@ -103,7 +103,7 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 				rawTransaction: rawTransaction,
 				studentHash: studentIdHash,
 			});
-			toast.success(`${data.name}님, 회원가입이 완료되었습니다.`);
+			toast.success(`${response.name}님, 회원가입이 완료되었습니다.`);
 			navigate("/sign-in");
 		} catch (error: any) {
 			toast.error(error.message);

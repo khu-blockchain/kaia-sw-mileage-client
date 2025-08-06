@@ -23,7 +23,6 @@ const SignUpForm = () => {
 			name: "",
 			department: "",
 			email: "",
-			phoneNumber: "",
 			walletAddress: "",
 			bankAccountNumber: "",
 			bankCode: "",
