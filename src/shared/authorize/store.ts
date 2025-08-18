@@ -1,6 +1,11 @@
-import { atom } from "recoil";
+import { create } from "zustand";
 
-export const accessTokenState = atom<string | null>({
-	key: "accessToken",
-	default: null,
-});
+interface AuthStore {
+	accessToken: string | null;
+	setAccessToken: (token: string | null) => void;
+}
+
+export const useAuthStore = create<AuthStore>((set) => ({
+	accessToken: null,
+	setAccessToken: (accessToken) => set({ accessToken }),
+}));

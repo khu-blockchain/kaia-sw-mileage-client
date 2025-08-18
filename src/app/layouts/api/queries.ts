@@ -14,7 +14,6 @@ export const useGetMileagePoint = ({
 		queryKey: ["get-mileage-point", targetAddress],
 		placeholderData: 0,
 		queryFn: async () => {
-			console.log(targetAddress);
 
 			if (targetAddress === "" || !targetAddress) {
 				return 0;
@@ -29,6 +28,8 @@ export const useGetMileagePoint = ({
 				"mileageToken",
 				[],
 			)) as ContractAddress;
+
+      console.log(swMileageToken)
 
 			const point = await contractCall(
 				swMileageToken,

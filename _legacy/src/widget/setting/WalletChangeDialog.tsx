@@ -8,7 +8,6 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogCancel,
-  AlertDialogAction,
   Input,
   Button,
 } from "@/shared/ui";

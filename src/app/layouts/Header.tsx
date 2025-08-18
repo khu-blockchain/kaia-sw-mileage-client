@@ -60,10 +60,9 @@ const Header = () => {
 
 const MyPoint = () => {
 	const { data } = useGetMileagePoint({
-		targetAddress: kaia.browserProvider.selectedAddress,
+		targetAddress: kaia.browserProvider.selectedAddress || "",
 	});
 
-	console.log(data);
 	return (
 		<div className="flex gap-1 items-center">
 			<Bolt className="w-5 h-5 text-body" />

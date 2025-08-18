@@ -5,7 +5,7 @@ type AccessToken = {
 };
 
 type SignInRequest = {
-	adminId: string;
+	studentId: string;
 	password: string;
 };
 

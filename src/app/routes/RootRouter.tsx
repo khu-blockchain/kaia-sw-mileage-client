@@ -28,17 +28,15 @@ export default function RootRouter() {
 				<Route path="sign-up" element={<SignUpPage />} />
 			</Route>
 			<Route element={<AuthGuard />}>
-				<Route>
-					<Route element={<MainLayout />}>
-						<Route index path={"/"} element={<MileageInfoPage />} />
-						<Route path="apply" element={<MileageRegistrationPage />} />
-						<Route path="history/*">
-							<Route index element={<MileageHistoryPage />} />
-							<Route path=":id" element={<MileageHistoryDetailPage />} />
-						</Route>
-						<Route path="setting" element={<UserSettingPage />} />
-						<Route path="ranking" element={<RankPage />} />
+				<Route element={<MainLayout />}>
+					<Route index path={"/"} element={<MileageInfoPage />} />
+					<Route path="apply" element={<MileageRegistrationPage />} />
+					<Route path="history/*">
+						<Route index element={<MileageHistoryPage />} />
+						<Route path=":id" element={<MileageHistoryDetailPage />} />
 					</Route>
+					<Route path="setting" element={<UserSettingPage />} />
+					<Route path="ranking" element={<RankPage />} />
 				</Route>
 				<Route path="*" element={<Navigate to={"/"} />} />
 			</Route>

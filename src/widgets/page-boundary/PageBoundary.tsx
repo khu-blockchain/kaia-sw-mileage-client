@@ -17,7 +17,7 @@ function Loading() {
 	);
 };
 
-function CommonErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+function CommonErrorFallback({ resetErrorBoundary }: FallbackProps) {
 	return (
 		<div className="flex flex-col w-full h-full items-center justify-center">
 			<p className="text-black text-4xl font-bold mb-2">문제가 발생했어요</p>

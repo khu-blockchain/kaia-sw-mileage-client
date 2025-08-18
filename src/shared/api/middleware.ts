@@ -2,16 +2,11 @@ import type { Options } from "ky";
 
 import ky from "ky";
 
-import {
-	getAuthTokenStateExternal,
-	resetAuthTokenStateExternal,
-	setAuthTokenStateExternal,
-} from "../authorize";
-
+import { useAuthStore } from "../authorize";
 import { authApi } from "./auth";
 
 function beforeRequest(request: Request) {
-	const token = getAuthTokenStateExternal();
+	const token = useAuthStore.getState().accessToken;
 	if (token) {
 		request.headers.set("Authorization", `Bearer ${token}`);
 	}
@@ -19,14 +14,14 @@ function beforeRequest(request: Request) {
 
 async function afterResponse(
 	request: Request,
-	options: Options,
+	_options: Options,
 	response: Response,
 ) {
 	if (response.status === 401) {
 		try {
 			const { data } = await authApi.refreshToken();
 			const { access_token } = data;
-			setAuthTokenStateExternal(access_token);
+			useAuthStore.getState().setAccessToken(access_token);
 			if (access_token) {
 				request.headers.set("Authorization", `Bearer ${access_token}`);
 				return ky(request);
@@ -35,7 +30,7 @@ async function afterResponse(
 			if (typeof window !== "undefined") {
 				window.location.href = "/sign-in";
 			}
-			resetAuthTokenStateExternal();
+			useAuthStore.getState().setAccessToken(null);
 			console.error("Token refresh failed:", error);
 		}
 	}

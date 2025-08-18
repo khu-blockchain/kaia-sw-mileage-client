@@ -1,1 +1,1 @@
-export { default as UserSettingPage } from "./ui/UserSettingPage";
+export { UserSettingPage } from "./ui";

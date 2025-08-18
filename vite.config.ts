@@ -10,7 +10,6 @@ import { defineConfig, loadEnv } from "vite";
 declare global {
 	const __ENV__: {
 		VITE_STUDENT_MANAGER_CONTRACT_ADDRESS: string;
-		VITE_SW_MILEAGE_TOKEN_FACTORY_ADDRESS: string;
 		VITE_NETWORK_RPC_URL: string;
 		VITE_API_URL: string;
 		VITE_KAIROS_NETWORK_ID: string;
@@ -56,14 +55,9 @@ export default defineConfig(({ mode }) => {
 				VITE_STUDENT_MANAGER_CONTRACT_ADDRESS: JSON.stringify(
 					env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
 				),
-				VITE_SW_MILEAGE_TOKEN_FACTORY_ADDRESS: JSON.stringify(
-					env.VITE_SW_MILEAGE_TOKEN_FACTORY_ADDRESS,
-				),
 				VITE_NETWORK_RPC_URL: JSON.stringify(env.VITE_NETWORK_RPC_URL),
 				VITE_API_URL: JSON.stringify(env.VITE_API_URL),
-				VITE_KAIROS_NETWORK_ID: JSON.stringify(
-					env.VITE_KAIROS_NETWORK_ID,
-				),
+				VITE_KAIROS_NETWORK_ID: JSON.stringify(env.VITE_KAIROS_NETWORK_ID),
 				NODE_ENV: JSON.stringify(mode),
 			},
 		},

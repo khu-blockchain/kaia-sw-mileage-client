@@ -9,6 +9,11 @@ export const STUDENT_MANAGER_ABI: ABI = [
 				type: "address",
 				internalType: "address",
 			},
+			{
+				name: "tokenImpl",
+				type: "address",
+				internalType: "address",
+			},
 		],
 		stateMutability: "nonpayable",
 	},
@@ -126,6 +131,59 @@ export const STUDENT_MANAGER_ABI: ABI = [
 			},
 		],
 		outputs: [],
+		stateMutability: "nonpayable",
+	},
+	{
+		type: "function",
+		name: "deploy",
+		inputs: [
+			{
+				name: "name",
+				type: "string",
+				internalType: "string",
+			},
+			{
+				name: "symbol",
+				type: "string",
+				internalType: "string",
+			},
+		],
+		outputs: [
+			{
+				name: "",
+				type: "address",
+				internalType: "address",
+			},
+		],
+		stateMutability: "nonpayable",
+	},
+	{
+		type: "function",
+		name: "deployWithAdmin",
+		inputs: [
+			{
+				name: "name",
+				type: "string",
+				internalType: "string",
+			},
+			{
+				name: "symbol",
+				type: "string",
+				internalType: "string",
+			},
+			{
+				name: "admin",
+				type: "address",
+				internalType: "address",
+			},
+		],
+		outputs: [
+			{
+				name: "",
+				type: "address",
+				internalType: "address",
+			},
+		],
 		stateMutability: "nonpayable",
 	},
 	{
@@ -339,10 +397,28 @@ export const STUDENT_MANAGER_ABI: ABI = [
 	},
 	{
 		type: "function",
+		name: "implementaion",
+		inputs: [],
+		outputs: [
+			{
+				name: "",
+				type: "address",
+				internalType: "address",
+			},
+		],
+		stateMutability: "view",
+	},
+	{
+		type: "function",
 		name: "initialize",
 		inputs: [
 			{
 				name: "mileageToken_",
+				type: "address",
+				internalType: "address",
+			},
+			{
+				name: "tokenImpl",
 				type: "address",
 				internalType: "address",
 			},
@@ -486,6 +562,19 @@ export const STUDENT_MANAGER_ABI: ABI = [
 		inputs: [
 			{
 				name: "account",
+				type: "address",
+				internalType: "address",
+			},
+		],
+		outputs: [],
+		stateMutability: "nonpayable",
+	},
+	{
+		type: "function",
+		name: "setImplementation",
+		inputs: [
+			{
+				name: "impl",
 				type: "address",
 				internalType: "address",
 			},
@@ -862,6 +951,19 @@ export const STUDENT_MANAGER_ABI: ABI = [
 	},
 	{
 		type: "event",
+		name: "MileageTokenCreated",
+		inputs: [
+			{
+				name: "tokenAddress",
+				type: "address",
+				indexed: true,
+				internalType: "address",
+			},
+		],
+		anonymous: false,
+	},
+	{
+		type: "event",
 		name: "Paused",
 		inputs: [
 			{
@@ -954,5 +1056,26 @@ export const STUDENT_MANAGER_ABI: ABI = [
 			},
 		],
 		anonymous: false,
+	},
+	{
+		type: "error",
+		name: "FailedDeployment",
+		inputs: [],
+	},
+	{
+		type: "error",
+		name: "InsufficientBalance",
+		inputs: [
+			{
+				name: "balance",
+				type: "uint256",
+				internalType: "uint256",
+			},
+			{
+				name: "needed",
+				type: "uint256",
+				internalType: "uint256",
+			},
+		],
 	},
 ];

@@ -5,3 +5,8 @@ export { Input } from "./input";
 export * from "./select";
 export { ErrorMessage } from "./error-message";
 export * from "./table";
+export { Spinner } from "./spinner";
+export { Textarea } from "./textarea";
+export * from "./alert";
+export * from "./pagination";
+export * from "./alert-dialog";
