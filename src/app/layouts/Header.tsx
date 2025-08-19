@@ -8,7 +8,7 @@ import { cn } from "@shared/lib/style";
 import { kaia, sliceWalletAddress } from "@shared/lib/web3";
 
 import { useGetMileagePoint } from "./api";
-import { MENU } from "./config";
+import { MENU } from "./configuration";
 
 const Header = () => {
 	const navigate = useNavigate();

@@ -267,7 +267,7 @@ const ApplySwMileageDocument = () => {
 				</div>
 			</div>
 			<Separator />
-			<div className="flex gap-6 items-center">
+			<div className="flex gap-6 items-center justify-end">
 				<Button type="submit" className="w-min" disabled={isPending}>
 					{isPending ? (
 						<div className="flex items-center gap-1">

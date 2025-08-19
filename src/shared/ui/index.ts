@@ -10,3 +10,4 @@ export { Textarea } from "./textarea";
 export * from "./alert";
 export * from "./pagination";
 export * from "./alert-dialog";
+export { DataTable } from "./data-table";

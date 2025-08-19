@@ -11,7 +11,6 @@ import { authApi } from "@/shared/api/auth";
 import { useAuthStore } from "@/shared/authorize";
 
 const useRefresh = () => {
-  console.log("useRefresh");
 	const setAccessToken = useAuthStore(state => state.setAccessToken);
 
 	return useSuspenseQuery({

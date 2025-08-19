@@ -27,8 +27,7 @@ const ApplySwMileageBasicInfo = () => {
 			<div className="grid gap-2">
 				<p className="text-xl font-semibold">기본 정보</p>
 				<p className="text-sm text-muted-foreground whitespace-pre-wrap">
-					{"기본 정보는 가입 시 등록된 정보를 바탕으로 기입됩니다.\n" +
-						'잘못된 항목이 존재할 경우 "내 정보" 에서 수정해주세요.'}
+					{"기본 정보는 가입 시 등록된 정보를 바탕으로 기입됩니다."}
 				</p>
 			</div>
 			<Separator />

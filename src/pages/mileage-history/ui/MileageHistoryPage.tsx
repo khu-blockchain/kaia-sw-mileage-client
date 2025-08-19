@@ -1,6 +1,7 @@
 import { PageBoundary } from "@widgets/page-boundary";
 import { PageLayout } from "@widgets/page-layout";
 import { Separator } from "@/shared/ui";
+
 import SwMileageHistoryTable from "./SwMileageHistoryTable";
 
 export default function MileageHistoryPage() {
@@ -15,9 +16,7 @@ export default function MileageHistoryPage() {
 						있습니다. 상세 내역 확인을 원하시면 해당 신청 건을 선택하세요.
 					</p>
 					<Separator />
-					<div className="flex gap-4 w-full">
-						<SwMileageHistoryTable />
-					</div>
+					<SwMileageHistoryTable />
 				</div>
 			</PageLayout>
 		</PageBoundary>

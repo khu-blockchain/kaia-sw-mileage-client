@@ -1,103 +1,68 @@
+import type { MileagePointHistory } from "@entities/mileage-point-history";
+import type { Row } from "@tanstack/react-table";
+import type { MileageColumns } from "./columns";
+
+import { useMemo } from "react";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useNavigate } from "react-router";
 
-import { type Mileage } from "@entities/mileage";
 import { mileageQueries } from "@entities/mileage/api";
-import { MILEAGE_STATUS } from "@/shared/api";
+import { MILEAGE_POINT_HISTORY_TYPE } from "@/shared/api";
 import { parseToFormattedDate } from "@/shared/lib/date.utils";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/shared/ui";
+import { DataTable } from "@/shared/ui";
+
+import { columns } from "./columns";
 
 const SwMileageHistoryTable = () => {
 	const navigate = useNavigate();
-	const { data: myMileage } = useSuspenseQuery(mileageQueries.getMyMileages());
+	const { data } = useSuspenseQuery(mileageQueries.getMyMileages());
 
-	console.log(myMileage);
-	const historyTableMapper = (data: Mileage[]) =>
-		data.map((history) => {
-			return {
-				id: history.id,
-				mileageCategoryName: history.mileageCategoryName,
-				mileageActivityName: history.mileageActivityName,
-				createdAt: history.createdAt,
-				status: history.status,
-			};
-		});
+	const calculateMileagePoint = (
+		mileagePointHistories: MileagePointHistory[],
+	) => {
+		return mileagePointHistories?.reduce((acc, curr) => {
+			if (curr.type === MILEAGE_POINT_HISTORY_TYPE.MILEAGE_BURNED) {
+				return acc - curr.mileagePoint;
+			}
+			return acc + curr.mileagePoint;
+		}, 0);
+	};
+
+	const transformedData = useMemo(
+		() =>
+			data.map((mileage) => ({
+				id: mileage.id,
+				mileageCategoryName: mileage.mileageCategoryName,
+				mileageActivityName: mileage.mileageActivityName,
+				status: mileage.status,
+				createdAt: parseToFormattedDate(mileage.createdAt.toISOString()),
+				mileagePoint: calculateMileagePoint(
+					mileage.mileagePointHistories ?? [],
+				),
+				mileageTokenName:
+					mileage.mileagePointHistories?.[0]?.mileageTokenName ?? "-",
+			})),
+		[data],
+	);
+
+	const onRowClick = (row: Row<MileageColumns>) => {
+		navigate(`/history/${row.original.id}`);
+	};
+
+	const table = useReactTable({
+		data: transformedData,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		debugTable: true,
+	});
 
 	return (
 		<div className="flex w-full">
-			<div className="w-full rounded-md border overflow-auto">
-				<Table className="border-collapse w-full">
-					<TableHeader>
-						<TableRow>
-							<TableHead className="text-center text-muted-foreground">
-								학술 분야
-							</TableHead>
-							<TableHead className="text-center text-muted-foreground">
-								비교과 활동
-							</TableHead>
-							<TableHead className="text-center text-muted-foreground">
-								신청일
-							</TableHead>
-							<TableHead className="text-center text-muted-foreground">
-								상태
-							</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{historyTableMapper(myMileage).map((history) => (
-							<TableRow
-								className="hover:cursor-pointer hover:bg-gray-50"
-								key={history.id}
-								onClick={() => {
-									navigate(`/history/${history.id}`);
-								}}
-							>
-								<TableCell className="text-center">
-									{history.mileageCategoryName}
-								</TableCell>
-								<TableCell className="text-center">
-									{history.mileageActivityName}
-								</TableCell>
-								<TableCell className="text-center">
-									{parseToFormattedDate(history.createdAt.toISOString())}
-								</TableCell>
-								<TableCell className="text-center">
-									<SwMileageStatusBadge status={history.status} />
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</div>
+			<DataTable table={table} onRowClick={onRowClick} />
 		</div>
 	);
 };
 
 export default SwMileageHistoryTable;
-
-const SwMileageStatusBadge = ({ status }: { status: MILEAGE_STATUS }) => {
-	const statusText = {
-		[MILEAGE_STATUS.REVIEWING]: {
-			text: "심사중",
-			color: "text-pending",
-		},
-		[MILEAGE_STATUS.APPROVED]: {
-			text: "승인",
-			color: "text-approved",
-		},
-		[MILEAGE_STATUS.REJECTED]: {
-			text: "반려",
-			color: "text-destructive",
-		},
-	};
-	return (
-		<p className={`${statusText[status].color}`}>{statusText[status].text}</p>
-	);
-};
