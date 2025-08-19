@@ -20,8 +20,23 @@ export default tseslint.config([
 			globals: globals.browser,
 		},
 		rules: {
+			...reactHooks.configs.recommended.rules,
+
+			"react-refresh/only-export-components": [
+				"warn",
+				{ allowConstantExport: true },
+			],
+
 			"@typescript-eslint/no-explicit-any": "off",
 			"@typescript-eslint/no-unused-vars": "off",
+			"@typescript-eslint/no-unused-expressions": [
+				"error",
+				{
+					allowShortCircuit: true,
+					allowTernary: true,
+					allowTaggedTemplates: true,
+				},
+			],
 		},
 	},
 ]);
