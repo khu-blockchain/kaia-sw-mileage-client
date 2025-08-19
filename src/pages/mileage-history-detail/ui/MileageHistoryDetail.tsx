@@ -1,4 +1,4 @@
-import type { MileagePointHistory } from "@entities/mileage-point-history";
+import type { MileagePointHistory } from "@/shared/api";
 
 import { useMemo } from "react";
 
@@ -6,9 +6,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { AlertCircle, CircleCheck, CircleDot } from "lucide-react";
 import { useParams } from "react-router";
 
-import { mileageQueries } from "@entities/mileage/api";
+import { mileageQueries } from "@entities/mileage";
 import { MILEAGE_POINT_HISTORY_TYPE, MILEAGE_STATUS } from "@/shared/api";
-import { parseToFormattedDate } from "@/shared/lib/date.utils";
+import { parseToFormattedDate } from "@/shared/lib";
 import { sliceWalletAddress } from "@/shared/lib/web3";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/ui";
 
@@ -30,53 +30,53 @@ const MileageHistoryDetail = () => {
 	};
 
 	const mileagePointAmount = useMemo(() => {
-		return data.mileagePointHistories?.reduce(
+		return data.mileage_point_histories?.reduce(
 			(acc: number, curr: MileagePointHistory) => {
 				if (curr.type === MILEAGE_POINT_HISTORY_TYPE.MILEAGE_BURNED) {
-					return acc - curr.mileagePoint;
+					return acc - curr.mileage_point;
 				}
-				return acc + curr.mileagePoint;
+				return acc + curr.mileage_point;
 			},
 			0,
 		);
-	}, [data.mileagePointHistories]);
+	}, [data.mileage_point_histories]);
 
 	const detailContentMapper = useMemo(() => {
 		return {
 			student: {
 				studentId: {
 					label: "학번",
-					value: data.student?.studentId,
+					value: data.student?.student_id,
 				},
 				name: {
 					label: "이름",
-					value: data.student?.name,
+					value: data.student?.name ?? "-",
 				},
 				department: {
 					label: "학과",
-					value: data.student?.department,
+					value: data.student?.department ?? "-",
 				},
 				walletAddress: {
 					label: "지갑 주소",
-					value: sliceWalletAddress(data.student?.walletAddress ?? "", 6),
+					value: sliceWalletAddress(data.student?.wallet_address ?? "", 6),
 				},
 				email: {
 					label: "이메일",
-					value: data.student?.email,
+					value: data.student?.email ?? "-",
 				},
 			},
 			document: {
 				mileageCategoryName: {
 					label: "활동 분야",
-					value: data.mileageCategoryName,
+					value: data.mileage_category_name,
 				},
 				mileageActivityName: {
 					label: "비교과 활동",
-					value: data.mileageActivityName,
+					value: data.mileage_activity_name,
 				},
 				mileageDescription: {
 					label: "활동 설명",
-					value: data.mileageDescription,
+					value: data.mileage_description,
 				},
 			},
 		};
@@ -86,7 +86,7 @@ const MileageHistoryDetail = () => {
 		<div className="flex flex-col gap-2 w-full">
 			<SwMileageStatus
 				status={data.status as MILEAGE_STATUS}
-				comment={data.adminComment ?? "-"}
+				comment={data.admin_comment ?? "-"}
 			/>
 
 			<div className="content-container">
@@ -111,7 +111,7 @@ const MileageHistoryDetail = () => {
 						<div className="flex items-center justify-between">
 							<p className="text-xl font-semibold">제출 정보</p>
 							<p className="text-sm text-muted-foreground">
-								제출 일자: {parseToFormattedDate(data.createdAt.toISOString())}
+								제출 일자: {parseToFormattedDate(data.created_at)}
 							</p>
 						</div>
 						<div className="grid grid-cols-1 gap-6">
@@ -122,7 +122,8 @@ const MileageHistoryDetail = () => {
 											지급된 마일리지 토큰
 										</p>
 										<p className="text-md font-semibold text-body">
-											{data.mileagePointHistories?.[0]?.mileageTokenName ?? "-"}
+											{data.mileage_point_histories?.[0]?.mileage_token_name ??
+												"-"}
 										</p>
 									</div>
 									<div className="flex flex-col gap-1">
@@ -148,20 +149,20 @@ const MileageHistoryDetail = () => {
 							<div className="flex flex-col gap-1">
 								<p className="text-sm text-muted-foreground">제출 파일</p>
 								<div className="flex flex-col gap-1">
-									{data.mileageFiles?.length === 0 && (
+									{data.mileage_files?.length === 0 && (
 										<p className="text-md text-body break-all font-semibold">
 											제출된 파일이 없습니다.
 										</p>
 									)}
-									{data.mileageFiles?.map((file) => (
+									{data.mileage_files?.map((file) => (
 										<div key={file.id} className="flex gap-1">
 											<button
 												onClick={() =>
-													handleFileDownload(file.url, file.originalFileName)
+													handleFileDownload(file.url, file.original_file_name)
 												}
 												className="text-md text-blue-600 hover:text-blue-800 hover:underline break-all text-left cursor-pointer transition-colors"
 											>
-												{file.originalFileName}
+												{file.original_file_name}
 											</button>
 										</div>
 									))}

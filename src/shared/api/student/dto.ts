@@ -1,21 +1,5 @@
 import type { Address, RawTransaction } from "@/shared/lib/web3";
-import type { TRANSACTION_STATUS } from "../enum";
-
-type StudentResponse = {
-	student_id: string;
-	name: string;
-	department: string;
-	wallet_address: string;
-	email: string;
-	transaction_status: TRANSACTION_STATUS;
-	bank_code: string;
-	bank_account_number: string;
-	student_hash: string;
-	personal_information_consent: boolean;
-	personal_information_consent_date: string;
-	created_at: string;
-	updated_at: string;
-};
+import type { Student } from "./types";
 
 type SignUpRequest = {
 	studentId: string;
@@ -32,7 +16,9 @@ type SignUpRequest = {
 	rawTransaction: RawTransaction;
 };
 
-type SignUpResponse = StudentResponse;
+type SignUpResponse = Student;
+
+type GetMeResponse = Student;
 
 type CreateWalletChangeRequest = {
 	studentHash: string;
@@ -53,9 +39,9 @@ type ConfirmWalletChangeResponse = {
 };
 
 export type {
-	StudentResponse,
 	SignUpRequest,
 	SignUpResponse,
+	GetMeResponse,
 	CreateWalletChangeRequest,
 	CreateWalletChangeResponse,
 	ConfirmWalletChangeRequest,

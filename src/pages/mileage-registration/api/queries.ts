@@ -1,14 +1,18 @@
-import type { RegisterMileageRequest } from "@/shared/api/mileage";
+import { queryOptions } from "@tanstack/react-query";
 
-import { useMutation } from "@tanstack/react-query";
+import { mileageRubricApi } from "@shared/api";
 
-import { mileageApi } from "@/shared/api/mileage";
+export const mileageRubricQueries = {
+	all: () => ["mileage-rubric"] as const,
 
-export const useRegisterMileage = () => {
-	return useMutation({
-		mutationFn: async (request: RegisterMileageRequest) => {
-			const { data } = await mileageApi.registerMileage(request);
-			return data;
-		},
-	});
+	getRubrics: () => [...mileageRubricQueries.all(), "rubrics"] as const,
+
+	getRubric: () =>
+		queryOptions({
+			queryKey: [...mileageRubricQueries.getRubrics()],
+			queryFn: async () => {
+				const { data } = await mileageRubricApi.getRubrics();
+				return data;
+			},
+		}),
 };

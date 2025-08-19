@@ -2,9 +2,11 @@ export { studentApi } from "./api";
 export type {
 	SignUpRequest,
 	SignUpResponse,
-	StudentResponse,
+	GetMeResponse,
 	CreateWalletChangeRequest,
 	CreateWalletChangeResponse,
 	ConfirmWalletChangeRequest,
 	ConfirmWalletChangeResponse,
 } from "./dto";
+
+export type { Student } from "./types";

@@ -1,13 +1,15 @@
+import type { ContractAddress } from "@shared/lib/web3";
+
+import { useQuery } from "@tanstack/react-query";
 import { Bolt } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 
-import { ConnectButton } from "@features/connect-wallet";
-import { useConnect } from "@features/connect-wallet/model";
+import { ConnectButton, useConnect } from "@features/connect-wallet";
 import { KaiaIcon } from "@shared/assets";
+import { STUDENT_MANAGER_ABI, SW_MILEAGE_TOKEN_ABI } from "@shared/config";
 import { cn } from "@shared/lib/style";
-import { kaia, sliceWalletAddress } from "@shared/lib/web3";
+import { contractCall, kaia, sliceWalletAddress } from "@shared/lib/web3";
 
-import { useGetMileagePoint } from "./api";
 import { MENU } from "./configuration";
 
 const Header = () => {
@@ -59,8 +61,38 @@ const Header = () => {
 };
 
 const MyPoint = () => {
-	const { data } = useGetMileagePoint({
-		targetAddress: kaia.browserProvider.selectedAddress || "",
+	const { data } = useQuery({
+		queryKey: ["my-point", kaia.browserProvider.selectedAddress],
+		placeholderData: 0,
+		queryFn: async () => {
+			if (
+				kaia.browserProvider.selectedAddress === "" ||
+				!kaia.browserProvider.selectedAddress
+			) {
+				return 0;
+			}
+
+			const studentManagerContract = import.meta.env
+				.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS;
+
+			const swMileageToken = (await contractCall(
+				studentManagerContract,
+				STUDENT_MANAGER_ABI,
+				"mileageToken",
+				[],
+			)) as ContractAddress;
+
+			console.log(swMileageToken);
+
+			const point = await contractCall(
+				swMileageToken,
+				SW_MILEAGE_TOKEN_ABI,
+				"balanceOf",
+				[kaia.browserProvider.selectedAddress],
+			);
+			//TODO: point 있을 때 wei 처리해야하는지 확인
+			return point;
+		},
 	});
 
 	return (

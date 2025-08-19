@@ -1,5 +1,4 @@
-import { studentApi } from "@/shared/api/student";
-import { mapStudent } from "./mapper";
+import { studentApi } from "@/shared/api";
 
 export const studentQueries = {
 	all: () => ["student"] as const,
@@ -8,7 +7,7 @@ export const studentQueries = {
 		queryKey: studentQueries.me(),
 		queryFn: async () => {
 			const { data } = await studentApi.getMe();
-			return mapStudent(data);
+			return data;
 		},
 	}),
 };

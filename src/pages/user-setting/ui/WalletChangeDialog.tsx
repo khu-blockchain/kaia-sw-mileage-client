@@ -26,7 +26,10 @@ type WalletChangeDialogProps = {
 	children: React.ReactNode;
 };
 
-function WalletChangeDialog({ studentHash, children }: WalletChangeDialogProps) {
+function WalletChangeDialog({
+	studentHash,
+	children,
+}: WalletChangeDialogProps) {
 	const [open, setOpen] = useState(false);
 	const [walletAddress, setWalletAddress] = useState("");
 

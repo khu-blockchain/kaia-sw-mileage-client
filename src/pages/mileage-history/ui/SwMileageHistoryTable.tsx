@@ -1,4 +1,4 @@
-import type { MileagePointHistory } from "@entities/mileage-point-history";
+import type { MileagePointHistory } from "@/shared/api";
 import type { Row } from "@tanstack/react-table";
 import type { MileageColumns } from "./columns";
 
@@ -8,9 +8,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useNavigate } from "react-router";
 
-import { mileageQueries } from "@entities/mileage/api";
+import { mileageQueries } from "@entities/mileage";
 import { MILEAGE_POINT_HISTORY_TYPE } from "@/shared/api";
-import { parseToFormattedDate } from "@/shared/lib/date.utils";
+import { parseToFormattedDate } from "@/shared/lib";
 import { DataTable } from "@/shared/ui";
 
 import { columns } from "./columns";
@@ -24,9 +24,9 @@ const SwMileageHistoryTable = () => {
 	) => {
 		return mileagePointHistories?.reduce((acc, curr) => {
 			if (curr.type === MILEAGE_POINT_HISTORY_TYPE.MILEAGE_BURNED) {
-				return acc - curr.mileagePoint;
+				return acc - curr.mileage_point;
 			}
-			return acc + curr.mileagePoint;
+			return acc + curr.mileage_point;
 		}, 0);
 	};
 
@@ -34,15 +34,15 @@ const SwMileageHistoryTable = () => {
 		() =>
 			data.map((mileage) => ({
 				id: mileage.id,
-				mileageCategoryName: mileage.mileageCategoryName,
-				mileageActivityName: mileage.mileageActivityName,
+				mileageCategoryName: mileage.mileage_category_name,
+				mileageActivityName: mileage.mileage_activity_name,
 				status: mileage.status,
-				createdAt: parseToFormattedDate(mileage.createdAt.toISOString()),
+				createdAt: parseToFormattedDate(mileage.created_at),
 				mileagePoint: calculateMileagePoint(
-					mileage.mileagePointHistories ?? [],
+					mileage.mileage_point_histories ?? [],
 				),
 				mileageTokenName:
-					mileage.mileagePointHistories?.[0]?.mileageTokenName ?? "-",
+					mileage.mileage_point_histories?.[0]?.mileage_token_name ?? "-",
 			})),
 		[data],
 	);

@@ -34,11 +34,11 @@ const ApplySwMileageBasicInfo = () => {
 			<div className="flex flex-col gap-4">
 				{Object.entries(basicInfoMapper).map(([key, value]) => {
 					const parsedStudent = {
-						studentId: student.studentId,
+						studentId: student.student_id,
 						name: student.name,
 						department: student.department,
 						email: student.email,
-						walletAddress: sliceWalletAddress(student.walletAddress, 6),
+						walletAddress: sliceWalletAddress(student.wallet_address, 6),
 					};
 					const studentKey = key as StudentInfoKey;
 					return (

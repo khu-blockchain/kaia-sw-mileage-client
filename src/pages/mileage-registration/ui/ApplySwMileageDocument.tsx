@@ -3,12 +3,12 @@ import type { IRegisterDocumentForm } from "../model";
 
 import { useMemo, useState } from "react";
 
+import { useSuspenseQueries } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { encodePacked, keccak256, toHex } from "viem";
 
-import { mileageRubricQueries } from "@entities/mileage-rubric/api";
 import { studentQueries } from "@entities/student";
 import { STUDENT_MANAGER_ABI } from "@shared/config";
 import { encodeContractExecutionABI, kaia, KaiaTxType } from "@shared/lib/web3";
@@ -25,9 +25,8 @@ import {
 	Textarea,
 } from "@/shared/ui";
 
-import { useRegisterMileage } from "../api";
+import { mileageRubricQueries, useRegisterMileage } from "../api";
 import ApplyMileageFileContainer from "./ApplyMileageFileContainer";
-import { useSuspenseQueries } from "@tanstack/react-query";
 
 const ApplySwMileageDocument = () => {
 	const navigate = useNavigate();
@@ -85,7 +84,7 @@ const ApplySwMileageDocument = () => {
 		console.log(student);
 		const formData = new FormData();
 
-		formData.append("studentId", student.studentId);
+		formData.append("studentId", student.student_id);
 
 		Object.entries(data).forEach(([key, value]) => {
 			if (value === "") return;
@@ -156,12 +155,9 @@ const ApplySwMileageDocument = () => {
 		formData.append("rawTransaction", rawTransaction);
 		try {
 			await mutateAsync(formData);
-			toast.success(
-				"마일리지 신청이 완료되었습니다.",
-				{
-					description: "블록체인에 기록되는데 시간이 소요될 수 있습니다.",
-				},
-			);
+			toast.success("마일리지 신청이 완료되었습니다.", {
+				description: "블록체인에 기록되는데 시간이 소요될 수 있습니다.",
+			});
 			navigate("/history");
 		} catch (error) {
 			console.error(error);
@@ -224,7 +220,7 @@ const ApplySwMileageDocument = () => {
 										<SelectValue placeholder={"비교과 활동을 선택해주세요"} />
 									</SelectTrigger>
 									<SelectContent className="w-full">
-										{selectedRubric?.mileageActivities.map((activity) => (
+										{selectedRubric?.mileage_activities.map((activity) => (
 											<SelectItem
 												key={activity.id}
 												value={activity.id.toString()}

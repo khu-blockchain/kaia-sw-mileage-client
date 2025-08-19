@@ -20,7 +20,7 @@ const SignInForm = () => {
 	} = useForm<ISignInForm>({
 		resolver: zodResolver(signInSchema),
 		defaultValues: {
-			student_id: "",
+			studentId: "",
 			password: "",
 		},
 	});
@@ -30,7 +30,7 @@ const SignInForm = () => {
 	const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
 		try {
 			const response = await mutateAsync({
-				studentId: data.student_id,
+				studentId: data.studentId,
 				password: data.password,
 			});
 			console.log(response);
@@ -55,9 +55,9 @@ const SignInForm = () => {
 				<div className="grid gap-2">
 					<div className="flex justify-between w-full">
 						<Label htmlFor="student_id">학번</Label>
-						{errors.student_id && (
+						{errors.studentId && (
 							<p className="text-xs leading-none text-destructive">
-								{errors.student_id.message}
+								{errors.studentId.message}
 							</p>
 						)}
 					</div>
@@ -65,7 +65,7 @@ const SignInForm = () => {
 						id="student_id"
 						type="text"
 						placeholder="학번을 입력해주세요."
-						{...register("student_id")}
+						{...register("studentId")}
 					/>
 				</div>
 				<div className="grid gap-2">

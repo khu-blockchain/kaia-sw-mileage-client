@@ -1,7 +1,7 @@
-import type { MileageResponse } from "@shared/api/mileage";
 import type { MILEAGE_POINT_HISTORY_TYPE, TRANSACTION_STATUS } from "../enum";
+import type { Mileage } from "../mileage";
 
-type MileagePointHistoryResponse = {
+type MileagePointHistory = {
 	id: number;
 	type: MILEAGE_POINT_HISTORY_TYPE;
 	mileage_token_name: string;
@@ -11,11 +11,9 @@ type MileagePointHistoryResponse = {
 	transaction_hash: string;
 	transaction_status: TRANSACTION_STATUS;
 	note: string;
-	mileage: MileageResponse;
-	created_at: Date;
-	updated_at: Date;
+	mileage: Mileage;
+	created_at: string;
+	updated_at: string;
 };
 
-export type {
-	MileagePointHistoryResponse,
-};
+export type { MileagePointHistory };

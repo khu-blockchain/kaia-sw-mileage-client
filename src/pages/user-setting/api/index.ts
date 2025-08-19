@@ -2,4 +2,6 @@ export {
 	useCreateWalletChange,
 	useConfirmWalletChange,
 	useCreatWalletLost,
-} from "./queries";
+} from "./actions";
+
+export { walletLostQueries } from "./queries";

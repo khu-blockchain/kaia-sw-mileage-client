@@ -1,9 +1,10 @@
+import type { Student } from "@shared/api";
+
 import { useState } from "react";
 
 import { toast } from "sonner";
 
 import { ConnectButton, useConnect } from "@features/connect-wallet";
-import { type Student } from "@entities/student";
 import { STUDENT_MANAGER_ABI } from "@shared/config";
 import { encodeContractExecutionABI, kaia, KaiaTxType } from "@shared/lib/web3";
 import {
@@ -41,7 +42,7 @@ function ConfirmChangeDialog({
 		const data = encodeContractExecutionABI(
 			STUDENT_MANAGER_ABI,
 			"confirmAccountChange",
-			[student.studentHash],
+			[student.student_hash],
 		);
 
 		const rawTransaction = await kaia.wallet.signTransaction({
@@ -54,7 +55,7 @@ function ConfirmChangeDialog({
 
 		toast.promise(
 			mutateAsync({
-				studentHash: student.studentHash,
+				studentHash: student.student_hash,
 				rawTransaction,
 			}),
 			{

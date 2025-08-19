@@ -4,9 +4,9 @@ import type {
 	ConfirmWalletChangeResponse,
 	CreateWalletChangeRequest,
 	CreateWalletChangeResponse,
+	GetMeResponse,
 	SignUpRequest,
 	SignUpResponse,
-	StudentResponse,
 } from "./dto";
 
 import { StudentServer } from "../route";
@@ -17,7 +17,7 @@ export const studentApi = {
 			json: request,
 		}).json(),
 
-	getMe: (): APIPromise<StudentResponse> => StudentServer.get("me").json(),
+	getMe: (): APIPromise<GetMeResponse> => StudentServer.get("me").json(),
 
 	createWalletChange: (
 		request: CreateWalletChangeRequest,

@@ -1,10 +1,9 @@
-import type { SignInRequest } from "@/shared/api/auth";
+import type { SignInRequest } from "@/shared/api";
 
 import { useMutation } from "@tanstack/react-query";
 
-import { mapStudent } from "@entities/student";
 import { useAuthStore } from "@shared/authorize";
-import { authApi } from "@/shared/api/auth";
+import { authApi } from "@/shared/api";
 
 export const useStudentSignIn = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -15,7 +14,7 @@ export const useStudentSignIn = () => {
 
 			const { access_token, ...student } = data;
 			setAccessToken(access_token);
-			return mapStudent(student);
+			return student;
 		},
 	});
 };

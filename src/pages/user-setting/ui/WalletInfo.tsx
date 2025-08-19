@@ -2,18 +2,18 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { AlertCircle, Wallet } from "lucide-react";
 
 import { studentQueries } from "@entities/student";
-import { walletLostQueries } from "@entities/wallet-lost";
+import { parseToFormattedDate } from "@shared/lib";
 import { Button, Separator } from "@shared/ui";
 
+import { walletLostQueries } from "../api";
 import ConfirmChangeDialog from "./ConfirmChangeDialog";
 import WalletChangeDialog from "./WalletChangeDialog";
 import WalletLostDialog from "./WalletLostDialog";
-import { parseToFormattedDate } from "@shared/lib";
 
 export default function WalletInfo() {
 	const { data: student } = useSuspenseQuery(studentQueries.getMe());
 	const { data: walletChangeProcess } = useSuspenseQuery(
-		walletLostQueries.getCheck(student.studentHash),
+		walletLostQueries.getCheck(student.student_hash),
 	);
 
 	console.log(walletChangeProcess);
@@ -34,11 +34,11 @@ export default function WalletInfo() {
 									SW 마일리지 계정
 								</p>
 								<p className="text-xs text-blue-700">
-									연결된 계정 주소: {student.walletAddress}
+									연결된 계정 주소: {student.wallet_address}
 								</p>
 							</div>
 							<div className="flex items-center gap-2">
-								<WalletChangeDialog studentHash={student.studentHash}>
+								<WalletChangeDialog studentHash={student.student_hash}>
 									<Button variant="link" className="text-xs text-blue-700">
 										지갑 변경하기
 									</Button>
@@ -61,21 +61,21 @@ export default function WalletInfo() {
 									<p className="text-sm font-medium text-yellow-900">
 										SW 마일리지 계정 변경이 요청되었습니다.
 									</p>
-									{/* <p className="text-xs text-yellow-700">
+									<p className="text-xs text-yellow-700">
 										변경 요청 일시:{" "}
 										{parseToFormattedDate(
-											walletChangeProcess.data.data?.createdAt,
+											walletChangeProcess.data.data?.created_at ?? "",
 										)}
-									</p> */}
+									</p>
 								</div>
 
 								<p className="text-xs text-yellow-700">
 									기존 계정:{" "}
-									{walletChangeProcess.data.data?.previousWalletAddress}
+									{walletChangeProcess.data.data?.previous_wallet_address}
 								</p>
 								<p className="text-xs text-yellow-700">
 									변경 요청 계정:{" "}
-									{walletChangeProcess.data.data?.requestWalletAddress}
+									{walletChangeProcess.data.data?.request_wallet_address}
 								</p>
 							</div>
 						</div>

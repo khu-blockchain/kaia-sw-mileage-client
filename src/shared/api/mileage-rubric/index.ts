@@ -1,7 +1,4 @@
 export { mileageRubricApi } from "./api";
-export type {
-	MileageCategoryResponse,
-	MileageActivityResponse,
-	MileageRubricResponse,
-	GetRubricsResponse,
-} from "./dto";
+export type { GetRubricsResponse } from "./dto";
+
+export type { MileageCategory, MileageActivity, MileageRubric } from "./types";

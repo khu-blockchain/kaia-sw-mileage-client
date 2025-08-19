@@ -1,47 +1,80 @@
-import type {
-	ConfirmWalletChangeRequest,
-	CreateWalletChangeRequest,
-} from "@/shared/api/student";
-import type { CreateWalletLostRequest } from "@/shared/api/wallet-lost";
+import type { WalletLost } from "@shared/api";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { walletLostApi } from "@shared/api";
+import { STUDENT_MANAGER_ABI } from "@shared/config";
+import { contractCall, ZERO_ADDRESS } from "@shared/lib/web3";
 
-import { walletLostQueries } from "@entities/wallet-lost";
-import { studentApi } from "@/shared/api/student";
-import { walletLostApi } from "@/shared/api/wallet-lost";
+type useCheckHasWalletChangeProcessResponse =
+	| hasWalletChangeProcessResponse
+	| hasNotWalletChangeProcessResponse;
 
-export const useCreateWalletChange = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async (request: CreateWalletChangeRequest) => {
-			const { data } = await studentApi.createWalletChange(request);
-			queryClient.invalidateQueries(
-				walletLostQueries.getCheck(request.studentHash),
-			);
-			return data;
-		},
-	});
+type hasNotWalletChangeProcessResponse = {
+	result: false;
+	data: null;
 };
 
-export const useConfirmWalletChange = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async (request: ConfirmWalletChangeRequest) => {
-			const { data } = await studentApi.confirmWalletChange(request);
-			queryClient.invalidateQueries(
-				walletLostQueries.getCheck(request.studentHash),
-			);
-			return data;
-		},
-	});
+type hasWalletChangeProcessResponse = {
+	result: true;
+	data: walletChangeResponse | walletLostResponse;
 };
 
-export const useCreatWalletLost = () => {
-	// const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async (request: CreateWalletLostRequest) => {
-			const { data } = await walletLostApi.creatWalletLost(request);
-			return data;
+type walletChangeResponse = {
+	type: "WALLET_CHANGE";
+	data: {
+		createdAt: bigint;
+		targetAccount: string;
+	};
+};
+
+type walletLostResponse = {
+	type: "WALLET_LOST";
+	data: WalletLost | null;
+};
+
+export const walletLostQueries = {
+	all: () => ["wallet-lost"] as const,
+	check: (studentHash: string) =>
+		[...walletLostQueries.all(), "check", studentHash] as const,
+	getCheck: (studentHash: string) => ({
+		queryKey: walletLostQueries.check(studentHash),
+		queryFn: async (): Promise<useCheckHasWalletChangeProcessResponse> => {
+			const {
+				data: { result, data },
+			} = await walletLostApi.checkHasPendingWalletLost();
+			console.log(result, data);
+			if (result) {
+				return {
+					result: true,
+					data: {
+						type: "WALLET_LOST",
+						data: data,
+					},
+				};
+			}
+			const { createdAt, targetAccount } = (await contractCall(
+				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+				STUDENT_MANAGER_ABI,
+				"getPendingAccountChange",
+				[studentHash],
+			)) as { createdAt: bigint; targetAccount: string };
+
+			if (targetAccount !== ZERO_ADDRESS) {
+				return {
+					result: true,
+					data: {
+						type: "WALLET_CHANGE",
+						data: {
+							createdAt,
+							targetAccount,
+						},
+					},
+				};
+			}
+			return {
+				result: false,
+				data: null,
+			};
 		},
-	});
+		enabled: !!studentHash,
+	}),
 };

@@ -4,13 +4,13 @@ import { Suspense } from "react";
 
 import { ErrorBoundary } from "react-error-boundary";
 
-import { Button } from "@shared/ui";
+import { Button, Spinner } from "@shared/ui";
 
 function Loading() {
 	return (
 		<div className="flex justify-center items-center h-64">
-			<div className="text-center">
-				<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+			<div className="text-center flex flex-col items-center">
+        <Spinner className="w-12 h-12 mb-4"/>
 				<p className="text-gray-600">데이터를 불러오는 중...</p>
 			</div>
 		</div>

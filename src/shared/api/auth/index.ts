@@ -4,3 +4,5 @@ export type {
 	SignInResponse,
 	RefreshTokenResponse, 
 } from "./dto";
+
+export type { AccessToken } from "./types";

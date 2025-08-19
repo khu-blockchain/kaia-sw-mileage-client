@@ -1,10 +1,11 @@
+import type { Student } from "@shared/api";
+
 import { useState } from "react";
 
 import { CircleArrowDown } from "lucide-react";
 import { toast } from "sonner";
 
 import { ConnectButton, useConnect } from "@features/connect-wallet";
-import { type Student } from "@entities/student";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -85,7 +86,7 @@ function WalletLostDialog({ children, student }: ApproveMileageDialogProps) {
 							기존 Kaia 계정
 						</span>
 						<span className="font-medium text-body text-sm break-keep">
-							{student.walletAddress}
+							{student.wallet_address}
 						</span>
 					</div>
 					<div className="flex items-center justify-center">

@@ -1,4 +1,4 @@
-import type { Student } from "@entities/student";
+import type { Student } from "@shared/api";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { User } from "lucide-react";
@@ -31,7 +31,7 @@ export default function StudentProfile() {
 				{
 					key: "walletAddress",
 					label: "지갑 주소",
-					displayValue: sliceWalletAddress(student.walletAddress),
+					displayValue: sliceWalletAddress(student.wallet_address),
 				},
 				{
 					key: "email",
@@ -44,7 +44,7 @@ export default function StudentProfile() {
 				{
 					key: "bankCode",
 					label: "은행",
-					displayValue: BANK_CODE[student.bankCode],
+					displayValue: BANK_CODE[student.bank_code],
 				},
 			],
 		},

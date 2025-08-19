@@ -1,4 +1,4 @@
-import type { POINT_TYPE } from "@shared/api/enum";
+import type { POINT_TYPE } from "../enum";
 
 type MileageCategory = {
 	id: number;
@@ -9,13 +9,13 @@ type MileageCategory = {
 type MileageActivity = {
 	id: number;
 	name: string;
-	pointType: POINT_TYPE;
-	pointDescription: string;
-	fixedPoint: number;
+	point_type: POINT_TYPE;
+	point_description: string;
+	fixed_point: number;
 };
 
 type MileageRubric = MileageCategory & {
-	mileageActivities: MileageActivity[];
+	mileage_activities: MileageActivity[];
 };
 
 export type { MileageCategory, MileageActivity, MileageRubric };

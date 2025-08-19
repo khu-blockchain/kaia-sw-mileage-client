@@ -1,1 +1,1 @@
-export type { MileagePointHistoryResponse } from "./dto";
+export type { MileagePointHistory } from "./types";

@@ -1,1 +1,1 @@
-export { default as PageBoundary } from "./PageBoundary";
+export { PageBoundary } from "./ui";

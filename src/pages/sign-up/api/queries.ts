@@ -1,15 +1,14 @@
-import type { SignUpRequest } from "@/shared/api/student";
+import type { SignUpRequest } from "@/shared/api";
 
 import { useMutation } from "@tanstack/react-query";
 
-import { studentApi } from "@/shared/api/student";
-import { mapStudent } from "@entities/student";
+import { studentApi } from "@/shared/api";
 
 export const useStudentSignUp = () => {
 	return useMutation({
 		mutationFn: async (request: SignUpRequest) => {
 			const { data } = await studentApi.signUp(request);
-			return mapStudent(data);
+			return data;
 		},
 	});
 };
