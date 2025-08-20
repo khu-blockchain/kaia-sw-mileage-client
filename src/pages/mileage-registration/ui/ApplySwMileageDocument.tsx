@@ -9,9 +9,8 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { encodePacked, keccak256, toHex } from "viem";
 
+import { useStudentManager } from "@features/kaia";
 import { studentQueries } from "@entities/student";
-import { STUDENT_MANAGER_ABI } from "@shared/config";
-import { encodeContractExecutionABI, kaia, KaiaTxType } from "@shared/lib/web3";
 import {
 	Button,
 	Label,
@@ -30,6 +29,7 @@ import ApplyMileageFileContainer from "./ApplyMileageFileContainer";
 
 const ApplySwMileageDocument = () => {
 	const navigate = useNavigate();
+	const { encodeAbi, requestSignTransaction } = useStudentManager();
 	const [rubricData, studentData] = useSuspenseQueries({
 		queries: [
 			{
@@ -138,19 +138,9 @@ const ApplySwMileageDocument = () => {
 
 		formData.append("docHash", fileHash);
 
-		const transaction = encodeContractExecutionABI(
-			STUDENT_MANAGER_ABI,
-			"submitDocument",
-			[fileHash],
-		);
+		const transaction = encodeAbi("submitDocument", [fileHash]);
 
-		const rawTransaction = await kaia.wallet.signTransaction({
-			type: KaiaTxType.FeeDelegatedSmartContractExecution,
-			from: kaia.browserProvider.selectedAddress,
-			to: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-			data: transaction,
-			gas: "0x4C4B40",
-		});
+		const rawTransaction = await requestSignTransaction({ data: transaction });
 
 		formData.append("rawTransaction", rawTransaction);
 		try {

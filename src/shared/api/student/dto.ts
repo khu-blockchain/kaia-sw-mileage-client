@@ -1,4 +1,4 @@
-import type { Address, RawTransaction } from "@/shared/lib/web3";
+import type { Address, Hex } from "@kaiachain/viem-ext";
 import type { Student } from "./types";
 
 type SignUpRequest = {
@@ -13,7 +13,7 @@ type SignUpRequest = {
 	personalInformationConsentStatus: boolean;
 	walletAddress: Address;
 	studentHash: string;
-	rawTransaction: RawTransaction;
+	rawTransaction: Hex;
 };
 
 type SignUpResponse = Student;

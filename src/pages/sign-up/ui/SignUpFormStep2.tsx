@@ -1,19 +1,21 @@
-import type { Address } from "@shared/lib/web3";
+import type { Address } from "@kaiachain/viem-ext";
 import type { SubmitHandler } from "react-hook-form";
 import type { ISignUpForm } from "../models";
+
+import { useEffect } from "react";
 
 import { encodePacked, keccak256 } from "@kaiachain/viem-ext";
 import { Controller, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
-import { ConnectButton } from "@/features/connect-wallet";
-import { BANK_CODE, STUDENT_MANAGER_ABI } from "@/shared/config";
 import {
-	encodeContractExecutionABI,
-	kaia,
-	KaiaTxType,
-} from "@/shared/lib/web3";
+	KaiaButton,
+	useKaiaAccount,
+	useKaiaWallet,
+	useStudentManager,
+} from "@features/kaia";
+import { BANK_CODE } from "@/shared/config";
 import {
 	Button,
 	ErrorMessage,
@@ -36,13 +38,14 @@ interface SignUpFormStep2Props {
 
 const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 	const navigate = useNavigate();
+	const { currentAccount } = useKaiaAccount();
+	const { connectKaiaWallet } = useKaiaWallet();
+	const { encodeAbi, requestSignTransaction } = useStudentManager();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		setValue,
-		clearErrors,
-		watch,
 		control,
 		trigger,
 	} = useFormContext<ISignUpForm>();
@@ -60,35 +63,16 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 			return;
 		}
 
-		// 현재 지갑에 선택된 네트워크가 kairos인지 확인
-		const network = await kaia.browserProvider.networkVersion;
-		if (network !== 1001) {
-			toast.error(
-				<p className="whitespace-pre-wrap">
-					{
-						"Kairos 네트워크에 연결되어 있지 않습니다.\n지갑 좌측 상단에서 네트워크를 Kairos 테스트넷으로 변경해주세요."
-					}
-				</p>,
-			);
-			return;
-		}
 		try {
 			const studentIdHash = keccak256(
 				encodePacked(["string"], [data.studentId!]),
 			);
-			const transaction = encodeContractExecutionABI(
-				STUDENT_MANAGER_ABI,
-				"registerStudent",
-				[studentIdHash],
-			);
+			const encodeData = encodeAbi("registerStudent", [studentIdHash]);
 
-			const rawTransaction = await kaia.wallet.signTransaction({
-				type: KaiaTxType.FeeDelegatedSmartContractExecution,
-				from: kaia.browserProvider.selectedAddress,
-				to: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-				data: transaction,
-				gas: "0x4C4B40",
+			const rawTransaction = await requestSignTransaction({
+				data: encodeData,
 			});
+
 			const response = await mutateAsync({
 				studentId: data.studentId!,
 				password: data.password!,
@@ -110,10 +94,11 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 		}
 	};
 
-	const setWalletAddress = (address: string[]) => {
-		clearErrors("walletAddress");
-		setValue("walletAddress", address[0]);
-	};
+	useEffect(() => {
+		if (currentAccount) {
+			setValue("walletAddress", currentAccount);
+		}
+	}, [currentAccount, setValue]);
 
 	return (
 		<form onSubmit={handleSubmit(onStep2Submit)} className="grid gap-4 mt-4">
@@ -187,9 +172,9 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 				>
 					이전으로
 				</Button>
-				{!watch("walletAddress") ? (
-					<ConnectButton.DefaultButton
-						connectCallback={setWalletAddress}
+				{!currentAccount ? (
+					<KaiaButton.DefaultButton
+						onClick={() => connectKaiaWallet()}
 						className="w-full"
 					/>
 				) : (

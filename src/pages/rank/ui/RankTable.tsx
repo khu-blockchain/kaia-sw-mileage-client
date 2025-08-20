@@ -1,5 +1,8 @@
+import type { Address } from "@kaiachain/viem-ext";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { useStudentManager, useSwMileageToken } from "@features/kaia";
 import {
 	Table,
 	TableBody,
@@ -17,7 +20,24 @@ interface RankData {
 }
 
 export default function RankTable() {
-	const { data } = useSuspenseQuery(rankQueries.getList());
+	const { call: callStudentManager } = useStudentManager();
+	const { call: callSwMileageToken } = useSwMileageToken();
+	const { data } = useSuspenseQuery({
+		queryKey: rankQueries.list(),
+		queryFn: async () => {
+			const swMileageTokenAddress = (await callStudentManager(
+				"mileageToken",
+				[],
+			)) as Address;
+
+			const point = await callSwMileageToken(
+				swMileageTokenAddress,
+				"getRankingRange",
+				[1, 20],
+			);
+			return point;
+		},
+	});
 
 	const rankData = Array.isArray(data) ? (data as RankData[]) : [];
 

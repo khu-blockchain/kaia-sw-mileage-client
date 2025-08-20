@@ -3,8 +3,7 @@ import { useState } from "react";
 import { isAddress } from "@kaiachain/viem-ext";
 import { toast } from "sonner";
 
-import { STUDENT_MANAGER_ABI } from "@shared/config";
-import { encodeContractExecutionABI, kaia, KaiaTxType } from "@shared/lib/web3";
+import { useStudentManager } from "@features/kaia";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -32,7 +31,7 @@ function WalletChangeDialog({
 }: WalletChangeDialogProps) {
 	const [open, setOpen] = useState(false);
 	const [walletAddress, setWalletAddress] = useState("");
-
+	const { encodeAbi, requestSignTransaction } = useStudentManager();
 	const { mutateAsync } = useCreateWalletChange();
 
 	const handleSubmit = async () => {
@@ -45,18 +44,8 @@ function WalletChangeDialog({
 			return;
 		}
 
-		const data = encodeContractExecutionABI(
-			STUDENT_MANAGER_ABI,
-			"proposeAccountChange",
-			[walletAddress],
-		);
-		const rawTransaction = await kaia.wallet.signTransaction({
-			type: KaiaTxType.FeeDelegatedSmartContractExecution,
-			from: kaia.browserProvider.selectedAddress,
-			to: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-			data,
-			gas: "0x4C4B40",
-		});
+		const data = encodeAbi("proposeAccountChange", [walletAddress]);
+		const rawTransaction = await requestSignTransaction({ data });
 
 		toast.promise(
 			mutateAsync({

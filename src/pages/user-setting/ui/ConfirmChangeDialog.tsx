@@ -4,9 +4,13 @@ import { useState } from "react";
 
 import { toast } from "sonner";
 
-import { ConnectButton, useConnect } from "@features/connect-wallet";
-import { STUDENT_MANAGER_ABI } from "@shared/config";
-import { encodeContractExecutionABI, kaia, KaiaTxType } from "@shared/lib/web3";
+import {
+	KaiaButton,
+	useKaiaAccount,
+	useKaiaWallet,
+	useStudentManager,
+} from "@features/kaia";
+
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -33,24 +37,18 @@ function ConfirmChangeDialog({
 	student,
 	targetAccount,
 }: ConfirmChangeDialogProps) {
-	const { walletAddress } = useConnect();
+	const { currentAccount } = useKaiaAccount();
+	const { connectKaiaWallet } = useKaiaWallet();
+	const { encodeAbi, requestSignTransaction } = useStudentManager();
 	const [open, setOpen] = useState(false);
 
 	const { mutateAsync } = useConfirmWalletChange();
 
 	const handleSubmit = async () => {
-		const data = encodeContractExecutionABI(
-			STUDENT_MANAGER_ABI,
-			"confirmAccountChange",
-			[student.student_hash],
-		);
+		const data = encodeAbi("confirmAccountChange", [student.student_hash]);
 
-		const rawTransaction = await kaia.wallet.signTransaction({
-			type: KaiaTxType.FeeDelegatedSmartContractExecution,
-			from: kaia.browserProvider.selectedAddress,
-			to: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+		const rawTransaction = await requestSignTransaction({
 			data,
-			gas: "0x4C4B40",
 		});
 
 		toast.promise(
@@ -118,12 +116,15 @@ function ConfirmChangeDialog({
 						<span className="text-sm text-muted-foreground">
 							현재 연결된 Kaia 계정 주소
 						</span>
-						{walletAddress ? (
+						{currentAccount ? (
 							<span className="font-medium text-body text-sm break-keep">
-								{walletAddress}
+								{currentAccount}
 							</span>
 						) : (
-							<ConnectButton.DefaultButton />
+							<KaiaButton.DefaultButton
+								onClick={() => connectKaiaWallet()}
+								className="w-full"
+							/>
 						)}
 					</div>
 				</div>

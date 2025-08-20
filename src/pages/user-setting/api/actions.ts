@@ -15,9 +15,9 @@ export const useCreateWalletChange = () => {
 	return useMutation({
 		mutationFn: async (request: CreateWalletChangeRequest) => {
 			const { data } = await studentApi.createWalletChange(request);
-			queryClient.invalidateQueries(
-				walletLostQueries.getCheck(request.studentHash),
-			);
+			queryClient.invalidateQueries({
+				queryKey: walletLostQueries.check(request.studentHash),
+			});
 			return data;
 		},
 	});
@@ -28,9 +28,9 @@ export const useConfirmWalletChange = () => {
 	return useMutation({
 		mutationFn: async (request: ConfirmWalletChangeRequest) => {
 			const { data } = await studentApi.confirmWalletChange(request);
-			queryClient.invalidateQueries(
-				walletLostQueries.getCheck(request.studentHash),
-			);
+			queryClient.invalidateQueries({
+				queryKey: walletLostQueries.check(request.studentHash),
+			});
 			return data;
 		},
 	});

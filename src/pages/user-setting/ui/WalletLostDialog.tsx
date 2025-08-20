@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CircleArrowDown } from "lucide-react";
 import { toast } from "sonner";
 
-import { ConnectButton, useConnect } from "@features/connect-wallet";
+import { KaiaButton, useKaiaAccount, useKaiaWallet } from "@features/kaia";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -28,16 +28,17 @@ type ApproveMileageDialogProps = {
 
 function WalletLostDialog({ children, student }: ApproveMileageDialogProps) {
 	const [open, setOpen] = useState(false);
-	const { walletAddress } = useConnect();
+	const { currentAccount } = useKaiaAccount();
 	const { mutateAsync } = useCreatWalletLost();
-
+	const { connectKaiaWallet } = useKaiaWallet();
+  
 	const handleSubmit = () => {
-		if (!walletAddress) {
+		if (!currentAccount) {
 			return;
 		}
 		toast.promise(
 			mutateAsync({
-				targetAddress: walletAddress,
+				targetAddress: currentAccount,
 			}),
 			{
 				loading: "지갑 주소 분실 요청 중...",
@@ -96,12 +97,15 @@ function WalletLostDialog({ children, student }: ApproveMileageDialogProps) {
 						<span className="text-sm text-muted-foreground">
 							변경할 Kaia 계정
 						</span>
-						{walletAddress ? (
+						{currentAccount ? (
 							<span className="font-medium text-body text-sm break-keep">
-								{walletAddress}
+								{currentAccount}
 							</span>
 						) : (
-							<ConnectButton.DefaultButton />
+							<KaiaButton.DefaultButton
+								onClick={() => connectKaiaWallet()}
+								className="w-full"
+							/>
 						)}
 					</div>
 				</div>

@@ -1,7 +1,11 @@
+import type { WalletLost } from "@shared/api";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { AlertCircle, Wallet } from "lucide-react";
 
+import { useStudentManager, ZERO_ADDRESS } from "@features/kaia";
 import { studentQueries } from "@entities/student";
+import { walletLostApi } from "@shared/api";
 import { parseToFormattedDate } from "@shared/lib";
 import { Button, Separator } from "@shared/ui";
 
@@ -10,11 +14,74 @@ import ConfirmChangeDialog from "./ConfirmChangeDialog";
 import WalletChangeDialog from "./WalletChangeDialog";
 import WalletLostDialog from "./WalletLostDialog";
 
+type useCheckHasWalletChangeProcessResponse =
+	| hasWalletChangeProcessResponse
+	| hasNotWalletChangeProcessResponse;
+
+type hasNotWalletChangeProcessResponse = {
+	result: false;
+	data: null;
+};
+
+type hasWalletChangeProcessResponse = {
+	result: true;
+	data: walletChangeResponse | walletLostResponse;
+};
+
+type walletChangeResponse = {
+	type: "WALLET_CHANGE";
+	data: {
+		created_at: string;
+		target_account: string;
+	};
+};
+
+type walletLostResponse = {
+	type: "WALLET_LOST";
+	data: WalletLost | null;
+};
+
 export default function WalletInfo() {
+	const { call } = useStudentManager();
 	const { data: student } = useSuspenseQuery(studentQueries.getMe());
-	const { data: walletChangeProcess } = useSuspenseQuery(
-		walletLostQueries.getCheck(student.student_hash),
-	);
+	const { data: walletChangeProcess } = useSuspenseQuery({
+		queryKey: walletLostQueries.check(student.student_hash),
+		queryFn: async (): Promise<useCheckHasWalletChangeProcessResponse> => {
+			const {
+				data: { result, data },
+			} = await walletLostApi.checkHasPendingWalletLost();
+			if (result) {
+				return {
+					result: true,
+					data: {
+						type: "WALLET_LOST",
+						data: data,
+					},
+				};
+			}
+			const { createdAt, targetAccount } = (await call(
+				"getPendingAccountChange",
+				[student.student_hash],
+			)) as { createdAt: bigint; targetAccount: string };
+
+			if (targetAccount !== ZERO_ADDRESS) {
+				return {
+					result: true,
+					data: {
+						type: "WALLET_CHANGE",
+						data: {
+							created_at: createdAt.toString(),
+							target_account: targetAccount,
+						},
+					},
+				};
+			}
+			return {
+				result: false,
+				data: null,
+			};
+		},
+	});
 
 	console.log(walletChangeProcess);
 
@@ -89,13 +156,13 @@ export default function WalletInfo() {
 								</p>
 								<p className="text-xs text-yellow-700">
 									소유권 증명이 완료된 계정:{" "}
-									{walletChangeProcess.data.data?.targetAccount}
+									{walletChangeProcess.data.data?.target_account}
 								</p>
 							</div>
 							<div className="flex items-center gap-2">
 								<ConfirmChangeDialog
 									student={student}
-									targetAccount={walletChangeProcess.data.data?.targetAccount}
+									targetAccount={walletChangeProcess.data.data?.target_account}
 								>
 									<Button variant="link" className="text-xs text-yellow-700">
 										지갑 변경 완료하기
