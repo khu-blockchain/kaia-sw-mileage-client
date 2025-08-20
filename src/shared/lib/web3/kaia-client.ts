@@ -7,7 +7,7 @@ import {
 } from "@kaiachain/viem-ext";
 
 // Fallback RPC URL (테스트넷)
-const KAIROS_RPC_URL = import.meta.env.VITE_NETWORK_RPC_URL;
+const KAIROS_RPC_URL = "https://public-en-kairos.node.kaia.io";
 
 const provider = window.klaytn;
 

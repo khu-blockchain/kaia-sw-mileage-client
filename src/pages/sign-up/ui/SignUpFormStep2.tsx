@@ -62,7 +62,7 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 
 		// 현재 지갑에 선택된 네트워크가 kairos인지 확인
 		const network = await kaia.browserProvider.networkVersion;
-		if (network !== Number(import.meta.env.VITE_NETWORK_ID)) {
+		if (network !== 1001) {
 			toast.error(
 				<p className="whitespace-pre-wrap">
 					{
