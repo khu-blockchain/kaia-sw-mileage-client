@@ -10,15 +10,6 @@ import { defineConfig } from "vite";
 export default defineConfig(() => {
 	return {
 		plugins: [react(), tailwindcss()],
-		server: {
-			proxy: {
-				"/api": {
-					target: "http://khunggum.khu.ac.kr:8080/api/v1/",
-					changeOrigin: true,
-					rewrite: (path) => path.replace(/^\/api/, ""),
-				},
-			},
-		},
 		optimizeDeps: {
 			esbuildOptions: {
 				// Node.js 글로벌 polyfill

@@ -2,7 +2,7 @@ import type { KyInstance } from "ky";
 
 import { apiClient, authClient } from "./client";
 
-const baseURL = "/api/";
+const baseURL = "http://khunggum.khu.ac.kr:8080/api/v1/";
 
 const server = (api: KyInstance) => (route: string) => {
 	return api.extend({
