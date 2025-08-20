@@ -17,7 +17,7 @@ export default function StudentProfile() {
 			icon: <User className="w-5 h-5" />,
 			fields: [
 				{
-					key: "studentId",
+					key: "student_id",
 					label: "학번",
 				},
 				{
@@ -29,7 +29,7 @@ export default function StudentProfile() {
 					label: "학과",
 				},
 				{
-					key: "walletAddress",
+					key: "wallet_address",
 					label: "지갑 주소",
 					displayValue: sliceWalletAddress(student.wallet_address),
 				},
@@ -38,11 +38,11 @@ export default function StudentProfile() {
 					label: "이메일",
 				},
 				{
-					key: "bankAccountNumber",
+					key: "bank_account_number",
 					label: "계좌번호",
 				},
 				{
-					key: "bankCode",
+					key: "bank_code",
 					label: "은행",
 					displayValue: BANK_CODE[student.bank_code],
 				},
