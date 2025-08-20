@@ -1,11 +1,14 @@
 import { PageBoundary } from "@widgets/page-boundary";
 import { PageLayout } from "@widgets/page-layout";
+import { useKaiaWallet } from "@features/kaia";
 import { Separator } from "@/shared/ui";
 
 import ApplySwMileageBasicInfo from "./ApplySwMileageBasicInfo";
 import ApplySwMileageDocument from "./ApplySwMileageDocument";
 
 export default function MileageRegistrationPage() {
+	const { connectKaiaWallet } = useKaiaWallet();
+	connectKaiaWallet();
 	return (
 		<PageBoundary>
 			<PageLayout title="SW 마일리지 신청 내역">
