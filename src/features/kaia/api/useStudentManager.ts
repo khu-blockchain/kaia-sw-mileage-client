@@ -1,7 +1,6 @@
 import type {
 	ContractFunctionArgs,
 	Hex,
-	KaiaTransactionRequest,
 } from "@kaiachain/viem-ext";
 
 import {
