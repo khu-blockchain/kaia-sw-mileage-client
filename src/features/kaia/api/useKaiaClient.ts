@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { createWalletClient, custom, http, kairos } from "@kaiachain/viem-ext";
 import { createPublicClient } from "viem";
 
-const KAIROS_RPC_URL = import.meta.env.VITE_NETWORK_RPC_URL;
+const KAIROS_RPC_URL = "https://public-en-kairos.node.kaia.io";
 
 export const useKaiaClient = () => {
 	const provider = window.klaytn;
