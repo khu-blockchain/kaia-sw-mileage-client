@@ -199,7 +199,7 @@ const SwMileageStatus = ({
 			icon: <CircleCheck color="var(--approved)" className="w-4 h-4" />,
 		},
 		[MILEAGE_STATUS.REJECTED]: {
-			text: "SW 마일리지 신청이 반려되었습니다. 반려 사유를 확인하세요.",
+			text: "SW 마일리지 신청이 반려되었습니다. 반려 사유는 아래와 같습니다.",
 			description: comment ?? "-",
 			icon: <AlertCircle color="var(--destructive)" className="w-4 h-4" />,
 		},

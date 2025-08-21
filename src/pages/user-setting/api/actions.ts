@@ -18,6 +18,7 @@ export const useCreateWalletChange = () => {
 			queryClient.invalidateQueries({
 				queryKey: walletLostQueries.check(request.studentHash),
 			});
+			window.location.reload();
 			return data;
 		},
 	});
@@ -31,6 +32,7 @@ export const useConfirmWalletChange = () => {
 			queryClient.invalidateQueries({
 				queryKey: walletLostQueries.check(request.studentHash),
 			});
+			window.location.reload();
 			return data;
 		},
 	});

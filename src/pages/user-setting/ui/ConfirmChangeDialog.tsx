@@ -25,6 +25,7 @@ import {
 } from "@/shared/ui";
 
 import { useConfirmWalletChange } from "../api";
+import { isSameAddress } from "@shared/lib/web3";
 
 type ConfirmChangeDialogProps = {
 	children: React.ReactNode;
@@ -45,6 +46,16 @@ function ConfirmChangeDialog({
 	const { mutateAsync } = useConfirmWalletChange();
 
 	const handleSubmit = async () => {
+		if (!currentAccount) {
+			toast.error("Kaia 계정을 연결해주세요.");
+			return;
+		}
+
+		if (!isSameAddress(currentAccount, targetAccount)) {
+			toast.error("현재 연결된 계정과 소유권 증명이 완료된 계정이 일치하지 않습니다.");
+			return;
+		}
+
 		const data = encodeAbi("confirmAccountChange", [student.student_hash]);
 
 		const rawTransaction = await requestSignTransaction(data);
