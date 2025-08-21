@@ -31,7 +31,7 @@ function WatchAsssetDialog({
 }: WatchAsssetDialogProps) {
 	const [open, setOpen] = useState(false);
 
-	const { data: prepareResult, isLoading } = useQuery({
+	const { data: prepareResult } = useQuery({
 		queryKey: ["prepare-watch-asset", name, symbol, decimals, address],
 		queryFn: async () => {
 			const result = await fetch(`https://api.kaiawallet.io/api/v1/k/prepare`, {
