@@ -1,3 +1,5 @@
+import type { Address } from "viem";
+
 import { useMemo } from "react";
 
 import { createWalletClient, custom, http, kairos } from "@kaiachain/viem-ext";
@@ -15,9 +17,6 @@ export const useKaiaClient = () => {
 
 	// wallet client는 kaia wallet extension이 설치되어야지만 활성화됩니다.
 	const walletClient = useMemo(() => {
-		if (!provider) {
-			return null;
-		}
 		return createWalletClient({
 			chain: kairos,
 			transport: custom(provider!),

@@ -1,7 +1,4 @@
-import type {
-	ContractFunctionArgs,
-	Hex,
-} from "@kaiachain/viem-ext";
+import type { ContractFunctionArgs, Hex } from "@kaiachain/viem-ext";
 
 import {
 	encodeFunctionData,
@@ -37,22 +34,18 @@ export const useStudentManager = () => {
 			args,
 		});
 
-	const requestSignTransaction = async (
-		data: Hex,
-	): Promise<Hex> => {
-		if (!walletClient) {
-			throw new Error("Kaia Wallet Extension이 설치되어 있지 않습니다.");
-		}
+	const requestSignTransaction = async (data: Hex): Promise<Hex> => {
 		if (!currentAccount) {
 			throw new Error("지갑이 연결되어 있지 않습니다.");
 		}
-    const tx = await publicClient.prepareTransactionRequest({
+		const tx = await publicClient.prepareTransactionRequest({
 			type: KaiaTxType.FeeDelegatedSmartContractExecution,
+			account: currentAccount,
 			to: studentManager.address,
-			from: currentAccount,
 			data: data,
 			value: "0",
 		});
+
 		const rawTransaction = await walletClient.signTransaction(tx);
 		return rawTransaction as Hex;
 	};
