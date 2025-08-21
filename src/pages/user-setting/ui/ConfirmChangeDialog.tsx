@@ -47,9 +47,7 @@ function ConfirmChangeDialog({
 	const handleSubmit = async () => {
 		const data = encodeAbi("confirmAccountChange", [student.student_hash]);
 
-		const rawTransaction = await requestSignTransaction({
-			data,
-		});
+		const rawTransaction = await requestSignTransaction(data);
 
 		toast.promise(
 			mutateAsync({

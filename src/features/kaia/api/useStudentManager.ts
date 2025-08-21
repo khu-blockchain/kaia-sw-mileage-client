@@ -39,7 +39,7 @@ export const useStudentManager = () => {
 		});
 
 	const requestSignTransaction = async (
-		data: KaiaTransactionRequest,
+		data: Hex,
 	): Promise<Hex> => {
 		if (!walletClient) {
 			throw new Error("Kaia Wallet Extension이 설치되어 있지 않습니다.");
@@ -47,12 +47,14 @@ export const useStudentManager = () => {
 		if (!currentAccount) {
 			throw new Error("지갑이 연결되어 있지 않습니다.");
 		}
-		const rawTransaction = await walletClient.signTransaction({
-			...data,
+    const tx = await publicClient.prepareTransactionRequest({
 			type: KaiaTxType.FeeDelegatedSmartContractExecution,
 			to: studentManager.address,
 			from: currentAccount,
+			data: data,
+			value: "0",
 		});
+		const rawTransaction = await walletClient.signTransaction(tx);
 		return rawTransaction as Hex;
 	};
 

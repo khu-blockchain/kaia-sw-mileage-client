@@ -13,15 +13,15 @@ export default defineConfig(() => {
     // only development
     // production 푸시 시 아래 server object 주석
     // shared/route.ts에서 baseURL 수정
-		// server: {
-		// 	proxy: {
-		// 		"/api": {
-		// 			target: "http://khunggum.khu.ac.kr:8080/api/v1/",
-		// 			changeOrigin: true,
-		// 			rewrite: (path) => path.replace(/^\/api/, ""),
-		// 		},
-		// 	},
-		// },
+		server: {
+			proxy: {
+				"/api": {
+					target: "http://khunggum.khu.ac.kr:8080/api/v1/",
+					changeOrigin: true,
+					rewrite: (path) => path.replace(/^\/api/, ""),
+				},
+			},
+		},
 		optimizeDeps: {
 			esbuildOptions: {
 				// Node.js 글로벌 polyfill

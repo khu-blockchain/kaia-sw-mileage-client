@@ -45,7 +45,7 @@ function WalletChangeDialog({
 		}
 
 		const data = encodeAbi("proposeAccountChange", [walletAddress]);
-		const rawTransaction = await requestSignTransaction({ data });
+		const rawTransaction = await requestSignTransaction(data);
 
 		toast.promise(
 			mutateAsync({

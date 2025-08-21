@@ -69,9 +69,7 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 			);
 			const encodeData = encodeAbi("registerStudent", [studentIdHash]);
 
-			const rawTransaction = await requestSignTransaction({
-				data: encodeData,
-			});
+			const rawTransaction = await requestSignTransaction(encodeData);
 
 			const response = await mutateAsync({
 				studentId: data.studentId!,

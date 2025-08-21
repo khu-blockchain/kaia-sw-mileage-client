@@ -138,9 +138,9 @@ const ApplySwMileageDocument = () => {
 
 		formData.append("docHash", fileHash);
 
-		const transaction = encodeAbi("submitDocument", [fileHash]);
+		const encodeData = encodeAbi("submitDocument", [fileHash]);
 
-		const rawTransaction = await requestSignTransaction({ data: transaction });
+		const rawTransaction = await requestSignTransaction(encodeData);
 
 		formData.append("rawTransaction", rawTransaction);
 		try {
