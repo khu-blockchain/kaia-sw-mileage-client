@@ -80,129 +80,63 @@ export default function MileageGuide() {
 						</thead>
 						<tbody>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="13">학술 분야</td>
-								<td rowspan="2" class="w-[400px] whitespace-pre-wrap text-center border border-gray-300 px-4 py-2">국내 학술회의 논문 발표\n(사사문구 필요)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">주저자 (100%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">50</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">공동저자 (50%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">25</td>
-							</tr>
-							<tr>
-								<td rowspan="2" class="w-[400px] whitespace-pre-wrap text-center border border-gray-300 px-4 py-2">국내 학술지 논문 게재\n(사사문구 필요)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">주저자 (100%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">100</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">공동저자 (70%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">70</td>
-							</tr>
-							<tr>
+								<td class="text-center border border-gray-300 px-4 py-2" rowspan="4">학술분야</td>
 								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">오픈소스 코드기여 (기여도에 다른 차등지급)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">최대 200</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 10<br/>(최대 100)</td>
 							</tr>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">교내 경진대회 및 공모전 수상 (운영위원회)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">최대 100</td>
+								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">교내 경진대회 및 공모전 수상<br/>(사내회 또는 장관상)</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 50<br/>(최대 200)</td>
 							</tr>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">교외 경진대회 및 공모전 수상 (운영위원회)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">최대 200</td>
+								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">교외 행사기획 및 운영 (양식에 역할 명시)</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 20<br/>(최대 100)</td>
 							</tr>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">교내 행사 기획 및 운영</td>
-								<td class="text-center border border-gray-300 px-4 py-2">최대 100</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">국내 특허 출원 (사사문구 필요)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">150</td>
-							</tr>
-							<tr>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2" rowspan="4">SW중심대학 사업단\n진행행사 참여</td>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">SW페스티벌, Khuthon, Starup Dream2.0,\n학생회 주관 공모 행사 참여 (수상자 제외)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">20</td>
-							</tr>
-							<tr>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">IITP 교육만족도 설문 및\n전공/기초/융합 교육 만족도 설문조사 등 참가</td>
-								<td class="text-center border border-gray-300 px-4 py-2">20</td>
-							</tr>
-							<tr>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">IITP 행사 참가\n(SW인재 페스티벌, 공동 해커톤, AI경진대회 등)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">50</td>
-							</tr>
-							<tr>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">IITP, 협의회 및 타대학과의\n공동추진 행사 참관(1건당)\n(사업단에서 사전홍보된 행사에 한함)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">50</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="6">국제분야</td>
-								<td rowspan="2" class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">국외 학술회의 논문 발표\n(사사문구 필요)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">주저자 (100%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">100</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">공동저자 (70%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">70</td>
-							</tr>
-							<tr>
-								<td rowspan="2" class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">국외 학술지 논문 게재\n(사사문구 필요)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">주저자 (100%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">250</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">공동저자 (70%)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">175</td>
-							</tr>
-							<tr>
-								<td rowspan="2" class="text-center border border-gray-300 px-4 py-2">영어 봉사활동 실적</td>
-								<td class="text-center border border-gray-300 px-4 py-2">해외 IT 봉사단 등</td>
-								<td class="text-center border border-gray-300 px-4 py-2">100</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">국내 봉사활동 등</td>
-								<td class="text-center border border-gray-300 px-4 py-2">50</td>
+								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">SW중심대학 사업단<br/>진행행사 참여</td>
+								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">IITP, 협의회 및 타대학과의 공동추진<br/>행사 참관 (1건당)<br/>(사업단에서 사전 홍보된 행사에 한함)</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 20<br/>(최대 100)</td>
 							</tr>
 							<tr>
 								<td class="text-center border border-gray-300 px-4 py-2" rowspan="3">창업분야</td>
 								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">전공 관련 창업 (사업자등록증 제출)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">250</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 100<br/>(최대 400)</td>
 							</tr>
 							<tr>
 								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">창업 공모전 수상</td>
-								<td class="text-center border border-gray-300 px-4 py-2">150</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 40<br/>(최대 100)</td>
 							</tr>
 							<tr>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2" colspan="2">앱스토어 소프트웨어 등록\n(단위점수:1점)</td>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">다운로드 수\n*단위점수\n(최대 250)</td>
+								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">앱스토어 소프트웨어 등록<br/>(증빙자료에 링 명단 및 역할 필요)</td>
+								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">클릭당 1건<br/>(최대 200/<br/>타입수수 동일 분배)</td>
+							</tr>
+              
+							<tr>
+								<td class="text-center border border-gray-300 px-4 py-2" rowspan="3">인턴십</td>
+								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">자율현장실습</td>
+								<td class="text-center border border-gray-300 px-4 py-2">100</td>
 							</tr>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="4">봉사분야</td>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="3">SW 아너십</td>
-								<td class="text-center border border-gray-300 px-4 py-2">강의(1회차 1시간 이상)</td>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">50\n(2회차부터는 10)</td>
+								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">ICPC현장실습</td>
+								<td class="text-center border border-gray-300 px-4 py-2">200</td>
 							</tr>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">멘토보고서 (건당)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">15</td>
+								<td class="text-center border border-gray-300 px-4 py-2" colspan="2">취업연계 인턴십</td>
+								<td class="text-center border border-gray-300 px-4 py-2">200</td>
 							</tr>
 							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">그 외 활동 (건당)</td>
-								<td class="text-center border border-gray-300 px-4 py-2">10</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2">SW 나눔봉사단</td>
-								<td class="text-center border border-gray-300 px-4 py-2">학기당</td>
-								<td class="text-center border border-gray-300 px-4 py-2">10</td>
-							</tr>
-							<tr>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="2">기타활동</td>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="2">사업단장 인정 기타활동</td>
-								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">사업단 주관 프로그램 참가\n(특별 프로그램에 한함)</td>
-								<td class="text-center border border-gray-300 px-4 py-2" rowspan="2">별도 책정</td>
+								<td class="text-center border border-gray-300 px-4 py-2" rowspan="3">기타활동</td>
+								<td class="text-center border border-gray-300 px-4 py-2" rowspan="3">사업단장 인정 기타활동</td>
+								<td class="text-center whitespace-pre-wrap border border-gray-300 px-4 py-2">사업단 주관 프로그램 참가<br/>(특별 프로그램에 한함)</td>
+								<td class="text-center border border-gray-300 px-4 py-2">별도 책정</td>
 							</tr>
 							<tr>
 								<td class="text-center border border-gray-300 px-4 py-2">기타</td>
+								<td class="text-center border border-gray-300 px-4 py-2">별도 책정</td>
+							</tr>
+							<tr>
+								<td class="text-center border border-gray-300 px-4 py-2">비전공자를 위한 신문고 활용</td>
+								<td class="text-center border border-gray-300 px-4 py-2">1건당 10<br/>(최대 100)</td>
 							</tr>
 						</tbody>
 					</table>

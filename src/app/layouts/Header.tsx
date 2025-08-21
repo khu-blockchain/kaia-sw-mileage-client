@@ -70,12 +70,14 @@ const MyPoint = () => {
 	const { currentAccount } = useKaiaAccount();
 	const { call: callStudentManager } = useStudentManager();
 	const { call: callSwMileageToken } = useSwMileageToken();
-	const { data } = useQuery({
+	const { data: { point, name } = { point: 0, name: "-" } } = useQuery({
 		queryKey: ["my-point", currentAccount],
-		placeholderData: 0,
 		queryFn: async () => {
 			if (!currentAccount) {
-				return 0;
+				return {
+					point: 0,
+					name: "-",
+				};
 			}
 
 			const swMileageTokenAddress = (await callStudentManager(
@@ -88,15 +90,31 @@ const MyPoint = () => {
 				"balanceOf",
 				[currentAccount],
 			);
+
+			const name = await callSwMileageToken(swMileageTokenAddress, "name", []);
+
 			//TODO: point 있을 때 wei 처리해야하는지 확인
-			return point;
+			return {
+				point,
+				name,
+			};
 		},
 	});
 
 	return (
 		<div className="flex gap-1 items-center">
-			<Bolt className="w-5 h-5 text-body" />
-			<p className="text-body text-sm font-semibold">{`${data}점`}</p>
+			{currentAccount && (
+				<>
+					<p className="text-body text-sm font-semibold">{`${name}`}</p>
+					<Bolt className="w-5 h-5 text-body" />
+					<p className="text-body text-sm font-semibold">{`${point}점`}</p>
+				</>
+			)}
+			{!currentAccount && (
+				<p className="text-body text-[10px] font-semibold">
+					지갑을 연결하면 마일리지 토큰과 보유량이 표시됩니다.
+				</p>
+			)}
 		</div>
 	);
 };
