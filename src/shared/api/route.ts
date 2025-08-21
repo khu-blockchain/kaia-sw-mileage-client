@@ -16,6 +16,7 @@ const baseServer = server(apiClient);
 const authServer = server(authClient);
 
 const AuthServer = baseServer("auth");
+const AuthServerWithAccessToken = authServer("auth");
 const StudentServer = authServer("student");
 const MileageServer = authServer("mileage");
 const MileageTokenServer = authServer("mileage-token");
@@ -25,6 +26,7 @@ const WalletLostServer = authServer("wallet-lost");
 
 export {
 	AuthServer,
+	AuthServerWithAccessToken,
 	StudentServer,
 	MileageServer,
 	MileageTokenServer,

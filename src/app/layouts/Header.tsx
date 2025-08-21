@@ -1,7 +1,7 @@
 import type { Address } from "@kaiachain/viem-ext";
 
 import { useQuery } from "@tanstack/react-query";
-import { Bolt } from "lucide-react";
+import { Bolt, LogOut } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 
 import {
@@ -16,12 +16,16 @@ import { cn } from "@shared/lib/style";
 import { sliceWalletAddress } from "@shared/lib/web3";
 
 import { MENU } from "./configuration";
+import { Button } from "@shared/ui";
+import { useLogout } from "./api";
 
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { currentAccount } = useKaiaAccount();
 	const { connectKaiaWallet } = useKaiaWallet();
+
+	const { mutate } = useLogout();
 
 	return (
 		<header className="fixed top-0 left-0 z-50 w-full h-16 flex items-center px-8 bg-white border-b border-slate-20">
@@ -48,7 +52,7 @@ const Header = () => {
 						))}
 					</div>
 				</div>
-				<div className="flex gap-6">
+				<div className="flex gap-4 items-center">
 					<MyPoint />
 					{!currentAccount ? (
 						<KaiaButton.SmallButton onClick={() => connectKaiaWallet()} />
@@ -60,6 +64,9 @@ const Header = () => {
 							</span>
 						</div>
 					)}
+					<Button variant="ghost" size="icon" onClick={() => mutate()}>
+						<LogOut className="w-5 h-5 text-body" />
+					</Button>
 				</div>
 			</div>
 		</header>

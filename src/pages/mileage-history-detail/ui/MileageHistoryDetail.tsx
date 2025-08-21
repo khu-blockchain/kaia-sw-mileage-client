@@ -212,3 +212,22 @@ const SwMileageStatus = ({
 		</Alert>
 	);
 };
+
+
+// {
+//   "chain_id": "1001",
+//   "type": "watch_asset",
+//   "bapp": {
+//     "name": "SW Mileage",
+//     "callback":{
+//       "success": null,
+//       "fail": null
+//     }
+//   },
+//   "watch_asset":{
+//       "address":"0x76af11F24b6003E8b0B339268F1Be660F7902952",
+//       "symbol":"MT",
+//       "decimals":18,
+//       "name":"Mileage Token"
+//   }
+// }

@@ -28,8 +28,7 @@ function AuthGuardInner() {
 	return <Outlet />;
 }
 
-function AuthGuardFallback(FallbackProps: FallbackProps) {
-	console.log(FallbackProps);
+function AuthGuardFallback() {
 	return <Navigate to="/sign-in" />;
 }
 

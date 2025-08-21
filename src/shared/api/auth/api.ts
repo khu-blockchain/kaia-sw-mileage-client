@@ -5,7 +5,7 @@ import type {
 	SignInResponse,
 } from "./dto";
 
-import { AuthServer } from "../route";
+import { AuthServer, AuthServerWithAccessToken } from "../route";
 
 export const authApi = {
 	signIn: (request: SignInRequest): APIPromise<SignInResponse> =>
@@ -16,6 +16,11 @@ export const authApi = {
 
 	refreshToken: (): APIPromise<RefreshTokenResponse> =>
 		AuthServer.post("refresh", {
+			credentials: "include",
+		}).json(),
+
+	logout: (): APIPromise<void> =>
+		AuthServerWithAccessToken.post("logout", {
 			credentials: "include",
 		}).json(),
 };
