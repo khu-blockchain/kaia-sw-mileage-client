@@ -142,7 +142,9 @@ const MileageHistoryDetail = () => {
 										<p className="text-sm text-muted-foreground">
 											{value.label}
 										</p>
-										<p className="text-md text-body">{value.value}</p>
+										<p className="text-md text-body whitespace-pre-wrap">
+											{value.value}
+										</p>
 									</div>
 								),
 							)}
