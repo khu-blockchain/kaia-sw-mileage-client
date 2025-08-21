@@ -5,7 +5,6 @@ import { User } from "lucide-react";
 
 import { studentQueries } from "@entities/student";
 import { BANK_CODE } from "@shared/config";
-import { sliceWalletAddress } from "@shared/lib/web3";
 import { Label } from "@shared/ui";
 
 export default function StudentProfile() {
