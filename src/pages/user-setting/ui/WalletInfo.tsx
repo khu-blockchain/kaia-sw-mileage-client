@@ -113,9 +113,9 @@ export default function WalletInfo() {
 							</div>
 						</div>
 						<div className="flex items-center gap-1">
-							<AlertCircle className="w-3.5 h-3.5 text-red-600" />
+							<AlertCircle className="w-3.5 h-3.5 text-destructive" />
 							<WalletLostDialog student={student}>
-								연결된 Kaia 계정을 사용할 수 없나요?
+								등록했던 Kaia 계정을 사용할 수 없나요?
 							</WalletLostDialog>
 						</div>
 					</>

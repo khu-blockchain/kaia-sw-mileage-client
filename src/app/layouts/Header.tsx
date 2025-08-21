@@ -14,10 +14,11 @@ import {
 import { KaiaIcon } from "@shared/assets";
 import { cn } from "@shared/lib/style";
 import { sliceWalletAddress } from "@shared/lib/web3";
-
-import { MENU } from "./configuration";
 import { Button } from "@shared/ui";
+
 import { useLogout } from "./api";
+import { MENU } from "./configuration";
+import WatchAsssetDialog from "./WatchAsssetDialog";
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -77,7 +78,7 @@ const MyPoint = () => {
 	const { currentAccount } = useKaiaAccount();
 	const { call: callStudentManager } = useStudentManager();
 	const { call: callSwMileageToken } = useSwMileageToken();
-	const { data: { point, name } = { point: 0, name: "-" } } = useQuery({
+	const { data: { point, name, symbol, decimals, address } = { point: 0, name: "-", symbol: "-", decimals: 0, address: "-" } } = useQuery({
 		queryKey: ["my-point", currentAccount],
 		queryFn: async () => {
 			if (!currentAccount) {
@@ -99,20 +100,25 @@ const MyPoint = () => {
 			);
 
 			const name = await callSwMileageToken(swMileageTokenAddress, "name", []);
+			const symbol = await callSwMileageToken(swMileageTokenAddress, "symbol", []);
+			const decimals = await callSwMileageToken(swMileageTokenAddress, "decimals", []);
 
 			//TODO: point 있을 때 wei 처리해야하는지 확인
 			return {
 				point,
+				address: swMileageTokenAddress,
 				name,
+				symbol,
+				decimals,
 			};
 		},
 	});
 
 	return (
 		<div className="flex gap-1 items-center">
-			{currentAccount && (
+			{name !== "-" && currentAccount && (
 				<>
-					<p className="text-body text-sm font-semibold">{`${name}`}</p>
+					<WatchAsssetDialog name={name as string} symbol={symbol as string} decimals={decimals as number} address={address as string} />
 					<Bolt className="w-5 h-5 text-body" />
 					<p className="text-body text-sm font-semibold">{`${point}점`}</p>
 				</>

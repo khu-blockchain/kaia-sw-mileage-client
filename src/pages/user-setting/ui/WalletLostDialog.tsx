@@ -75,7 +75,7 @@ function WalletLostDialog({ children, student }: ApproveMileageDialogProps) {
 						이전됩니다.
 						<br />
 						<br />
-						<strong className="text-red-600">
+						<strong className="text-destructive">
 							반드시 변경할 지갑 주소를 확인해주세요.
 						</strong>
 					</AlertDialogDescription>
@@ -91,7 +91,7 @@ function WalletLostDialog({ children, student }: ApproveMileageDialogProps) {
 						</span>
 					</div>
 					<div className="flex items-center justify-center">
-						<CircleArrowDown className="w-6 h-6 text-blue-700" />
+						<CircleArrowDown className="w-4 h-4 text-body" />
 					</div>
 					<div className="flex flex-col gap-2 items-center">
 						<span className="text-sm text-muted-foreground">

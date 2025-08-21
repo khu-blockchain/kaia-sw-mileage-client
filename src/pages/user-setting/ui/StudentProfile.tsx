@@ -31,7 +31,6 @@ export default function StudentProfile() {
 				{
 					key: "wallet_address",
 					label: "지갑 주소",
-					displayValue: sliceWalletAddress(student.wallet_address),
 				},
 				{
 					key: "email",
