@@ -1,5 +1,3 @@
-import type { Address } from "viem";
-
 import { useMemo } from "react";
 
 import { createWalletClient, custom, http, kairos } from "@kaiachain/viem-ext";
