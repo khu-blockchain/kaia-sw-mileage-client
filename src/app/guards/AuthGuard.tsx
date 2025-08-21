@@ -1,4 +1,3 @@
-import type { FallbackProps } from "react-error-boundary";
 
 import { Suspense } from "react";
 
