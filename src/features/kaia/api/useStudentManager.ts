@@ -40,7 +40,7 @@ export const useStudentManager = () => {
 		}
 		const tx = await publicClient.prepareTransactionRequest({
 			type: KaiaTxType.FeeDelegatedSmartContractExecution,
-			account: currentAccount,
+			from: currentAccount,
 			to: studentManager.address,
 			data: data,
 			value: "0",
