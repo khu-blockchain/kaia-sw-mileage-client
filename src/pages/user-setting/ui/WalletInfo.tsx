@@ -3,7 +3,7 @@ import type { WalletLost } from "@shared/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { AlertCircle, Wallet } from "lucide-react";
 
-import { useStudentManager, ZERO_ADDRESS } from "@features/kaia";
+import { ContractEnum, useKaiaContract, ZERO_ADDRESS } from "@features/kaia";
 import { studentQueries } from "@entities/student";
 import { walletLostApi } from "@shared/api";
 import { parseToFormattedDate } from "@shared/lib";
@@ -42,7 +42,7 @@ type walletLostResponse = {
 };
 
 export default function WalletInfo() {
-	const { call } = useStudentManager();
+	const { call } = useKaiaContract();
 	const { data: student } = useSuspenseQuery(studentQueries.getMe());
 	const { data: walletChangeProcess } = useSuspenseQuery({
 		queryKey: walletLostQueries.check(student.student_hash),
@@ -60,6 +60,8 @@ export default function WalletInfo() {
 				};
 			}
 			const { createdAt, targetAccount } = (await call(
+				ContractEnum.STUDENT_MANAGER,
+				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
 				"getPendingAccountChange",
 				[student.student_hash],
 			)) as { createdAt: bigint; targetAccount: string };

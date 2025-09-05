@@ -3,7 +3,7 @@ import { useState } from "react";
 import { isAddress } from "@kaiachain/viem-ext";
 import { toast } from "sonner";
 
-import { useStudentManager } from "@features/kaia";
+import { ContractEnum, useKaiaContract } from "@features/kaia";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -31,7 +31,7 @@ function WalletChangeDialog({
 }: WalletChangeDialogProps) {
 	const [open, setOpen] = useState(false);
 	const [walletAddress, setWalletAddress] = useState("");
-	const { encodeAbi, requestSignTransaction } = useStudentManager();
+	const { encodeAbi, requestSignTransaction } = useKaiaContract();
 	const { mutateAsync } = useCreateWalletChange();
 
 	const handleSubmit = async () => {
@@ -44,14 +44,23 @@ function WalletChangeDialog({
 			return;
 		}
 
-		const data = encodeAbi("proposeAccountChange", [walletAddress]);
-		const rawTransaction = await requestSignTransaction(data);
+		const data = encodeAbi(
+			"proposeAccountChange",
+			ContractEnum.STUDENT_MANAGER,
+			[walletAddress],
+		);
 
 		toast.promise(
-			mutateAsync({
-				studentHash,
-				rawTransaction,
-			}),
+			async () => {
+				const rawTransaction = await requestSignTransaction(
+					import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+					data,
+				);
+				return mutateAsync({
+					studentHash,
+					rawTransaction,
+				});
+			},
 			{
 				loading: "지갑 주소 변경 요청 중...",
 				success: () => {

@@ -1,32 +1,58 @@
 import type { Address } from "@kaiachain/viem-ext";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Bolt, LogOut } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 
 import {
+	ContractEnum,
 	KaiaButton,
 	useKaiaAccount,
+	useKaiaContract,
 	useKaiaWallet,
-	useStudentManager,
-	useSwMileageToken,
 } from "@features/kaia";
+import { authApi } from "@shared/api";
 import { KaiaIcon } from "@shared/assets";
+import { useAuthStore } from "@shared/authorize";
 import { cn } from "@shared/lib/style";
 import { sliceWalletAddress } from "@shared/lib/web3";
 import { Button } from "@shared/ui";
 
-import { useLogout } from "./api";
-import { MENU } from "./configuration";
 import WatchAsssetDialog from "./WatchAsssetDialog";
+
+const MENU = [
+	{
+		name: "마일리지 신청",
+		path: "/apply",
+	},
+	{
+		name: "신청 내역",
+		path: "/history",
+	},
+	{
+		name: "내 정보",
+		path: "/setting",
+	},
+	{
+		name: "랭킹",
+		path: "/ranking",
+	},
+];
 
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { currentAccount } = useKaiaAccount();
 	const { connectKaiaWallet } = useKaiaWallet();
+	const { reset } = useAuthStore();
 
-	const { mutate } = useLogout();
+	const { mutate } = useMutation({
+		mutationFn: async () => {
+			await authApi.logout();
+			reset();
+			window.location.reload();
+		},
+	});
 
 	return (
 		<header className="fixed top-0 left-0 z-50 w-full h-16 flex items-center px-8 bg-white border-b border-slate-20">
@@ -76,9 +102,16 @@ const Header = () => {
 
 const MyPoint = () => {
 	const { currentAccount } = useKaiaAccount();
-	const { call: callStudentManager } = useStudentManager();
-	const { call: callSwMileageToken } = useSwMileageToken();
-	const { data: { point, name, symbol, decimals, address } = { point: 0, name: "-", symbol: "-", decimals: 0, address: "-" } } = useQuery({
+	const { call } = useKaiaContract();
+	const {
+		data: { point, name, symbol, decimals, address } = {
+			point: 0,
+			name: "-",
+			symbol: "-",
+			decimals: 0,
+			address: "-",
+		},
+	} = useQuery({
 		queryKey: ["my-point", currentAccount],
 		queryFn: async () => {
 			if (!currentAccount) {
@@ -88,25 +121,43 @@ const MyPoint = () => {
 				};
 			}
 
-			const swMileageTokenAddress = (await callStudentManager(
+			const activeTokenAddress = (await call(
+				ContractEnum.STUDENT_MANAGER,
+				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
 				"mileageToken",
 				[],
 			)) as Address;
 
-			const point = await callSwMileageToken(
-				swMileageTokenAddress,
+			const point = await call(
+				ContractEnum.SW_MILEAGE_TOKEN,
+				activeTokenAddress,
 				"balanceOf",
 				[currentAccount],
 			);
 
-			const name = await callSwMileageToken(swMileageTokenAddress, "name", []);
-			const symbol = await callSwMileageToken(swMileageTokenAddress, "symbol", []);
-			const decimals = await callSwMileageToken(swMileageTokenAddress, "decimals", []);
+			const name = await call(
+				ContractEnum.SW_MILEAGE_TOKEN,
+				activeTokenAddress,
+				"name",
+				[],
+			);
+			const symbol = await call(
+				ContractEnum.SW_MILEAGE_TOKEN,
+				activeTokenAddress,
+				"symbol",
+				[],
+			);
+			const decimals = await call(
+				ContractEnum.SW_MILEAGE_TOKEN,
+				activeTokenAddress,
+				"decimals",
+				[],
+			);
 
 			//TODO: point 있을 때 wei 처리해야하는지 확인
 			return {
 				point,
-				address: swMileageTokenAddress,
+				address: activeTokenAddress,
 				name,
 				symbol,
 				decimals,
@@ -118,7 +169,12 @@ const MyPoint = () => {
 		<div className="flex gap-1 items-center">
 			{name !== "-" && currentAccount && (
 				<>
-					<WatchAsssetDialog name={name as string} symbol={symbol as string} decimals={decimals as number} address={address as string} />
+					<WatchAsssetDialog
+						name={name as string}
+						symbol={symbol as string}
+						decimals={decimals as number}
+						address={address as string}
+					/>
 					<Bolt className="w-5 h-5 text-body" />
 					<p className="text-body text-sm font-semibold">{`${point}점`}</p>
 				</>

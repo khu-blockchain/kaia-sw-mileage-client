@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { encodePacked, keccak256, toHex } from "viem";
 
-import { useStudentManager } from "@features/kaia";
+import { ContractEnum, useKaiaContract } from "@features/kaia";
 import { studentQueries } from "@entities/student";
 import {
 	Button,
@@ -29,7 +29,7 @@ import ApplyMileageFileContainer from "./ApplyMileageFileContainer";
 
 const ApplySwMileageDocument = () => {
 	const navigate = useNavigate();
-	const { encodeAbi, requestSignTransaction } = useStudentManager();
+	const { encodeAbi, requestSignTransaction } = useKaiaContract();
 	const [rubricData, studentData] = useSuspenseQueries({
 		queries: [
 			{
@@ -138,12 +138,18 @@ const ApplySwMileageDocument = () => {
 
 		formData.append("docHash", fileHash);
 
-		const encodeData = encodeAbi("submitDocument", [fileHash]);
+		const encodeData = encodeAbi(
+			"submitDocument",
+			ContractEnum.STUDENT_MANAGER,
+			[fileHash],
+		);
 
-		const rawTransaction = await requestSignTransaction(encodeData);
-
-		formData.append("rawTransaction", rawTransaction);
 		try {
+			const rawTransaction = await requestSignTransaction(
+				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+				encodeData,
+			);
+			formData.append("rawTransaction", rawTransaction);
 			await mutateAsync(formData);
 			toast.success("마일리지 신청이 완료되었습니다.", {
 				description: "블록체인에 기록되는데 시간이 소요될 수 있습니다.",

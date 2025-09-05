@@ -5,12 +5,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import {
+	ContractEnum,
 	KaiaButton,
 	useKaiaAccount,
+	useKaiaContract,
 	useKaiaWallet,
-	useStudentManager,
 } from "@features/kaia";
-
+import { isSameAddress } from "@shared/lib/web3";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -25,7 +26,6 @@ import {
 } from "@/shared/ui";
 
 import { useConfirmWalletChange } from "../api";
-import { isSameAddress } from "@shared/lib/web3";
 
 type ConfirmChangeDialogProps = {
 	children: React.ReactNode;
@@ -40,7 +40,7 @@ function ConfirmChangeDialog({
 }: ConfirmChangeDialogProps) {
 	const { currentAccount } = useKaiaAccount();
 	const { connectKaiaWallet } = useKaiaWallet();
-	const { encodeAbi, requestSignTransaction } = useStudentManager();
+	const { encodeAbi, requestSignTransaction } = useKaiaContract();
 	const [open, setOpen] = useState(false);
 
 	const { mutateAsync } = useConfirmWalletChange();
@@ -52,19 +52,29 @@ function ConfirmChangeDialog({
 		}
 
 		if (!isSameAddress(currentAccount, targetAccount)) {
-			toast.error("현재 연결된 계정과 소유권 증명이 완료된 계정이 일치하지 않습니다.");
+			toast.error(
+				"현재 연결된 계정과 소유권 증명이 완료된 계정이 일치하지 않습니다.",
+			);
 			return;
 		}
 
-		const data = encodeAbi("confirmAccountChange", [student.student_hash]);
-
-		const rawTransaction = await requestSignTransaction(data);
+		const data = encodeAbi(
+			"confirmAccountChange",
+			ContractEnum.STUDENT_MANAGER,
+			[student.student_hash],
+		);
 
 		toast.promise(
-			mutateAsync({
-				studentHash: student.student_hash,
-				rawTransaction,
-			}),
+			async () => {
+				const rawTransaction = await requestSignTransaction(
+					import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+					data,
+				);
+				return mutateAsync({
+					studentHash: student.student_hash,
+					rawTransaction,
+				});
+			},
 			{
 				loading: "지갑 주소 변경 확인 중...",
 				success: () => {

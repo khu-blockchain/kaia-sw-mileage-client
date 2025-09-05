@@ -1,13 +1,18 @@
+import type { Abi } from "viem";
+
 import { STUDENT_MANAGER_ABI, SW_MILEAGE_TOKEN_ABI } from "./abi";
 
 export enum ContractEnum {
 	STUDENT_MANAGER = "studentManager",
-  SW_MILEAGE_TOKEN = "swMileageToken",
+	SW_MILEAGE_TOKEN = "swMileageToken",
 }
 
-const ContractParams = {
+interface IContractParams {
+	abi: Abi;
+}
+
+const ContractParams: Record<ContractEnum, IContractParams> = {
 	[ContractEnum.STUDENT_MANAGER]: {
-		address: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
 		abi: STUDENT_MANAGER_ABI,
 	},
 	[ContractEnum.SW_MILEAGE_TOKEN]: {

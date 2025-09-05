@@ -6,9 +6,9 @@ import { useAuthStore } from "../authorize";
 import { authApi } from "./auth";
 
 function beforeRequest(request: Request) {
-	const token = useAuthStore.getState().accessToken;
-	if (token) {
-		request.headers.set("Authorization", `Bearer ${token}`);
+  const accessToken = useAuthStore.getState().getAccessToken();
+	if (accessToken) {
+		request.headers.set("Authorization", `Bearer ${accessToken}`);
 	}
 }
 

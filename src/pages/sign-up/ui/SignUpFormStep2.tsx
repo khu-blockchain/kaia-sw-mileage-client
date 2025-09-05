@@ -10,10 +10,11 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import {
+	ContractEnum,
 	KaiaButton,
 	useKaiaAccount,
+	useKaiaContract,
 	useKaiaWallet,
-	useStudentManager,
 } from "@features/kaia";
 import { BANK_CODE } from "@/shared/config";
 import {
@@ -40,7 +41,7 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 	const navigate = useNavigate();
 	const { currentAccount } = useKaiaAccount();
 	const { connectKaiaWallet } = useKaiaWallet();
-	const { encodeAbi, requestSignTransaction } = useStudentManager();
+	const { encodeAbi, requestSignTransaction } = useKaiaContract();
 	const {
 		register,
 		handleSubmit,
@@ -67,9 +68,16 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 			const studentIdHash = keccak256(
 				encodePacked(["string"], [data.studentId!]),
 			);
-			const encodeData = encodeAbi("registerStudent", [studentIdHash]);
+			const encodeData = encodeAbi(
+				"registerStudent",
+				ContractEnum.STUDENT_MANAGER,
+				[studentIdHash],
+			);
 
-			const rawTransaction = await requestSignTransaction(encodeData);
+			const rawTransaction = await requestSignTransaction(
+				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+				encodeData,
+			);
 
 			const response = await mutateAsync({
 				studentId: data.studentId!,
