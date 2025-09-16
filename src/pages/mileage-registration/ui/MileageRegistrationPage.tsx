@@ -1,6 +1,15 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Navigate } from "react-router";
+import { toast } from "sonner";
+
 import { PageBoundary } from "@widgets/page-boundary";
 import { PageLayout } from "@widgets/page-layout";
-import { useKaiaWallet } from "@features/kaia";
+import {
+	ContractEnum,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
+	useKaiaContract,
+	useKaiaWallet,
+} from "@features/kaia";
 import { Separator } from "@/shared/ui";
 
 import ApplySwMileageBasicInfo from "./ApplySwMileageBasicInfo";
@@ -8,7 +17,29 @@ import ApplySwMileageDocument from "./ApplySwMileageDocument";
 
 export default function MileageRegistrationPage() {
 	const { connectKaiaWallet } = useKaiaWallet();
+	const { call } = useKaiaContract();
 	connectKaiaWallet();
+	const { data: isPaused } = useSuspenseQuery({
+		queryKey: ["is-paused"],
+		queryFn: async () => {
+			const result = (await call({
+				contractType: ContractEnum.STUDENT_MANAGER,
+				contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+				method: "paused",
+				args: [],
+			})) as boolean;
+
+			return result;
+		},
+	});
+
+	if (isPaused) {
+		toast.error(
+			"SW 마일리지 신청이 비활성화되었습니다.\n공지사항을 확인해주세요.",
+		);
+		return <Navigate to="/"/>;
+	}
+
 	return (
 		<PageBoundary>
 			<PageLayout title="SW 마일리지 신청 내역">
