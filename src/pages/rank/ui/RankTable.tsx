@@ -2,7 +2,11 @@ import type { Address } from "@kaiachain/viem-ext";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { ContractEnum, useKaiaContract } from "@features/kaia";
+import {
+	ContractEnum,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
+	useKaiaContract,
+} from "@features/kaia";
 import {
 	Table,
 	TableBody,
@@ -24,19 +28,19 @@ export default function RankTable() {
 	const { data } = useSuspenseQuery({
 		queryKey: rankQueries.list(),
 		queryFn: async () => {
-			const swMileageTokenAddress = (await call(
-				ContractEnum.STUDENT_MANAGER,
-				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-				"mileageToken",
-				[],
-			)) as Address;
+			const swMileageTokenAddress = (await call({
+				contractType: ContractEnum.STUDENT_MANAGER,
+				contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+				method: "mileageToken",
+				args: [],
+			})) as Address;
 
-			const point = await call(
-				ContractEnum.SW_MILEAGE_TOKEN,
-				swMileageTokenAddress,
-				"getRankingRange",
-				[1, 20],
-			);
+			const point = await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: swMileageTokenAddress,
+				method: "getRankingRange",
+				args: [1, 20],
+			});
 			return point;
 		},
 	});

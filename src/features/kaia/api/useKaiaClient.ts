@@ -1,7 +1,7 @@
 import { createWalletClient, custom, http, kairos } from "@kaiachain/viem-ext";
 import { createPublicClient } from "viem";
 
-const KAIROS_RPC_URL = "https://public-en-kairos.node.kaia.io";
+const KAIROS_RPC_URL = import.meta.env.VITE_NETWORK_RPC_URL;
 
 export const useKaiaClient = () => {
 	const publicClient = createPublicClient({

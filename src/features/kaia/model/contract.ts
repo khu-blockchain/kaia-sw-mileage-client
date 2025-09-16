@@ -1,17 +1,11 @@
-import type { Abi } from "viem";
-
-import { STUDENT_MANAGER_ABI, SW_MILEAGE_TOKEN_ABI } from "./abi";
+import { STUDENT_MANAGER_ABI, SW_MILEAGE_TOKEN_ABI } from "../config";
 
 export enum ContractEnum {
 	STUDENT_MANAGER = "studentManager",
 	SW_MILEAGE_TOKEN = "swMileageToken",
 }
 
-interface IContractParams {
-	abi: Abi;
-}
-
-const ContractParams: Record<ContractEnum, IContractParams> = {
+const ContractParams = {
 	[ContractEnum.STUDENT_MANAGER]: {
 		abi: STUDENT_MANAGER_ABI,
 	},

@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import {
 	ContractEnum,
 	KaiaButton,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
 	useKaiaAccount,
 	useKaiaContract,
 	useKaiaWallet,
@@ -68,16 +69,16 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 			const studentIdHash = keccak256(
 				encodePacked(["string"], [data.studentId!]),
 			);
-			const encodeData = encodeAbi(
-				"registerStudent",
-				ContractEnum.STUDENT_MANAGER,
-				[studentIdHash],
-			);
+			const encodeData = encodeAbi({
+				method: "registerStudent",
+				contractType: ContractEnum.STUDENT_MANAGER,
+				args: [studentIdHash],
+			});
 
-			const rawTransaction = await requestSignTransaction(
-				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-				encodeData,
-			);
+			const rawTransaction = await requestSignTransaction({
+				contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+				data: encodeData,
+			});
 
 			const response = await mutateAsync({
 				studentId: data.studentId!,

@@ -1,1 +1,0 @@
-export { default as CONTRACT, ContractEnum } from "./contract";

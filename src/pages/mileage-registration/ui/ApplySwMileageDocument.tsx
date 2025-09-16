@@ -9,7 +9,11 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { encodePacked, keccak256, toHex } from "viem";
 
-import { ContractEnum, useKaiaContract } from "@features/kaia";
+import {
+	ContractEnum,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
+	useKaiaContract,
+} from "@features/kaia";
 import { studentQueries } from "@entities/student";
 import {
 	Button,
@@ -138,17 +142,18 @@ const ApplySwMileageDocument = () => {
 
 		formData.append("docHash", fileHash);
 
-		const encodeData = encodeAbi(
-			"submitDocument",
-			ContractEnum.STUDENT_MANAGER,
-			[fileHash],
-		);
+		const encodeData = encodeAbi({
+			method: "submitDocument",
+			contractType: ContractEnum.STUDENT_MANAGER,
+			args: [fileHash],
+		});
 
 		try {
-			const rawTransaction = await requestSignTransaction(
-				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-				encodeData,
-			);
+			const rawTransaction = await requestSignTransaction({
+				contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+				data: encodeData,
+			});
+
 			formData.append("rawTransaction", rawTransaction);
 			await mutateAsync(formData);
 			toast.success("마일리지 신청이 완료되었습니다.", {

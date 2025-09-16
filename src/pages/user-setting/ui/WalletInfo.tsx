@@ -9,7 +9,7 @@ import { walletLostApi } from "@shared/api";
 import { parseToFormattedDate } from "@shared/lib";
 import { Button, Separator } from "@shared/ui";
 
-import { walletLostQueries } from "../api";
+import { walletManageQueries } from "../api";
 import ConfirmChangeDialog from "./ConfirmChangeDialog";
 import WalletChangeDialog from "./WalletChangeDialog";
 import WalletLostDialog from "./WalletLostDialog";
@@ -45,7 +45,7 @@ export default function WalletInfo() {
 	const { call } = useKaiaContract();
 	const { data: student } = useSuspenseQuery(studentQueries.getMe());
 	const { data: walletChangeProcess } = useSuspenseQuery({
-		queryKey: walletLostQueries.check(student.student_hash),
+		queryKey: walletManageQueries.checkChange(student.student_hash),
 		queryFn: async (): Promise<useCheckHasWalletChangeProcessResponse> => {
 			const {
 				data: { result, data },
@@ -59,12 +59,12 @@ export default function WalletInfo() {
 					},
 				};
 			}
-			const { createdAt, targetAccount } = (await call(
-				ContractEnum.STUDENT_MANAGER,
-				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-				"getPendingAccountChange",
-				[student.student_hash],
-			)) as { createdAt: bigint; targetAccount: string };
+			const { createdAt, targetAccount } = (await call({
+				contractType: ContractEnum.STUDENT_MANAGER,
+				contractAddress: import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+				method: "getPendingAccountChange",
+				args: [student.student_hash],
+			})) as { createdAt: bigint; targetAccount: string };
 
 			if (targetAccount !== ZERO_ADDRESS) {
 				return {
@@ -84,8 +84,6 @@ export default function WalletInfo() {
 			};
 		},
 	});
-
-	console.log(walletChangeProcess);
 
 	return (
 		<div className="content-container">

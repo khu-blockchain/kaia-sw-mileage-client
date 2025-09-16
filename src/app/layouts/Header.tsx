@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router";
 import {
 	ContractEnum,
 	KaiaButton,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
 	useKaiaAccount,
 	useKaiaContract,
 	useKaiaWallet,
@@ -121,38 +122,40 @@ const MyPoint = () => {
 				};
 			}
 
-			const activeTokenAddress = (await call(
-				ContractEnum.STUDENT_MANAGER,
-				import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-				"mileageToken",
-				[],
-			)) as Address;
+			const activeTokenAddress = (await call({
+				contractType: ContractEnum.STUDENT_MANAGER,
+				contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+				method: "mileageToken",
+				args: [],
+			})) as Address;
 
-			const point = await call(
-				ContractEnum.SW_MILEAGE_TOKEN,
-				activeTokenAddress,
-				"balanceOf",
-				[currentAccount],
-			);
+			const point = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "balanceOf",
+				args: [currentAccount],
+			}));
 
-			const name = await call(
-				ContractEnum.SW_MILEAGE_TOKEN,
-				activeTokenAddress,
-				"name",
-				[],
-			);
-			const symbol = await call(
-				ContractEnum.SW_MILEAGE_TOKEN,
-				activeTokenAddress,
-				"symbol",
-				[],
-			);
-			const decimals = await call(
-				ContractEnum.SW_MILEAGE_TOKEN,
-				activeTokenAddress,
-				"decimals",
-				[],
-			);
+			const name = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "name",
+				args: [],
+			}));
+
+			const symbol = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "symbol",
+				args: [],
+			}));
+
+			const decimals = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "decimals",
+				args: [],
+			}));
 
 			//TODO: point 있을 때 wei 처리해야하는지 확인
 			return {

@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { studentApi, walletLostApi } from "@/shared/api";
 
-import { walletLostQueries } from "./queries";
+import { walletManageQueries } from "./queries";
 
 export const useCreateWalletChange = () => {
 	const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ export const useCreateWalletChange = () => {
 		mutationFn: async (request: CreateWalletChangeRequest) => {
 			const { data } = await studentApi.createWalletChange(request);
 			queryClient.invalidateQueries({
-				queryKey: walletLostQueries.check(request.studentHash),
+				queryKey: walletManageQueries.checkChange(request.studentHash),
 			});
 			window.location.reload();
 			return data;
@@ -30,7 +30,7 @@ export const useConfirmWalletChange = () => {
 		mutationFn: async (request: ConfirmWalletChangeRequest) => {
 			const { data } = await studentApi.confirmWalletChange(request);
 			queryClient.invalidateQueries({
-				queryKey: walletLostQueries.check(request.studentHash),
+				queryKey: walletManageQueries.checkChange(request.studentHash),
 			});
 			window.location.reload();
 			return data;

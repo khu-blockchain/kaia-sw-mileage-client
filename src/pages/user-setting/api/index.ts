@@ -4,4 +4,4 @@ export {
 	useCreatWalletLost,
 } from "./actions";
 
-export { walletLostQueries } from "./queries";
+export { walletManageQueries } from "./queries";

@@ -1,8 +1,9 @@
-import type { Address, ContractFunctionArgs, Hex } from "@kaiachain/viem-ext";
+import type { Hex } from "@kaiachain/viem-ext";
+import type { Call, EncodeAbi, RequestSignTransaction } from "../model/types";
 
 import { encodeFunctionData, getContract, TxType } from "@kaiachain/viem-ext";
 
-import { CONTRACT, ContractEnum } from "../contract";
+import { CONTRACT, ContractEnum } from "../model";
 import { useKaiaAccount } from "./useKaiaAccount";
 import { useKaiaClient } from "./useKaiaClient";
 import { useKaiaWallet } from "./useKaiaWallet";
@@ -16,68 +17,42 @@ export const useKaiaContract = () => {
 		return CONTRACT[contractEnum];
 	};
 
-	/**
-	 *
-	 * @param contractEnum: target contract enum (STUDENT_MANAGER, SW_MILEAGE_TOKEN)
-	 * @param address: target contract address
-	 * @param method: execute method name
-	 * @param args: arguments for the method
-	 * @returns
-	 */
-	const call = async (
-		contractEnum: ContractEnum,
-		address: Address,
-		method: string,
-		args: ContractFunctionArgs,
-	) => {
+	const call: Call = async ({
+		contractType,
+		contractAddress,
+		method,
+		args,
+	}) => {
 		const contract = getContract({
-			address,
-			abi: getContractInstance(contractEnum).abi,
+			address: contractAddress,
+			abi: getContractInstance(contractType).abi,
 			client: publicClient,
 		});
 
 		return await contract.read[method]([...args]);
 	};
 
-	/**
-	 *
-	 * @param method: execute method name
-	 * @param contractEnum: target contract enum (STUDENT_MANAGER, SW_MILEAGE_TOKEN)
-	 * @param args: arguments for the method
-	 * @returns
-	 */
-	const encodeAbi = (
-		method: string,
-		contractEnum: ContractEnum,
-		args: ContractFunctionArgs,
-	) =>
+	const encodeAbi: EncodeAbi = ({ method, contractType, args }) =>
 		encodeFunctionData({
-			abi: getContractInstance(contractEnum).abi,
+			abi: getContractInstance(contractType).abi,
 			functionName: method,
 			args,
 		});
 
-	/**
-	 *
-	 * @param address: target contract address
-	 * @param data: encoded data
-	 * @param txType?: transaction type (default: FeeDelegatedSmartContractExecution)
-	 * @returns
-	 */
-	const requestSignTransaction = async (
-		address: Address,
-		data: string,
-		txType?: TxType,
-	): Promise<Hex> => {
+	const requestSignTransaction: RequestSignTransaction = async ({
+		contractAddress,
+		data,
+		txType,
+	}) => {
 		if (!currentAccount) {
-			throw new Error("지갑이 연결되어 있지 않습니다.");
+			throw new Error("지갑 연결 후 다시 시도해주세요.");
 		}
 
 		const client = createBrowserWalletClient(provider);
 
 		return (await client.signTransaction({
 			type: txType ?? TxType.FeeDelegatedSmartContractExecution,
-			to: address,
+			to: contractAddress,
 			from: currentAccount,
 			data: data,
 			value: "0",

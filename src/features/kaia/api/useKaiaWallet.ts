@@ -23,6 +23,8 @@ export const useKaiaWallet = () => {
 		await provider.enable();
 	};
 
+  
+
 	return {
 		provider,
 		isInstalled,

@@ -44,18 +44,19 @@ function WalletChangeDialog({
 			return;
 		}
 
-		const data = encodeAbi(
-			"proposeAccountChange",
-			ContractEnum.STUDENT_MANAGER,
-			[walletAddress],
-		);
+		const data = encodeAbi({
+			method: "proposeAccountChange",
+			contractType: ContractEnum.STUDENT_MANAGER,
+			args: [walletAddress],
+		});
 
 		toast.promise(
 			async () => {
-				const rawTransaction = await requestSignTransaction(
-					import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-					data,
-				);
+				const rawTransaction = await requestSignTransaction({
+					contractAddress: import.meta.env
+						.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
+					data: data,
+				});
 				return mutateAsync({
 					studentHash,
 					rawTransaction,

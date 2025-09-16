@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import {
 	ContractEnum,
 	KaiaButton,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
 	useKaiaAccount,
 	useKaiaContract,
 	useKaiaWallet,
@@ -58,18 +59,18 @@ function ConfirmChangeDialog({
 			return;
 		}
 
-		const data = encodeAbi(
-			"confirmAccountChange",
-			ContractEnum.STUDENT_MANAGER,
-			[student.student_hash],
-		);
+		const data = encodeAbi({
+			method: "confirmAccountChange",
+			contractType: ContractEnum.STUDENT_MANAGER,
+			args: [student.student_hash],
+		});
 
 		toast.promise(
 			async () => {
-				const rawTransaction = await requestSignTransaction(
-					import.meta.env.VITE_STUDENT_MANAGER_CONTRACT_ADDRESS,
-					data,
-				);
+				const rawTransaction = await requestSignTransaction({
+					contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+					data: data,
+				});
 				return mutateAsync({
 					studentHash: student.student_hash,
 					rawTransaction,
