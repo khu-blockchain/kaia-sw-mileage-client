@@ -49,17 +49,6 @@
 			"@tailwindcss/oxide",
 			"esbuild",
 			"unrs-resolver"
-		],
-		"onlyBuiltDependencies": [
-			"@tailwindcss/oxide",
-			"cwebp-bin",
-			"esbuild",
-			"gifsicle",
-			"jpegtran-bin",
-			"mozjpeg",
-			"optipng-bin",
-			"pngquant-bin",
-			"unrs-resolver"
 		]
 	},
 	"devDependencies": {
