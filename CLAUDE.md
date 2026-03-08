@@ -116,3 +116,9 @@ VITE_NETWORK_RPC_URL=<Kairos RPC>
 ## 테스트
 
 테스트 프레임워크 미설정
+
+## 머지 전 체크리스트
+
+- develop/main 머지 시 로컬 개발용 proxy 설정을 반드시 원복할 것:
+  - `vite.config.ts`: proxy 설정 주석 처리
+  - `src/shared/api/route.ts`: baseURL을 프로덕션 URL(`http://khunggum.khu.ac.kr:8080/api/v1/`)로 원복
