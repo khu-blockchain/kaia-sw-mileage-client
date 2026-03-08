@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/shared/utils/tailwind.utils"
+import { cn } from "@shared/lib/style"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (

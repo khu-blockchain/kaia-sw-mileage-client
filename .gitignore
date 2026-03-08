@@ -23,6 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-.yarn/cache/*
-
+.claude
+.env.development
+.env.production
 .env
+
+/.claude
+/.claude-md

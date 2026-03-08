@@ -1,0 +1,194 @@
+import type { Address } from "@kaiachain/viem-ext";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Bolt, LogOut } from "lucide-react";
+import { useLocation, useNavigate } from "react-router";
+
+import {
+	ContractEnum,
+	KaiaButton,
+	STUDENT_MANAGER_CONTRACT_ADDRESS,
+	useKaiaAccount,
+	useKaiaContract,
+	useKaiaWallet,
+} from "@features/kaia";
+import { authApi } from "@shared/api";
+import { KaiaIcon } from "@shared/assets";
+import { useAuthStore } from "@shared/authorize";
+import { cn } from "@shared/lib/style";
+import { sliceWalletAddress } from "@shared/lib/web3";
+import { Button } from "@shared/ui";
+
+import WatchAsssetDialog from "./WatchAsssetDialog";
+
+const MENU = [
+	{
+		name: "마일리지 신청",
+		path: "/apply",
+	},
+	{
+		name: "신청 내역",
+		path: "/history",
+	},
+	{
+		name: "내 정보",
+		path: "/setting",
+	},
+	{
+		name: "랭킹",
+		path: "/ranking",
+	},
+];
+
+const Header = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const { currentAccount } = useKaiaAccount();
+	const { connectKaiaWallet } = useKaiaWallet();
+	const { reset } = useAuthStore();
+
+	const { mutate } = useMutation({
+		mutationFn: async () => {
+			await authApi.logout();
+			reset();
+			window.location.reload();
+		},
+	});
+
+	return (
+		<header className="fixed top-0 left-0 z-50 w-full h-16 flex items-center px-8 bg-white border-b border-slate-20">
+			<div className="flex w-7xl max-w-7xl mx-auto justify-between items-center gap-8">
+				<div className="flex gap-10 items-center ">
+					<img
+						src="https://swedu.khu.ac.kr/images/logo_swedu.png"
+						alt="logo"
+						onClick={() => navigate("/")}
+						className="h-8 object-contain cursor-pointer"
+					/>
+					<div className="flex gap-4">
+						{MENU.map((menu) => (
+							<p
+								key={menu.path}
+								className={cn(
+									"text-body text-sm font-semibold cursor-pointer",
+									location.pathname.includes(menu.path) && "text-index",
+								)}
+								onClick={() => navigate(menu.path)}
+							>
+								{menu.name}
+							</p>
+						))}
+					</div>
+				</div>
+				<div className="flex gap-4 items-center">
+					<MyPoint />
+					{!currentAccount ? (
+						<KaiaButton.SmallButton onClick={() => connectKaiaWallet()} />
+					) : (
+						<div className="flex flex-row items-center h-8 gap-1 border border-kaia rounded-full py-1 pl-1 pr-2">
+							<img src={KaiaIcon} alt="logo" className="w-6" />
+							<span className="text-xs text-kaia font-bold">
+								{sliceWalletAddress(currentAccount)}
+							</span>
+						</div>
+					)}
+					<Button variant="ghost" size="icon" onClick={() => mutate()}>
+						<LogOut className="w-5 h-5 text-body" />
+					</Button>
+				</div>
+			</div>
+		</header>
+	);
+};
+
+const MyPoint = () => {
+	const { currentAccount } = useKaiaAccount();
+	const { call } = useKaiaContract();
+	const {
+		data: { point, name, symbol, decimals, address } = {
+			point: 0,
+			name: "-",
+			symbol: "-",
+			decimals: 0,
+			address: "-",
+		},
+	} = useQuery({
+		queryKey: ["my-point", currentAccount],
+		queryFn: async () => {
+			if (!currentAccount) {
+				return {
+					point: 0,
+					name: "-",
+				};
+			}
+
+			const activeTokenAddress = (await call({
+				contractType: ContractEnum.STUDENT_MANAGER,
+				contractAddress: STUDENT_MANAGER_CONTRACT_ADDRESS,
+				method: "mileageToken",
+				args: [],
+			})) as Address;
+
+			const point = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "balanceOf",
+				args: [currentAccount],
+			}));
+
+			const name = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "name",
+				args: [],
+			}));
+
+			const symbol = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "symbol",
+				args: [],
+			}));
+
+			const decimals = (await call({
+				contractType: ContractEnum.SW_MILEAGE_TOKEN,
+				contractAddress: activeTokenAddress,
+				method: "decimals",
+				args: [],
+			}));
+
+			//TODO: point 있을 때 wei 처리해야하는지 확인
+			return {
+				point,
+				address: activeTokenAddress,
+				name,
+				symbol,
+				decimals,
+			};
+		},
+	});
+
+	return (
+		<div className="flex gap-1 items-center">
+			{name !== "-" && currentAccount && (
+				<>
+					<WatchAsssetDialog
+						name={name as string}
+						symbol={symbol as string}
+						decimals={decimals as number}
+						address={address as string}
+					/>
+					<Bolt className="w-5 h-5 text-body" />
+					<p className="text-body text-sm font-semibold">{`${point}점`}</p>
+				</>
+			)}
+			{!currentAccount && (
+				<p className="text-body text-[10px] font-semibold">
+					지갑을 연결하면 마일리지 토큰과 보유량이 표시됩니다.
+				</p>
+			)}
+		</div>
+	);
+};
+
+export default Header;

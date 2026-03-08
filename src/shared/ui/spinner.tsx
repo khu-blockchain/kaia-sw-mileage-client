@@ -1,4 +1,4 @@
-import { cn } from "@/shared/utils";
+import { cn } from "@shared/lib/style";
 
 const Spinner = ({className}: {className?: string}) => {
   return (
