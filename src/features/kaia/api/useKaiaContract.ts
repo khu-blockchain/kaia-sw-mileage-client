@@ -48,6 +48,13 @@ export const useKaiaContract = () => {
 			throw new Error("지갑 연결 후 다시 시도해주세요.");
 		}
 
+		// Kaia Wallet이 내부 캐시된 nonce를 사용하면 tx 실패 후 재시도 시
+		// stale nonce로 또 실패하는 문제 발생
+		// → 온체인에서 실제 nonce를 조회하여 명시적으로 전달
+		const nonce = await publicClient.getTransactionCount({
+			address: currentAccount,
+		});
+
 		const client = createBrowserWalletClient(provider);
 
 		return (await client.signTransaction({
@@ -56,6 +63,7 @@ export const useKaiaContract = () => {
 			from: currentAccount,
 			data: data,
 			value: "0",
+			nonce,
 		})) as Hex;
 	};
 

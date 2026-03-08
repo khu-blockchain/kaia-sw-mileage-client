@@ -4,6 +4,8 @@ import type { ISignUpForm } from "../models";
 
 import { useEffect } from "react";
 
+import { Spinner } from "@/shared/ui";
+
 import { encodePacked, keccak256 } from "@kaiachain/viem-ext";
 import { Controller, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -188,9 +190,10 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 					<Button
 						disabled={isPending}
 						type="submit"
-						className="flex-1 w-full h-10 rounded-md"
+						className="flex-1 w-full h-10 rounded-md gap-2"
 					>
-						회원가입
+						{isPending && <Spinner className="w-4 h-4 fill-white" />}
+						{isPending ? "처리 중..." : "회원가입"}
 					</Button>
 				)}
 			</div>
