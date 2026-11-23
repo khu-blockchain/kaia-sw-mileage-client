@@ -12,6 +12,18 @@ import { parseToFormattedDate } from "@/shared/lib";
 import { sliceWalletAddress } from "@/shared/lib/web3";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/ui";
 
+// DB에 저장된 http://...:8080 주소를 현재 페이지의 프로토콜/포트 기준 경로로 변환
+const toSameOriginPath = (url: string) => {
+	try {
+		const parsed = new URL(url, window.location.origin);
+		return parsed.hostname === window.location.hostname
+			? parsed.pathname + parsed.search
+			: url;
+	} catch {
+		return url;
+	}
+};
+
 const MileageHistoryDetail = () => {
 	const { id: swMileageId } = useParams();
 	const { data } = useSuspenseQuery(
@@ -19,9 +31,8 @@ const MileageHistoryDetail = () => {
 	);
 
 	const handleFileDownload = (fileUrl: string, fileName: string) => {
-		// 새 탭에서 파일 URL 열기 (브라우저에서 자동으로 다운로드 처리)
 		const link = document.createElement("a");
-		link.href = fileUrl;
+		link.href = toSameOriginPath(fileUrl);
 		link.download = fileName;
 		link.target = "_blank";
 		document.body.appendChild(link);

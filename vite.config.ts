@@ -10,18 +10,15 @@ import { defineConfig } from "vite";
 export default defineConfig(() => {
 	return {
 		plugins: [react(), tailwindcss()],
-		// only development
-		// production 푸시 시 아래 server object 주석
-		// shared/route.ts에서 baseURL 수정
-		// server: {
-		// 	proxy: {
-		// 		"/api": {
-		// 			target: "http://localhost:8080/api/v1/",
-		// 			changeOrigin: true,
-		// 			rewrite: (path) => path.replace(/^\/api/, ""),
-		// 		},
-		// 	},
-		// },
+		// 개발 서버 전용 설정 (프로덕션 빌드에는 영향 없음)
+		server: {
+			proxy: {
+				"/api": {
+					target: "http://localhost:8080",
+					changeOrigin: true,
+				},
+			},
+		},
 		build: {
 			// 번들 크기 경고 임계값 증가 (임시)
 			chunkSizeWarningLimit: 1000,

@@ -2,9 +2,8 @@ import type { KyInstance } from "ky";
 
 import { apiClient, authClient } from "./client";
 
-// const baseURL = "/api/"; // development
-
-const baseURL = "http://khunggum.khu.ac.kr:8080/api/v1/"; // production
+// 운영: nginx, 개발: vite proxy가 /api/를 백엔드로 전달
+const baseURL = "/api/v1/";
 
 const server = (api: KyInstance) => (route: string) => {
 	return api.extend({
