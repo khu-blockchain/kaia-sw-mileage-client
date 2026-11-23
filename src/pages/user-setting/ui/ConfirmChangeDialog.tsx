@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import {
 	ContractEnum,
+	getKaiaErrorMessage,
 	KaiaButton,
 	STUDENT_MANAGER_CONTRACT_ADDRESS,
 	useKaiaAccount,
@@ -85,7 +86,8 @@ function ConfirmChangeDialog({
 						description: "블록체인에 기록되는데까지 시간이 소요될 수 있습니다.",
 					};
 				},
-				error: "지갑 주소 변경 확인에 실패했습니다.",
+				error: (error) =>
+					getKaiaErrorMessage(error, "지갑 주소 변경 확인에 실패했습니다."),
 			},
 		);
 	};

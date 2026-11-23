@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 import {
 	ContractEnum,
+	getKaiaErrorMessage,
 	KaiaButton,
 	STUDENT_MANAGER_CONTRACT_ADDRESS,
 	useKaiaAccount,
@@ -48,13 +49,13 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 		setValue,
 		control,
 		trigger,
 	} = useFormContext<ISignUpForm>();
 
-	const { mutateAsync, isPending } = useStudentSignUp();
+	const { mutateAsync } = useStudentSignUp();
 
 	const onStep2Submit: SubmitHandler<ISignUpForm> = async (data) => {
 		const isValid = await trigger([
@@ -98,8 +99,14 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 			});
 			toast.success(`${response.name}님, 회원가입이 완료되었습니다.`);
 			navigate("/sign-in");
-		} catch (error: any) {
-			toast.error(error.message);
+		} catch (error) {
+			console.error(error);
+			toast.error(
+				getKaiaErrorMessage(
+					error,
+					"회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.",
+				),
+			);
 		}
 	};
 
@@ -188,12 +195,12 @@ const SignUpFormStep2 = ({ setCurrentStep }: SignUpFormStep2Props) => {
 					/>
 				) : (
 					<Button
-						disabled={isPending}
+						disabled={isSubmitting}
 						type="submit"
 						className="flex-1 w-full h-10 rounded-md gap-2"
 					>
-						{isPending && <Spinner className="w-4 h-4 fill-white" />}
-						{isPending ? "처리 중..." : "회원가입"}
+						{isSubmitting && <Spinner className="w-4 h-4 fill-white" />}
+						{isSubmitting ? "처리 중..." : "회원가입"}
 					</Button>
 				)}
 			</div>

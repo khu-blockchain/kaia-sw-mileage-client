@@ -5,6 +5,8 @@ import { toast } from "sonner";
 
 import { KAIROS_NETWORK_ID, useKaiaWallet } from "@features/kaia";
 
+const WRONG_NETWORK_TOAST_ID = "wrong-network";
+
 export default function InitGuard() {
 	const { isInstalled, currentNetwork, switchToKairosNetwork } =
 		useKaiaWallet();
@@ -34,27 +36,30 @@ export default function InitGuard() {
 	}, [isInstalled]);
 
 	useEffect(() => {
-		if (currentNetwork !== KAIROS_NETWORK_ID && currentNetwork !== "loading") {
-			toast.error("Kairos Network에 연결되지 않았습니다.", {
-				description: () => {
-					return (
-						<span>
-							<button
-								className="text-index underline"
-								onClick={async () => {
-									await switchToKairosNetwork();
-									window.location.reload();
-								}}
-							>
-								Kairos Network에 연결하기
-							</button>
-						</span>
-					);
-				},
-				position: "top-center",
-				duration: 1000000,
-			});
+		if (currentNetwork == null || currentNetwork === "loading") {
+			return;
 		}
+		if (Number(currentNetwork) === KAIROS_NETWORK_ID) {
+			toast.dismiss(WRONG_NETWORK_TOAST_ID);
+			return;
+		}
+		toast.error("Kairos Network에 연결되지 않았습니다.", {
+			id: WRONG_NETWORK_TOAST_ID,
+			description: () => {
+				return (
+					<span>
+						<button
+							className="text-index underline"
+							onClick={() => switchToKairosNetwork()}
+						>
+							Kairos Network에 연결하기
+						</button>
+					</span>
+				);
+			},
+			position: "top-center",
+			duration: 1000000,
+		});
 	}, [currentNetwork, switchToKairosNetwork]);
 	//로그인이 완료된 사용자는 진입 할 수 없음.
 	//TODO: 의도한대로 동작하지 않음

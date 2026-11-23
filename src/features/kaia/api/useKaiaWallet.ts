@@ -1,12 +1,20 @@
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
+
+const subscribeNetwork = (onChange: () => void) => {
+	const provider = window.klaytn;
+	provider?.on("networkChanged", onChange);
+	return () => provider?.removeListener("networkChanged", onChange);
+};
+
+const getNetworkSnapshot = () => window.klaytn?.networkVersion;
 
 export const useKaiaWallet = () => {
 	const provider = window.klaytn;
 	const isInstalled = useMemo(() => !!provider, [provider]);
-
-	const currentNetwork = useMemo(() => {
-		return provider?.networkVersion;
-	}, [provider]);
+	const currentNetwork = useSyncExternalStore(
+		subscribeNetwork,
+		getNetworkSnapshot,
+	);
 
 	const switchToKairosNetwork = async () => {
 		try {
