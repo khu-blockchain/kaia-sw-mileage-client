@@ -11,6 +11,7 @@ import { encodePacked, keccak256, toHex } from "viem";
 
 import {
 	ContractEnum,
+	getKaiaErrorMessage,
 	STUDENT_MANAGER_CONTRACT_ADDRESS,
 	useKaiaContract,
 } from "@features/kaia";
@@ -162,7 +163,7 @@ const ApplySwMileageDocument = () => {
 			navigate("/history");
 		} catch (error) {
 			console.error(error);
-			toast.error("활동 정보 제출에 실패했습니다.");
+			toast.error(getKaiaErrorMessage(error, "활동 정보 제출에 실패했습니다."));
 		}
 	};
 
