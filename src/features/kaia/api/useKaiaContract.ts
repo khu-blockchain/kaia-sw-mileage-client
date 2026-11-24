@@ -3,6 +3,7 @@ import type { Call, EncodeAbi, RequestSignTransaction } from "../model/types";
 
 import { encodeFunctionData, getContract, TxType } from "@kaiachain/viem-ext";
 
+import { withWalletRequestToast } from "../lib";
 import {
 	CONTRACT,
 	ContractEnum,
@@ -84,15 +85,17 @@ export const useKaiaContract = () => {
 
 		const client = createBrowserWalletClient(provider);
 
-		return (await client.signTransaction({
-			type: txType ?? TxType.FeeDelegatedSmartContractExecution,
-			to: contractAddress,
-			from: currentAccount,
-			data: data,
-			value: "0",
-			nonce,
-			gasLimit: Number(estimatedGas * 2n + FEE_DELEGATION_GAS),
-		})) as Hex;
+		return (await withWalletRequestToast(() =>
+			client.signTransaction({
+				type: txType ?? TxType.FeeDelegatedSmartContractExecution,
+				to: contractAddress,
+				from: currentAccount,
+				data: data,
+				value: "0",
+				nonce,
+				gasLimit: Number(estimatedGas * 2n + FEE_DELEGATION_GAS),
+			}),
+		)) as Hex;
 	};
 
 	return {
